@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+.hero-text {
+  @apply absolute inset-0 flex items-center justify-center;
+}
+
+.hero-title {
+  @apply text-4xl font-bold text-gray-300 text-center italic;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-highlight {
+  @apply text-red-600 italic;
+}
