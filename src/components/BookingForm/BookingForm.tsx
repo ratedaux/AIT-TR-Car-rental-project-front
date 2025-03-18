@@ -28,7 +28,9 @@ function RentForm() {
       .required("End date is required")
       .min(Yup.ref("startDate"), "End date must be later than start date"),
     pickUpLocation: Yup.string().required("Pick-up location is required"),
-    totalRentCost: Yup.string().required("Rent cost can't be empty"),
+    totalRentCost: Yup.number()
+      .required("Rent cost can't be empty")
+      .min(0.01, "Rent cost can't be 0"),
   })
 
   const formik = useFormik({
@@ -45,72 +47,107 @@ function RentForm() {
     },
   })
 
+  const handleCalculateTotalCost = () => {
+    const { startDate, endDate } = formik.values
+
+    // Ensure the dates are valid strings (startDate and endDate should be valid date strings)
+    if (!startDate || !endDate) {
+      console.error("Both startDate and endDate are required.")
+      return // Exit if startDate or endDate is missing
+    }
+
+    const totalCost = calculateTotalCost(startDate, endDate) // Pass as strings
+    formik.setFieldValue("totalRentCost", totalCost) // Update Formik state
+  }
+
   return (
-    <div className="flex flex-col w-[590px] h-[592px] p-[60px] gap-5 rounded-md bg-white">
-      <h2 className="text-xl font-bold mb-4">
-        To rent a car please fill and submit the following form.
+    <div className="flex flex-col w-[590px] h-[592px] p-[60px] m-[60px] gap-8 rounded-md bg-white">
+      <h2 className="text-xl font-bold p-[60px] mb-6">
+        To rent a car please fill and submit the following form:
       </h2>
 
-      <div className="flex flex-col gap-1 w-full">
-        <Input
-          id="startDate"
-          name="startDate"
-          type="date"
-          label="Start date"
-          placeholder="Select start date"
-          value={formik.values.startDate}
-          onChange={formik.handleChange}
-          error={formik.errors.startDate}
-        />
-        <Input
-          id="endDate"
-          name="endDate"
-          type="date"
-          label="End date"
-          placeholder="Select end date"
-          value={formik.values.endDate} //saves dates from home page filter
-          onChange={formik.handleChange}
-          error={formik.errors.endDate}
-        />
-        <Input
-          id="pickUpLocation"
-          name="pickUpLocation"
-          type="text"
-          label="Pick up lokation"
-          placeholder="Car pick up at the office location is only possible."
-          value="Pick up station" // Predefined value
-          onChange={formik.handleChange}
-          disabled // Disable the input
-        />
-        <Input
-          id="totalRentCost"
-          name="totalRentCost"
-          type="number"
-          label="Total Rent Cost"
-          placeholder="Click button to display total cost"
-          value={formik.values.totalRentCost}
-          onChange={() => {}}
-          disabled
-        />
-        <div className="mt-2.5 w-1/2">
+      <form onSubmit={formik.handleSubmit}>
+        <div className="flex flex-col gap-1 w-full ">
+          <Input
+            id="startDate"
+            name="startDate"
+            type="date"
+            label="Start date"
+            placeholder="Select start date"
+            value={formik.values.startDate}
+            onChange={formik.handleChange}
+            error={formik.errors.startDate}
+            className={`${formik.errors.startDate && formik.touched.startDate}`}
+          />
+
+          {formik.errors.startDate && formik.touched.startDate && (
+            <div className="text-red-500 mb-6">{formik.errors.startDate}</div>
+          )}
+
+          <Input
+            id="endDate"
+            name="endDate"
+            type="date"
+            label="End date"
+            placeholder="Select end date"
+            value={formik.values.endDate} //saves dates from home page filter
+            onChange={formik.handleChange}
+            error={formik.errors.endDate}
+            className={` ${formik.errors.endDate && formik.touched.endDate}`}
+          />
+
+          {formik.errors.endDate && formik.touched.endDate && (
+            <div className="text-red-500 mb-6">{formik.errors.endDate}</div>
+          )}
+
+          <Input
+            id="pickUpLocation"
+            name="pickUpLocation"
+            type="text"
+            label="Pick up lokation"
+            //placeholder="You can pick up a car only at the pick up station."
+            value="Pick up station" // Predefined value
+            onChange={formik.handleChange}
+            disabled // Disable the input
+          />
+          <Input
+            id="totalRentCost"
+            name="totalRentCost"
+            type="number"
+            label="Total Rent Cost"
+            placeholder="Click button to display total cost"
+            value={formik.values.totalRentCost}
+            onChange={() => {}}
+            disabled
+            className={`${formik.errors.totalRentCost && formik.touched.totalRentCost}`}
+          />
+
+          {formik.errors.totalRentCost && formik.touched.totalRentCost && (
+            <div className="text-red-500 mb-4">
+              {formik.errors.totalRentCost}
+            </div>
+          )}
+
+          <p className="text-sm text-gray-500 mb-4">
+            Payment is available only at pick up station.
+          </p>
+          <div className="mt-2.5 w-100%">
+            <Button
+              name="Calculate Total Cost"
+              type="button"
+              onClick={handleCalculateTotalCost}
+              disabled={!(formik.values.startDate && formik.values.endDate)}
+            />
+          </div>
+        </div>
+        <div className="mt-2.5 w-100%">
           <Button
-            name="Calculate Total Cost"
-            type="button"
-            onClick={calculateTotalCost}
-            disabled={!(formik.values.startDate && formik.values.endDate)}
+            name="Confirm"
+            type="submit"
+            //disabled={!formik.isValid || !formik.values.totalRentCost || formik.isSubmitting}
           />
         </div>
-      </div>
-      <div className="mt-2.5 w-1/2">
-        <Button
-          name="Confirm"
-          type="submit"
-          disabled={!formik.isValid || !formik.values.totalRentCost}
-        />
-      </div>
-      <p className="text-sm text-gray-500 mb-4">
-        Payment can be done only at the office when picking up the car.
-      </p>
+      </form>
     </div>
   )
 }
