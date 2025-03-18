@@ -28,9 +28,9 @@ export default function FilterByDatesForm() {
     const today = new Date().toISOString().split("T")[0];
 
     return (
-        <div className='max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-lg relative -mt-30 p-6 border border-gray-100'>
+        <div className='max-w-5xl mx-auto bg-white rounded-lg shadow-lg relative -mt-30 p-6 border border-gray-100'>
             <h2 className='text-2xl font-bold text-gray-800 mb-12 text-center'>Find Available Cars</h2>
-            <form className="flex flex-col md:flex-row items-end gap-4 mt-5 items-stretch p-7" onSubmit={formik.handleSubmit}>
+            <form className="flex flex-col md:flex-row gap-4 mt-5 items-stretch p-7" onSubmit={formik.handleSubmit}>
                 <div className="flex-1">
                     <Input
                         name="startDate"
