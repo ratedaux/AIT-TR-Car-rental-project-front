@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+.nav-link {
+  @apply text-white font-bold px-4 py-2 rounded-md transition-all duration-300 hover:bg-red-600 relative z-10 hover:text-white;
+}
+
+.footer-link {
+  @apply text-white hover:text-gray-300 hover:underline transition-colors;
+}
+
+.hero-text {
+  @apply absolute inset-0 flex items-center justify-center;
+}
+
+.hero-title {
+  @apply text-4xl font-bold text-gray-300 text-center italic;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-highlight {
+  @apply text-red-600 italic;
+}
