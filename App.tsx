@@ -13,7 +13,6 @@ const App = () => {
     <BrowserRouter>
       <Layout>
         <Home />
-        <UserRegistrationForm/>  
       </Layout>
 
 
