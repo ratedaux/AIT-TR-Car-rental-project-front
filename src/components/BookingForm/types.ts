@@ -1,8 +1,6 @@
-export interface RentFormValues{
-
-    startDate: Date,
-    endDate: Date,
-    pickUpLocation: string,
-    totalRentCost: number,
-
+export interface RentFormValues {
+  startDate: string
+  endDate: string
+  pickUpLocation: string
+  totalRentCost: string
 }
