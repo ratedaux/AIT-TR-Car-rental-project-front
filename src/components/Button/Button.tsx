@@ -5,18 +5,16 @@ function Button({
   type = "button",
   onClick,
   disabled,
-  width = "w-full",  
-  height = "max-h-[60px]",
-  color = "bg-red-600"
+  customClasses = "",
 }: ButtonProps) {
+  const baseClasses =
+    "px-[54px] py-[20px] gap-2 text-x2 w-full max-h-[60px] font-medium rounded-md flex items-center justify-center"
 
-    const baseClasses = "px-[54px] py-[20px] gap-2 text-x2  font-medium rounded-md flex items-center justify-center";
+  const disabledClasses = disabled
+    ? "bg-gray-500 text-white font-bold opacity-50 cursor-not-allowed"
+    : "bg-red-600 hover:bg-red-700 text-white font-bold"
 
-    const colorClasses = disabled
-    ? "bg-gray-500 text-white opacity-50 cursor-not-allowed"  // серый цвет для disabled
-    : `${color} hover:${color.replace("bg-", "hover:bg-")} text-white font-bold`;
-  
-    const buttonClasses = `${baseClasses} ${colorClasses} ${width} ${height}`;
+  const buttonClasses = `${baseClasses} ${disabledClasses} ${customClasses} `
 
   return (
     <button
