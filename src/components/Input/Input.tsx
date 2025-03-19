@@ -1,3 +1,4 @@
+
 import { InputProps } from "./type"
 
 function Input({
@@ -10,13 +11,14 @@ function Input({
   onChange,
   errorMessage,
 }: InputProps) {
-    
+
   return (
     <div className="mb-6">
       <div className="relative">
         <label
           htmlFor={input_id}
-          className="absolute -top-3 left-3 bg-white px-1 text-sm font-semibold text-gray-800 z-10"
+         className="absolute -top-3 left-3 bg-white px-1 text-sm font-semibold text-gray-800 z-10" 
+        
         >
           {label}
         </label>

@@ -2,7 +2,7 @@ import { ChangeEvent } from "react";
 
 export interface InputProps {
     name : string;
-    type?: "text" | "email" | "password" | "tel" | "url" | "number";
+    type?: "text" | "email" | "password" | "tel" | "url" | "number" | "date";
     placeholder?: string;
     label?: string,
     input_id?: string;
