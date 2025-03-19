@@ -1,5 +1,12 @@
+import FilterByDatesForm from "components/FilterByDatesForm/FilterByDatesForm";
+
 function Home() {
-    return <div>Home Page Content</div>;
+
+    return (
+        <div className="container mx-auto px-4 py-8">
+            <FilterByDatesForm />
+        </div>
+    );
 }
 
 export default Home;

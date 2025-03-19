@@ -1,6 +1,7 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent } from "react"
 
 export interface InputProps {
+
     name : string;
     type?: "text" | "email" | "password" | "tel" | "url" | "number" | "date";
     placeholder?: string;
@@ -9,5 +10,7 @@ export interface InputProps {
     value: string;
     errorMessage? : string;
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+   min?: string
    
 }
+
