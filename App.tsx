@@ -12,11 +12,12 @@ const App = () => {
   return (
     <BrowserRouter>
       <Layout>
-        <Home />
-        <BookingForm></BookingForm>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          {/* <Route path="/login" element={<Login />} /> */}
+          <Route path="*" element="Page not found" />
+        </Routes>
       </Layout>
-
-
     </BrowserRouter>
   );
 };
