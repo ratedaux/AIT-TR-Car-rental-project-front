@@ -7,6 +7,7 @@ import {
   registrationFormSelectors,
 } from "../../store/redux/registrationForm/registrationFromSlice"
 import * as Yup from "yup"
+import { useEffect } from "react"
 
 const validationSchema = Yup.object({
   userFirstName: Yup.string()
@@ -27,6 +28,13 @@ const validationSchema = Yup.object({
 })
 
 function UserRegistrationForm() {
+
+
+  useEffect(() => {
+    // Когда компонент монтируется, прокручиваем страницу в верх
+    window.scrollTo(0, 0);
+  }, []);
+
   const formValues = useAppSelector(registrationFormSelectors.formValues)
   const isChecked = useAppSelector(registrationFormSelectors.isChecked)
   const errors = useAppSelector(registrationFormSelectors.errors)
