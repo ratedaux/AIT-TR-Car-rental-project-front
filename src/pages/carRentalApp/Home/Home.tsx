@@ -1,4 +1,5 @@
 import FilterByDatesForm from "components/FilterByDatesForm/FilterByDatesForm";
+import Loader from "components/Loader/Loader";
 import Login from "components/Login/Login";
 
 function Home() {
