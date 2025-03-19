@@ -15,6 +15,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
     "@reduxjs/toolkit": "^2.0.1",
     "@tailwindcss/vite": "^4.0.14",
     "@types/node": "^22.13.10",
