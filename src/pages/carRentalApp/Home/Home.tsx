@@ -1,128 +1,45 @@
-import CarList from "components/CarList/CarList";
-import FilterByDatesForm from "components/FilterByDatesForm/FilterByDatesForm";
+import FilterByDatesForm from "components/FilterByDatesForm/FilterByDatesForm"
+import Login from "components/Login/Login"
+import CarComponent from "../../../components/CarComponent/CarComponent"
+
+// test image remove later
+//import CarImg from "assets/CarImages/corolla-exterieur.jpg"  
+
 
 function Home() {
 
-    const testCars = [
-        {
-            image: "https://via.placeholder.com/200",
-            brand: "Toyota",
-            model: "Corolla",
-            pricePerDay: 50,
-            transmission: "Automatic",
-            year: 2020,
-            fuel: "Gasoline",
-            onMoreDetails: () => alert("More details clicked"),
-            onRent: () => alert("Rent clicked"),
-        },
-        {
-            image: "https://via.placeholder.com/200",
-            brand: "Honda",
-            model: "Civic",
-            pricePerDay: 55,
-            transmission: "Manual",
-            year: 2019,
-            fuel: "Diesel",
-            onMoreDetails: () => alert("More details clicked"),
-            onRent: () => alert("Rent clicked"),
-        },
-        {
-            image: "https://via.placeholder.com/200",
-            brand: "Toyota",
-            model: "Corolla",
-            pricePerDay: 50,
-            transmission: "Automatic",
-            year: 2020,
-            fuel: "Gasoline",
-            onMoreDetails: () => alert("More details clicked"),
-            onRent: () => alert("Rent clicked"),
-        },
-        {
-            image: "https://via.placeholder.com/200",
-            brand: "Honda",
-            model: "Civic",
-            pricePerDay: 55,
-            transmission: "Manual",
-            year: 2019,
-            fuel: "Diesel",
-            onMoreDetails: () => alert("More details clicked"),
-            onRent: () => alert("Rent clicked"),
-        },
-        {
-            image: "https://via.placeholder.com/200",
-            brand: "Toyota",
-            model: "Corolla",
-            pricePerDay: 50,
-            transmission: "Automatic",
-            year: 2020,
-            fuel: "Gasoline",
-            onMoreDetails: () => alert("More details clicked"),
-            onRent: () => alert("Rent clicked"),
-        },
-        {
-            image: "https://via.placeholder.com/200",
-            brand: "Honda",
-            model: "Civic",
-            pricePerDay: 55,
-            transmission: "Manual",
-            year: 2019,
-            fuel: "Diesel",
-            onMoreDetails: () => alert("More details clicked"),
-            onRent: () => alert("Rent clicked"),
-        },
-        {
-            image: "https://via.placeholder.com/200",
-            brand: "Toyota",
-            model: "Corolla",
-            pricePerDay: 50,
-            transmission: "Automatic",
-            year: 2020,
-            fuel: "Gasoline",
-            onMoreDetails: () => alert("More details clicked"),
-            onRent: () => alert("Rent clicked"),
-        },
-        {
-            image: "https://via.placeholder.com/200",
-            brand: "Honda",
-            model: "Civic",
-            pricePerDay: 55,
-            transmission: "Manual",
-            year: 2019,
-            fuel: "Diesel",
-            onMoreDetails: () => alert("More details clicked"),
-            onRent: () => alert("Rent clicked"),
-        },
-        {
-            image: "https://via.placeholder.com/200",
-            brand: "Toyota",
-            model: "Corolla",
-            pricePerDay: 50,
-            transmission: "Automatic",
-            year: 2020,
-            fuel: "Gasoline",
-            onMoreDetails: () => alert("More details clicked"),
-            onRent: () => alert("Rent clicked"),
-        },
-        {
-            image: "https://via.placeholder.com/200",
-            brand: "Honda",
-            model: "Civic",
-            pricePerDay: 55,
-            transmission: "Manual",
-            year: 2019,
-            fuel: "Diesel",
-            onMoreDetails: () => alert("More details clicked"),
-            onRent: () => alert("Rent clicked"),
-        }
-    ];
+  //example car data. later object from Backend
+//   const carData = {
+//     brand: "Toyota",
+//     model: "Corolla",
+//     year: 2021,
+//     type: "Sedan",
+//     fuelType: "Gasoline",
+//     transmissionType: "Automatic",
+//     carStatus: "Available",
+//     dayRentalPrice: 30,
+//     carImage: CarImg,
+//   }
 
-    return (
-        <div className="container mx-auto px-4 py-8 ">
-            <FilterByDatesForm />
-            <CarList cars={testCars} />
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <FilterByDatesForm />
 
-        </div>
-    );
+      {/* remove later test car data*/}
+      {/* <CarComponent
+        brand={carData.brand}
+        model={carData.model}
+        year={carData.year}
+        type={carData.type}
+        fuelType={carData.fuelType}
+        transmissionType={carData.transmissionType}
+        carStatus={carData.carStatus}
+        dayRentalPrice={carData.dayRentalPrice}
+        carImage={carData.carImage}
+      /> */}
+      
+    </div>
+  )
 }
 
-export default Home;
+export default Home

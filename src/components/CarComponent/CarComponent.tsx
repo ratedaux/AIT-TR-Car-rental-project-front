@@ -1,0 +1,137 @@
+import { CarProps } from "./types"
+import Button from "components/Button/Button"
+import fuelIcon from "assets/CarImages/fuel-icon.png"
+import transmissionIcon from "assets/CarImages/transmission-icon.png"
+import yearIcon from "assets/CarImages/year-icon.png"
+import euroIcon from "assets/CarImages/euro-icon.png"
+import carIcon from "assets/CarImages/car-icon.jpg"
+
+
+function CarComponent({
+  brand,
+  model,
+  year,
+  type,
+  fuelType,
+  transmissionType,
+  carStatus,
+  dayRentalPrice,
+  carImage,
+}: CarProps) {
+  return (
+    <div className="flex flex-row w-auto bg-white justify-center rounded-lg ">
+     
+     {/* right block */}
+      <div className="w-2/3 items-center">
+        <div className="flex flex-col w-auto m-6 gap-6">
+          <img
+            src={carImage}
+            alt={brand}
+            className="rounded-lg w-auto object-cover"
+          />
+
+          <div className="flex flex-col w-auto ">
+            <div className="bg-black text-white font-bold  rounded-tl-lg rounded-tr-lg p-3 ">
+              Info:
+            </div>
+
+            <div className="flex flex-row gap-1 w-auto p-3 bg-white  rounded-lg rounded-br-lg">
+              <div className="flex flex-row items-center gap-1 ">
+                <img src={fuelIcon} className="w-1/5" />
+                <div className="w-5/6">{fuelType}</div>
+              </div>
+
+              <div className="flex flex-row items-center gap-1">
+                <img src={transmissionIcon} className="w-1/5" />
+                <div className="w-5/6">{transmissionType}</div>
+              </div>
+
+              <div className="flex flex-row items-center gap-1">
+                <img src={yearIcon} className="w-1/5" />
+                <div className="w-5/6">{year}</div>
+              </div>
+
+              <div className="flex flex-row items-center gap-1">
+                <img src={euroIcon} className="w-1/5" />
+                <div className="w-5/6">{dayRentalPrice}</div>
+              </div>
+
+              <div className="flex flex-row items-center gap-1">
+                <img src={carIcon} className="w-1/3" />
+                <div className="w-2/3">{carStatus}</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+{/* left block */}
+      <div className="flex flex-col w-1/3 m-6 gap-6">
+        
+         {/* description block */}
+        <div className="flex flex-col w-auto ">
+          <div className="bg-black text-white font-bold  rounded-tl-lg rounded-tr-lg p-3 ">
+            Description:
+          </div>
+          <div className="flex flex-col gap-3 w-auto p-3 bg-white  rounded-lg rounded-br-lg">
+            <div className="flex gap-4">
+              <div className="w-1/4 font-bold">Brand:</div>
+              <div className="w-3/4">{brand}</div>
+            </div>
+            <div className="flex gap-4">
+              <div className="w-1/4 font-bold">Model:</div>
+              <div className="w-3/4">{model}</div>
+            </div>
+            <div className="flex gap-4">
+              <div className="w-1/4 font-bold">Year:</div>
+              <div className="w-3/4">{year}</div>
+            </div>
+            <div className="flex gap-4">
+              <div className="w-1/4 font-bold">Body type:</div>
+              <div className="w-3/4">{type}</div>
+            </div>
+            <div className="flex gap-4">
+              <div className="w-1/4 font-bold">Fuel:</div>
+              <div className="w-3/4">{fuelType}</div>
+            </div>
+            <div className="flex gap-4">
+              <div className="w-1/4 font-bold">Transmission:</div>
+              <div className="w-3/4">{transmissionType}</div>
+            </div>
+            <div className="flex gap-4">
+              <div className="w-1/4 font-bold">Status:</div>
+              <div className="w-3/4">{carStatus}</div>
+            </div>
+            <div className="flex gap-4">
+              <div className="w-1/4 font-bold">Daily price:</div>
+              <div className="w-3/4">{dayRentalPrice} €</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Note Block */}
+        <div className="flex flex-col w-auto ">
+        <div className="bg-black text-white font-bold  rounded-tl-lg rounded-tr-lg p-3 ">
+          Note:
+        </div>      
+        <div className="flex flex-col gap-1 w-auto p-3 bg-white  rounded-lg rounded-br-lg">
+          <p>You can pick up a car only at the pick up station! </p>
+          <p>Payment possible only at the pick up station! </p>
+          <p>Don't forget your driving license! </p>
+        </div>
+        </div>
+
+        <div className="w-auto">
+          <Button name="Rent" type="button" onClick={() => {}} />
+        </div>
+      </div>
+
+      <div>
+        <Button name="X" onClick={()=>{}}  />
+      </div>
+    </div>
+  )
+}
+export default CarComponent
