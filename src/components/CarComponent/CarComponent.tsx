@@ -5,6 +5,7 @@ import transmissionIcon from "assets/CarImages/transmission-icon.png"
 import yearIcon from "assets/CarImages/year-icon.png"
 import euroIcon from "assets/CarImages/euro-icon.png"
 import carIcon from "assets/CarImages/car-icon.jpg"
+import { useState } from "react"
 
 function CarComponent({
   brand,
@@ -17,6 +18,19 @@ function CarComponent({
   dayRentalPrice,
   carImage,
 }: CarProps) {
+
+    // State to manage the visibility of the window
+  const [isVisible, setIsVisible] = useState(true)
+
+  // Handle close button click
+  const handleClose = () => {
+    setIsVisible(false) // Set visibility to false, effectively "closing" the window
+  }
+
+  if (!isVisible) {
+    return null // If not visible, return nothing (effectively hiding the component)
+  }
+
   return (
     <div className="flex flex-row w-auto bg-white justify-center rounded-lg ">
       {/* right block */}
@@ -123,12 +137,12 @@ function CarComponent({
         </div>
       </div>
 
-{/* close button */}
+      {/* close button */}
       <div>
         <Button
           name="X"
           customClasses="!rounded-lg font-semibold !bg-gray-400 hover:!bg-red-700 text-white"
-          onClick={() => {}}
+          onClick={handleClose}
         />
       </div>
     </div>
