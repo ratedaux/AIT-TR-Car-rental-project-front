@@ -5,6 +5,7 @@ import Layout from 'pages/carRentalApp/Layout/Layout';
 import Home from 'pages/carRentalApp/Home/Home';
 import BookingForm from 'components/BookingForm/BookingForm'
 import Login from 'components/Login/Login';
+import CarPage from 'pages/carRentalApp/CarPage/CarPage'
 
 
 
@@ -18,6 +19,12 @@ const App = () => {
           <Route path="/" element={<Home />} />
           {/* <Route path="/login" element={<Login />} /> */}
           <Route path="*" element="Page not found" />
+         
+
+          {/* remove later */}
+          <Route path='/account' element={<CarPage/>}/>
+          
+          
         </Routes>
       </Layout>
     </BrowserRouter>
