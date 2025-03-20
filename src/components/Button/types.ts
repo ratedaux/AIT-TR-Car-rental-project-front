@@ -3,6 +3,5 @@ export interface ButtonProps {
     type?: "submit" | "button" | "reset";
     onClick?: () => void; 
     disabled?: boolean;
-    width?: string;  
-    height?: string;
+    customClasses?: string
 }

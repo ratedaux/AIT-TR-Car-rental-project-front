@@ -7,6 +7,8 @@ import {
   registrationFormSelectors,
 } from "../../store/redux/registrationForm/registrationFromSlice"
 import * as Yup from "yup"
+import { useEffect } from "react"
+import car_foto_for_login from "../../assets/car_foto_for-login.jpg"
 
 const validationSchema = Yup.object({
   userFirstName: Yup.string()
@@ -27,6 +29,13 @@ const validationSchema = Yup.object({
 })
 
 function UserRegistrationForm() {
+
+
+  useEffect(() => {
+    // Когда компонент монтируется, прокручиваем страницу в верх
+    window.scrollTo(0, 0);
+  }, []);
+
   const formValues = useAppSelector(registrationFormSelectors.formValues)
   const isChecked = useAppSelector(registrationFormSelectors.isChecked)
   const errors = useAppSelector(registrationFormSelectors.errors)
@@ -79,8 +88,8 @@ function UserRegistrationForm() {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="w-[700px] bg-white border border-gray-300 rounded-lg p-8">
+    <div className="flex justify-center items-center "> {/* min-h-screen bg-gray-100 */}
+      <div className="w-[550px]  rounded-lg p-8"> {/* bg-white border border-gray-300 */}
         <h2 className="mt-6 text-3xl font-semibold text-gray-900 text-center">
           Create your account
         </h2>
@@ -187,6 +196,7 @@ function UserRegistrationForm() {
           />
         </form>
       </div>
+      <img src={car_foto_for_login} alt="auto" className="w-1/3 h-126  rounded-lg ml-6" />
     </div>
   )
 }

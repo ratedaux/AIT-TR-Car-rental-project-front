@@ -1,10 +1,14 @@
 import Button from "components/Button/Button"
 import Input from "components/Input/Input"
-
+import { Link } from "react-router-dom"
+import car_foto_for_login from "../../assets/car_foto_for-login.jpg"
 function Login() {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+    <div className="flex justify-center items-center min-h-screen ">
+      {" "}
+      {/* bg-gray-100 */}
+      <div className=" p-8   w-full max-w-md ">
+        {/*  bg-white  shadow-md rounded*/}
         <div className="mb-6">
           <h2 className="text-2xl font-bold mb-6 text-left">Login</h2>
           <p className="mb-4 text-left text-gray-600">
@@ -28,7 +32,6 @@ function Login() {
             label="Password"
             onChange={() => {}}
           />
-
           <div className="flex items-center justify-between my-4">
             <label className="flex items-center mb-4 cursor-pointer">
               <input
@@ -43,15 +46,20 @@ function Login() {
               Forgot Password
             </a>
           </div>
-          <Button name="Login" />
+          <Button name="Login" /> {/* customClasses="!bg-blue-500" */}
         </form>
         <p className="text-center mt-4">
           Don’t have an account?{" "}
-          <a href="#" className="text-red-500">
+          <Link to="registration" className="text-red-500">
             Sign up
-          </a>
+          </Link>
         </p>
       </div>
+      <img
+        src={car_foto_for_login}
+        alt="auto"
+        className="w-1/3 h-126  rounded-lg ml-6"
+      />
     </div>
   )
 }
