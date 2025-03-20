@@ -6,7 +6,6 @@ import yearIcon from "assets/CarImages/year-icon.png"
 import euroIcon from "assets/CarImages/euro-icon.png"
 import carIcon from "assets/CarImages/car-icon.jpg"
 
-
 function CarComponent({
   brand,
   model,
@@ -20,8 +19,7 @@ function CarComponent({
 }: CarProps) {
   return (
     <div className="flex flex-row w-auto bg-white justify-center rounded-lg ">
-     
-     {/* right block */}
+      {/* right block */}
       <div className="w-2/3 items-center">
         <div className="flex flex-col w-auto m-6 gap-6">
           <img
@@ -60,17 +58,14 @@ function CarComponent({
                 <img src={carIcon} className="w-1/3" />
                 <div className="w-2/3">{carStatus}</div>
               </div>
-
             </div>
           </div>
         </div>
       </div>
 
-
-{/* left block */}
+      {/* left block */}
       <div className="flex flex-col w-1/3 m-6 gap-6">
-        
-         {/* description block */}
+        {/* description block */}
         <div className="flex flex-col w-auto ">
           <div className="bg-black text-white font-bold  rounded-tl-lg rounded-tr-lg p-3 ">
             Description:
@@ -113,14 +108,14 @@ function CarComponent({
 
         {/* Note Block */}
         <div className="flex flex-col w-auto ">
-        <div className="bg-black text-white font-bold  rounded-tl-lg rounded-tr-lg p-3 ">
-          Note:
-        </div>      
-        <div className="flex flex-col gap-1 w-auto p-3 bg-white  rounded-lg rounded-br-lg">
-          <p>You can pick up a car only at the pick up station! </p>
-          <p>Payment possible only at the pick up station! </p>
-          <p>Don't forget your driving license! </p>
-        </div>
+          <div className="bg-black text-white font-bold  rounded-tl-lg rounded-tr-lg p-3 ">
+            Note:
+          </div>
+          <div className="flex flex-col gap-1 w-auto p-3 bg-white  rounded-lg rounded-br-lg">
+            <p>You can pick up a car only at the pick up station! </p>
+            <p>Payment possible only at the pick up station! </p>
+            <p>Don't forget your driving license! </p>
+          </div>
         </div>
 
         <div className="w-auto">
@@ -128,8 +123,13 @@ function CarComponent({
         </div>
       </div>
 
+{/* close button */}
       <div>
-        <Button name="X" onClick={()=>{}}  />
+        <Button
+          name="X"
+          customClasses="!rounded-lg font-semibold !bg-gray-400 hover:!bg-red-700 text-white"
+          onClick={() => {}}
+        />
       </div>
     </div>
   )
