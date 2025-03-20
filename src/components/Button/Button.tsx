@@ -1,4 +1,4 @@
-import { ButtonProps } from "./types"
+import { ButtonProps } from "./types";
 
 function Button({
   name = "Sign Up",
@@ -16,6 +16,7 @@ function Button({
 
   const buttonClasses = `${baseClasses} ${disabledClasses} ${customClasses} `
 
+
   return (
     <button
       type={type}
@@ -25,7 +26,7 @@ function Button({
     >
       {name}
     </button>
-  )
+  );
 }
 
-export default Button
+export default Button;
