@@ -28,7 +28,7 @@ export default function FilterByDatesForm() {
     const today = new Date().toISOString().split("T")[0];
 
     return (
-        <div className='max-w-5xl mx-auto bg-white rounded-lg shadow-lg relative -mt-30 p-6 border border-gray-100'>
+        <div className='max-w-5xl mx-auto bg-white rounded-lg shadow-lg relative -mt-30 py-5 border border-gray-100 mb-6'>
             <h2 className='text-2xl font-bold text-gray-800 mb-12 text-center'>Find Available Cars</h2>
             <form className="flex flex-col md:flex-row gap-4 mt-5 items-stretch p-7" onSubmit={formik.handleSubmit}>
                 <div className="flex-1">
@@ -41,7 +41,7 @@ export default function FilterByDatesForm() {
                         onChange={formik.handleChange}
                         errorMessage={formik.errors.startDate}
                         min={today}
-                    ></Input>
+                    />
                 </div>
                 <div className="flex-1">
                     <Input
@@ -58,9 +58,8 @@ export default function FilterByDatesForm() {
                 <div className="md: w-48">
                     <Button
                         type="submit"
-                        name="Search"
-                        width="w-full"
-                        height="h-[58px]"
+                        name="SEARCH"
+                        customClasses="!w-full !h-[58px] !py-2.5 !px-5 !rounded-lg !font-semibold !bg-gray-900 !text-white hover:!bg-red-700 !transition-colors !duration-300"
                     />
                 </div>
             </form >
