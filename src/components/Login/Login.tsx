@@ -1,13 +1,12 @@
-import Button from "components/Button/Button"
-import Input from "components/Input/Input"
-import { Link } from "react-router-dom"
-import car_foto_for_login from "../../assets/car_foto_for-login.jpg"
+import Button from "components/Button/Button";
+import Input from "components/Input/Input";
+import { Link } from "react-router-dom";
+import car_foto_for_login from "../../assets/car_foto_for-login.jpg";
 function Login() {
   return (
     <div className="flex justify-center items-center min-h-screen ">
-      {" "}
       {/* bg-gray-100 */}
-      <div className=" p-8   w-full max-w-md ">
+      <div className=" p-8 w-full max-w-md ">
         {/*  bg-white  shadow-md rounded*/}
         <div className="mb-6">
           <h2 className="text-2xl font-bold mb-6 text-left">Login</h2>
@@ -22,7 +21,7 @@ function Login() {
             placeholder="Enter your email"
             value={""}
             label="Email"
-            onChange={() => {}}
+            onChange={() => { }}
           />
           <Input
             name="userPassword"
@@ -30,7 +29,7 @@ function Login() {
             placeholder="Enter your password"
             value={""}
             label="Password"
-            onChange={() => {}}
+            onChange={() => { }}
           />
           <div className="flex items-center justify-between my-4">
             <label className="flex items-center mb-4 cursor-pointer">
@@ -38,7 +37,7 @@ function Login() {
                 type="checkbox"
                 className="form-checkbox h5 w-5 text-red-500"
                 id="termsCheckbox"
-                onChange={() => {}}
+                onChange={() => { }}
               />
               <span className="ml-2 text gray-700">Remember me</span>
             </label>
@@ -61,7 +60,7 @@ function Login() {
         className="w-1/3 h-126  rounded-lg ml-6"
       />
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;
