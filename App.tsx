@@ -6,6 +6,7 @@ import Home from 'pages/carRentalApp/Home/Home';
 import BookingForm from 'components/BookingForm/BookingForm'
 import Login from 'components/Login/Login';
 import UserRegistrationForm from 'components/UserRegistrationForm/UserRegistrationForm';
+import LoginNotification from 'components/LoginNotification/LoginNotification';
 
 
 
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />  
           <Route path='/login/registration' element={<UserRegistrationForm/>}/>
+          
           <Route path="*" element="Page not found" />
           
         </Routes>
