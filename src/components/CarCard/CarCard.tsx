@@ -3,6 +3,7 @@ import { CarCardProps } from "./types";
 
 function CarCard({
     image,
+    brand,
     model,
     pricePerDay,
     transmission,
@@ -28,7 +29,7 @@ function CarCard({
                 <div className="w-2/3 flex">
                     <div className="flex-1">
                         <h3 className="text-2xl font-semibold text-gray-800 mb-6">
-                            {model}
+                            {brand}{model}
                         </h3>
                         <div className="flex gap-3 text-gray-600 my-4">
                             <div className="flex items-center gap-0.5">

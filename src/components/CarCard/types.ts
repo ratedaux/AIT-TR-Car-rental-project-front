@@ -1,5 +1,6 @@
 export interface CarCardProps {
   image: string
+  brand: string
   model: string
   pricePerDay: number
   transmission: string
