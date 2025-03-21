@@ -140,7 +140,7 @@ function CarComponent({
       <div>
         <Button
           name="X"
-          customClasses="!rounded-lg font-semibold !bg-gray-400 hover:!bg-red-700 text-white"
+          customClasses="!rounded-lg !w-1 font-semibold !bg-gray-400 hover:!bg-red-700 text-white"
           onClick={handleClose}
         />
       </div>

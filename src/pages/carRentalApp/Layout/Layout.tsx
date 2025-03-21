@@ -34,6 +34,9 @@ function Layout({ children }: LayoutProps) {
                             <Link to="/account" className="text-white font-bold px-4 py-2 rounded-md transition-all duration-300 hover:bg-red-600 relative z-10 hover:text-white">
                                 My Account
                             </Link>
+                            <Link to="/admin" className="text-white font-bold px-4 py-2 rounded-md transition-all duration-300 hover:bg-red-600 relative z-10 hover:text-white">
+                                Admin
+                            </Link>
                         </nav>
                     </div>
                 </div>

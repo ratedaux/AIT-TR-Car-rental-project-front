@@ -10,6 +10,7 @@ import Login from 'components/Login/Login';
 import UserRegistrationForm from 'components/UserRegistrationForm/UserRegistrationForm';
 import LoginNotification from 'components/LoginNotification/LoginNotification';
 import MyAccount from 'pages/carRentalApp/CustomerPage/MyAccount';
+import AdminPage from 'pages/carRentalApp/AdminPage/AdminPage';
 
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />  
           <Route path='/login/registration' element={<UserRegistrationForm/>}/>
           <Route path="/account" element={<MyAccount/>}/>
+          <Route path="/admin" element={<AdminPage/>}/>
           <Route path="*" element="Page not found" />
 
           
