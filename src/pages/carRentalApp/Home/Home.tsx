@@ -23,18 +23,7 @@ function Home() {
   //   carImage: CarImg,
   // }
 
- // example booking data delete later
-const bookingData={
-  startDate: "20.03.2025",
-    endDate: "21.03.2025",
-    carBrand: "Toyota",
-    carModel: "Corolla",
-    status: true,
-    price: 50,
-    renterName: "Masha",
-    updateBookingDate: "19.03.2025",
-    createBookingDate: "18.03.2025"
-}
+
 
 
   return (
@@ -54,18 +43,7 @@ const bookingData={
         carImage={carData.carImage}
       /> */}
 
-      <BookingComponent
-      startDate={bookingData.startDate}
-      endDate={bookingData.endDate}
-      carBrand={bookingData.carBrand}
-      carModel={bookingData.carModel}
-      status={bookingData.status}
-      price={bookingData.price}
-      renterName={bookingData.renterName}
-      updateBookingDate={bookingData.updateBookingDate}
-      createBookingDate={bookingData.createBookingDate}
-      />
-      
+          
     </div>
   )
 }

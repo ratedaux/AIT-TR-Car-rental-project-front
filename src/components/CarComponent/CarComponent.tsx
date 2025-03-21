@@ -18,8 +18,7 @@ function CarComponent({
   dayRentalPrice,
   carImage,
 }: CarProps) {
-
-    // State to manage the visibility of the window
+  // State to manage the visibility of the window
   const [isVisible, setIsVisible] = useState(true)
 
   // Handle close button click

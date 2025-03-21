@@ -1,3 +1,5 @@
+import { S } from "vitest/dist/reporters-w_64AS5f.js"
+
 export interface BookingProps{
     startDate:string
     endDate: string
@@ -5,7 +7,8 @@ export interface BookingProps{
     carModel: string
     status: boolean
     price: number
-    renterName: string
+    renterFirstName: string
+    renterLastName: string
     updateBookingDate: string
     createBookingDate: string
 }
