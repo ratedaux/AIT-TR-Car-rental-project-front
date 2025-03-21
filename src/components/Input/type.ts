@@ -1,5 +1,7 @@
 import { ChangeEvent } from "react"
 
+type AutocompleteTypes = "email" | "current-password" | "username" | "new-password" | "off" | undefined;
+
 export interface InputProps {
   name: string
   type?:
@@ -17,5 +19,7 @@ export interface InputProps {
   value: string
   errorMessage?: string
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
-  min?: string
+  min?: string;
+  autoComplete?: AutocompleteTypes; 
+
 }
