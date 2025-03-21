@@ -124,7 +124,6 @@ function UserRegistrationForm() {
               )}
             </div>
           </div>
-          <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <Input
                 name="userEmail"
@@ -138,7 +137,7 @@ function UserRegistrationForm() {
                 <div className="text-red-500 text-sm">{errors.userEmail}</div>
               )}
             </div>
-            <div>
+           {/*  <div>
               <Input
                 name="userPhoneNumber"
                 type="tel"
@@ -152,8 +151,8 @@ function UserRegistrationForm() {
                   {errors.userPhoneNumber}
                 </div>
               )}
-            </div>
-          </div>
+            </div> */}
+          
           <div>
             <Input
               name="userPassword"
