@@ -36,7 +36,6 @@ export const userRegisterSlice = createAppSlice({
 });
 
 
-export const selectLoading = userRegisterSlice.selectors.selectLoading;
-export const selectError = userRegisterSlice.selectors.selectError;
-export const selectSuccess = userRegisterSlice.selectors.selectSuccess;
+export const counterActions = userRegisterSlice.actions
+export const counterSelectors = userRegisterSlice.selectors
 
