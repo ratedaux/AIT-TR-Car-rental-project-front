@@ -3,9 +3,16 @@ import { ChangeEvent } from "react"
 type AutocompleteTypes = "email" | "current-password" | "username" | "new-password" | "off" | undefined;
 
 export interface InputProps {
-
   name: string
-  type?: "text" | "email" | "password" | "tel" | "url" | "number" | "date" | "checkbox"
+  type?:
+    | "text"
+    | "email"
+    | "password"
+    | "tel"
+    | "url"
+    | "number"
+    | "date"
+    | "checkbox"
   placeholder?: string
   label?: string
   input_id?: string
@@ -16,4 +23,3 @@ export interface InputProps {
   autoComplete?: AutocompleteTypes; 
 
 }
-

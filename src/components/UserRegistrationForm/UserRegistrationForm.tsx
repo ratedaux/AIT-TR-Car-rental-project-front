@@ -107,8 +107,7 @@ function UserRegistrationForm() {
                 ? formik.errors.userEmail
                 : ""}
             </div>
-          </div>
-
+          
           <div>
             <Input
               name="userPassword"

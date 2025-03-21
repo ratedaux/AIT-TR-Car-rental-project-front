@@ -113,4 +113,6 @@ function Login({ showHeader = true, img = true }: LoginProps) {
   )
 }
 
-export default Login
+
+export default Login;
+
