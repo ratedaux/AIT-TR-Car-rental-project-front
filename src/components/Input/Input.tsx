@@ -10,6 +10,7 @@ function Input({
   value,
   onChange,
   errorMessage,
+  autoComplete
 }: InputProps) {
 
   return (
@@ -32,6 +33,7 @@ function Input({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          autoComplete={autoComplete}
         />
       </div>
       {errorMessage && (

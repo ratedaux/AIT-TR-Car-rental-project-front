@@ -1,13 +1,13 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit"
 import { combineSlices, configureStore} from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
-import { registrationFormSlice } from "./redux/registrationForm/registrationFromSlice"
 import { rentCarSlice } from "./redux/rentCarSlice/rentCarSlice"
+import {userRegisterSlice} from "./redux/registrationForm/registrationFormSlice"
 
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-const rootReducer = combineSlices(registrationFormSlice, rentCarSlice)
+const rootReducer = combineSlices( rentCarSlice, userRegisterSlice)
 
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>
