@@ -10,7 +10,7 @@ function CustomerComponent(
 ){
 return(
 
-    <div className="m-6 rounded-lg">
+    <div className="m-4 rounded-lg transition-transform duration-300 hover:-translate-y-1 ">
     <div className="flex flex-col w-auto ">
       <div className="bg-black text-white font-bold  rounded-tl-lg rounded-tr-lg p-3 ">
         Customer Data:
