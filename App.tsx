@@ -9,6 +9,7 @@ import BookingForm from 'components/BookingForm/BookingForm';
 import Login from 'components/Login/Login';
 import UserRegistrationForm from 'components/UserRegistrationForm/UserRegistrationForm';
 import LoginNotification from 'components/LoginNotification/LoginNotification';
+import MyAccount from 'pages/carRentalApp/CustomerPage/MyAccount';
 
 
 const App = () => {
@@ -19,7 +20,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />  
           <Route path='/login/registration' element={<UserRegistrationForm/>}/>
-          
+          <Route path="/account" element={<MyAccount/>}/>
           <Route path="*" element="Page not found" />
 
           

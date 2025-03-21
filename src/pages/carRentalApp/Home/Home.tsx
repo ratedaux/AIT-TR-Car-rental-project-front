@@ -1,6 +1,7 @@
 import FilterByDatesForm from "components/FilterByDatesForm/FilterByDatesForm"
 import Login from "components/Login/Login"
 import CarComponent from "../../../components/CarComponent/CarComponent"
+import BookingComponent from "components/BookingComponent/BookingComponent"
 
 // test image remove later
 //import CarImg from "assets/CarImages/corolla-exterieur.jpg"  
@@ -9,17 +10,20 @@ import CarComponent from "../../../components/CarComponent/CarComponent"
 function Home() {
 
   //example car data. later object from Backend
-//   const carData = {
-//     brand: "Toyota",
-//     model: "Corolla",
-//     year: 2021,
-//     type: "Sedan",
-//     fuelType: "Gasoline",
-//     transmissionType: "Automatic",
-//     carStatus: "Available",
-//     dayRentalPrice: 30,
-//     carImage: CarImg,
-//   }
+  // const carData = {
+  //   brand: "Toyota",
+  //   model: "Corolla",
+  //   year: 2021,
+  //   type: "Sedan",
+  //   fuelType: "Gasoline",
+  //   transmissionType: "Automatic",
+  //   carStatus: "Available",
+  //   dayRentalPrice: 30,
+  //   carImage: CarImg,
+  // }
+
+
+
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -37,7 +41,8 @@ function Home() {
         dayRentalPrice={carData.dayRentalPrice}
         carImage={carData.carImage}
       /> */}
-      
+
+          
     </div>
   )
 }
