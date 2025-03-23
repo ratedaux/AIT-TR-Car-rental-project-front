@@ -6,10 +6,7 @@ import { useFormik } from "formik"
 import { useNavigate } from "react-router"
 
 function AddNewCarForm() {
-  //  const onDataChange = (values: AddNewCarFormProps) => {
-  //         console.log("Form submitted with values:", values);
-  //     };
-
+  
   const navigate = useNavigate()
 
   const validationSchema = Yup.object({
@@ -50,11 +47,11 @@ function AddNewCarForm() {
     validateOnChange: false,
     validateOnBlur:true,
     onSubmit: (values: AddNewCarFormProps, { resetForm }) => {
-      // onDataChange(values);
-      // Логика сабмита
+      
+     
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
-      // Очищаем форму после отправки
+      
       resetForm()
       alert("The car is saved")
       navigate("/admin")
@@ -162,7 +159,6 @@ function AddNewCarForm() {
           <Button
             name="Save"
             type="submit"
-            // onClick={formik.handleSubmit}
             //disabled={!formik.isValid || !formik.values.totalRentCost || formik.isSubmitting}
           />
         </div>

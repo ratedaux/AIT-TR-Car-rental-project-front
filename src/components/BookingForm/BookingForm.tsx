@@ -15,7 +15,7 @@ const calculateTotalCost = (startDate: Date, endDate: Date): number => {
     // Проверка, что дата конца не раньше даты начала
   if (end < start) {
     console.error("End date cannot be earlier than start date.");
-    return 0; // Возвращаем 0 или выбрасываем ошибку в зависимости от требований
+    return 0; 
 }
     // Вычисляем разницу во времени
     const timeDifference = end.getTime() - start.getTime();
@@ -24,16 +24,14 @@ const calculateTotalCost = (startDate: Date, endDate: Date): number => {
     const days = timeDifference / (1000 * 3600 * 24);
 
     // Если разница в днях меньше 1, считаем хотя бы 1 день аренды
-    const totalRentCost = days >= 1 ? days * costPerDay : costPerDay; // Пример: даже если 1 день, все равно начисляем стоимость аренды
+    const totalRentCost = days >= 1 ? days * costPerDay : costPerDay;
+    // Пример: даже если 1 день, все равно начисляем стоимость аренды
 
     return totalRentCost;
 };
 
 function BookingForm() {
-    // const onDataChange = (values: RentFormValues) => {
-    //     console.log("Form submitted with values:", values);
-    // };
-
+      
     const navigate = useNavigate()
 
     const today = new Date().toLocaleDateString("en-CA"); 
@@ -53,7 +51,6 @@ function BookingForm() {
     const formik = useFormik({
         initialValues: {
             startDate: new Date().toLocaleDateString("en-CA"),
-            // endDate: new Date().toLocaleDateString("en-CA"),
             endDate: (() => {
                 const tomorrow = new Date();
                 tomorrow.setDate(tomorrow.getDate() + 1); // Добавляем 1 день
@@ -65,8 +62,7 @@ function BookingForm() {
         validateOnChange: true,
         validateOnBlur:true,
         onSubmit: (values: RentFormValues, {resetForm}) => {
-            // onDataChange(values);
-             // Логика сабмита
+           
       console.log('Submitted values:', values);
 
       // Очищаем форму после отправки
@@ -78,7 +74,7 @@ function BookingForm() {
 
 // Сбрасываем стоимость аренды, если изменяется дата начала или конца
 const handleDateChange = () => {
-    formik.setFieldValue("totalRentCost", 0); // Сбросить стоимость аренды
+    formik.setFieldValue("totalRentCost", 0); 
 };
 
     const handleCalculateTotalCost = () => {
@@ -113,7 +109,7 @@ const handleDateChange = () => {
                         placeholder="Select start date"
                         value={formik.values.startDate}
                         onChange={(e) => {
-                            formik.handleChange(e); // Обрабатываем изменение
+                            formik.handleChange(e); 
                             handleDateChange(); // Сбрасываем стоимость при изменении даты
                         }}
                         onBlur={formik.handleBlur}
@@ -124,13 +120,13 @@ const handleDateChange = () => {
                         type="date"
                         label="End date"
                         placeholder="Select end date"
-                        value={formik.values.endDate} //saves dates from home page filter
+                        value={formik.values.endDate} 
                         onChange={(e) => {
-                            formik.handleChange(e); // Обрабатываем изменение
+                            formik.handleChange(e); 
                             handleDateChange(); // Сбрасываем стоимость при изменении даты
                         }}
                         onBlur={formik.handleBlur}
-                        errorMessage={formik.errors.endDate? String(formik.errors.endDate) : undefined} // Преобразуем ошибку в строку
+                        errorMessage={formik.errors.endDate? String(formik.errors.endDate) : undefined} 
                     />
 
                     <Input
