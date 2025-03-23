@@ -2,6 +2,7 @@ import FilterByDatesForm from "components/FilterByDatesForm/FilterByDatesForm"
 import Login from "components/Login/Login"
 import CarComponent from "../../../components/CarComponent/CarComponent"
 import BookingComponent from "components/BookingComponent/BookingComponent"
+import BookingForm from "components/BookingForm/BookingForm"
 
 // test image remove later
 //import CarImg from "assets/CarImages/corolla-exterieur.jpg"  
@@ -28,6 +29,7 @@ function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
       <FilterByDatesForm />
+      <BookingForm/>
 
       {/* remove later test car data*/}
       {/* <CarComponent

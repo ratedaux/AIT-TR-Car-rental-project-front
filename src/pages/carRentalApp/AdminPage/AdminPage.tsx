@@ -8,6 +8,7 @@ import CustomersList from "components/CustomersListComponent/CustomersList"
 import CarList from "components/CarList/CarList"
 import CarFilter from "components/CarFilter/CarFilter"
 import CarCard from "components/CarCard/CarCard"
+import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
 
 // test image remove later
 import CarImg from "assets/CarImages/corolla-exterieur.jpg"
@@ -80,11 +81,11 @@ const carsList = [
   {
     brand: "Toyota",
     model: "Corolla",
-    year: 2021,
+    year: 2022,
     type: "Sedan",
     fuel: "Gasoline",
     transmission: "Automatic",
-    pricePerDay: 30,
+    pricePerDay: 60,
     image: CarImg,
     onMoreDetails: () => {},
     onRent: () => {},
@@ -104,11 +105,11 @@ const carsList = [
   {
     brand: "Toyota",
     model: "Corolla",
-    year: 2021,
+    year: 2020,
     type: "Sedan",
     fuel: "Gasoline",
     transmission: "Automatic",
-    pricePerDay: 30,
+    pricePerDay: 40,
     image: CarImg,
     onMoreDetails: () => {},
     onRent: () => {},
@@ -123,6 +124,7 @@ function AdminPage() {
   const showCustomersList = () => setActiveComponent("customersList")
   const showBookingsList = () => setActiveComponent("bookingsList")
   const showCarsList = () => setActiveComponent("carsList")
+  const showAddNewCarForm = () => setActiveComponent("AddNewCarForm")
 
   return (
     <div className="flex flex-row w-auto bg-gray-100 justify-center rounded-lg">
@@ -135,7 +137,7 @@ function AdminPage() {
           </div>
           <nav className="flex flex-col  bg-white p-3 gap-3 rounded-lg rounded-br-lg">
             <button
-              onClick={() => {}}
+              onClick={showAddNewCarForm}
               className="text-black hover:text-red-700 text-lg text-left hover:underline  "
             >
               Add car
@@ -173,6 +175,8 @@ function AdminPage() {
         {activeComponent === "bookingsList" && (
           <BookingsListComponent bookings={bookingsList} />
         )}
+
+        {activeComponent === "AddNewCarForm" && <AddNewCarForm />}
 
         {/* {activeComponent === "carsList" && 
         <CarList cars={carsList}/>} */}

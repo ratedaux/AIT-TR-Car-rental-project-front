@@ -72,7 +72,7 @@ function CustomerPage() {
   return (
     <div className="flex flex-row w-auto bg-gray-100 justify-center rounded-lg">
       {/* левая часть с навигацией */}
-      <div className="w-1/3 items-center m-6">
+      <div className="w-1/3 items-center m-4">
         <div className="flex flex-col w-auto p-3 rounded-lg rounded-br-lg m-4">
           <div className="bg-black text-white font-bold rounded-tl-lg rounded-tr-lg p-3 ">
             Hi, {customerData.firstName}!
