@@ -6,7 +6,6 @@ import { useFormik } from "formik"
 import { useNavigate } from "react-router"
 
 function AddNewCarForm() {
-  
   const navigate = useNavigate()
 
   const validationSchema = Yup.object({
@@ -45,13 +44,11 @@ function AddNewCarForm() {
     } as unknown as AddNewCarFormProps,
     validationSchema: validationSchema,
     validateOnChange: false,
-    validateOnBlur:true,
+    validateOnBlur: true,
     onSubmit: (values: AddNewCarFormProps, { resetForm }) => {
-      
-     
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
-      
+
       resetForm()
       alert("The car is saved")
       navigate("/admin")
