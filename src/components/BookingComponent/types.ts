@@ -1,6 +1,6 @@
-import { S } from "vitest/dist/reporters-w_64AS5f.js"
 
 export interface BookingProps{
+    id: number
     startDate:string
     endDate: string
     carBrand: string

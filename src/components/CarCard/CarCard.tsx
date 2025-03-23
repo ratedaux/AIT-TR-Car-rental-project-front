@@ -10,7 +10,8 @@ function CarCard({
     year,
     fuel,
     onMoreDetails,
-    onRent
+    onRent,
+    
 
 }: CarCardProps) {
     return (
