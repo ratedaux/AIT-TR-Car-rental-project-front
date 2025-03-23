@@ -27,8 +27,8 @@ function AddNewCarForm() {
       .positive("Price must be more than 0")
       .min(0.01, "Price must be more than 0")
       .required("Price per day is required"),
-    // carImage: Yup.string()
-    // .required("Car image is required"),
+    carImage: Yup.string()
+    .required("Car image is required"),
   })
 
   const formik = useFormik({
@@ -40,7 +40,7 @@ function AddNewCarForm() {
       fuelType: "",
       transmissionType: "",
       dayRentalPrice: "",
-      //   carImage: "",
+      carImage: "",
     } as unknown as AddNewCarFormProps,
     validationSchema: validationSchema,
     validateOnChange: false,
@@ -142,15 +142,17 @@ function AddNewCarForm() {
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.dayRentalPrice}
           />
-          {/* <Input
+          <Input
             name="carImage"
             type="file"
+            accept="image/png, image/jpeg"
             label="Car image"
-            // placeholder="Upload car image"
-            // value={formik.values.carImage}
+            placeholder="Upload car image"
+            //value={formik.values.carImage}
             onChange={handleFileChange}
-            // errorMessage={formik.errors.carImage}
-          /> */}
+            onBlur={formik.handleBlur}
+            errorMessage={formik.errors.carImage}
+          />
         </div>
         <div className="mt-2.5 w-100%">
           <Button

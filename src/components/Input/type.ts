@@ -12,8 +12,8 @@ export interface InputProps {
     | "date"
     | "checkbox"
     | "file"
-    | "range"
     | "select"
+    
   placeholder?: string
   label?: string
   input_id?: string
@@ -23,4 +23,5 @@ export interface InputProps {
   min?: string
   options?: string[]; // For dropdown options
   onBlur?: (event: ChangeEvent<HTMLInputElement>) => void
+  accept?: string
 }
