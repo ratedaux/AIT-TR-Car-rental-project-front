@@ -1,5 +1,7 @@
 import { ChangeEvent } from "react"
 
+type AutocompleteTypes = "email" | "current-password" | "username" | "new-password" | "off" | undefined;
+
 export interface InputProps {
   name: string
   type?:
@@ -20,6 +22,10 @@ export interface InputProps {
   value?: string | number | boolean
   errorMessage?: string
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+
+  autoComplete?: AutocompleteTypes; 
+
+
   min?: string
   
   options?: string[]; // For dropdown options
@@ -27,5 +33,5 @@ export interface InputProps {
   accept?: string
   readOnly?:boolean
   disabled?:boolean
-  
+
 }

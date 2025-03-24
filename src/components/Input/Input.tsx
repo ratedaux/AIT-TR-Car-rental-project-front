@@ -9,10 +9,14 @@ function Input({
   value,
   onChange,
   errorMessage,
+
+  autoComplete
+
   options,
   onBlur,
   readOnly,
   disabled,
+
 }: InputProps) {
 
   
@@ -74,8 +78,12 @@ function Input({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+
+          autoComplete={autoComplete}
+
           readOnly={readOnly}
           disabled={disabled}
+
         />
       </div>
       {errorMessage && (
