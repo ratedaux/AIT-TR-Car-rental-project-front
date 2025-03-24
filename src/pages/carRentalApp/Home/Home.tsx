@@ -6,6 +6,7 @@ import CarList from "components/CarList/CarList";
 import BookingComponent from "components/BookingComponent/BookingComponent"
 import BookingForm from "components/BookingForm/BookingForm";
 import EditCarForm from "components/EditCarForm/EditCarForm";
+import EditBookingDetailsForm from "components/EditBookingDetailsForm/EditBookingDetails";
 
 
 // test image remove later
@@ -140,6 +141,7 @@ function Home() {
 
       <EditCarForm/>
       <BookingForm/>
+      <EditBookingDetailsForm/>
 
 
 

@@ -8,6 +8,19 @@ import { useNavigate } from "react-router"
 // test image remove later
 import CarImg from "assets/CarImages/corolla-exterieur.jpg"
 
+  // Test data for pre-filling
+  const testData: EditCarFormProps = {
+    brand: "Toyota",
+    model: "Corolla",
+    status: "Available",
+    year: 2022,
+    bodyType: "Sedan",
+    fuelType: "Gasoline",
+    transmissionType: "Automatic",
+    dayRentalPrice: 45,
+    carImage: CarImg,
+  }
+
 function EditCarForm() {
   const navigate = useNavigate()
 
@@ -34,39 +47,13 @@ function EditCarForm() {
     carImage: Yup.string().required("Car image is required"),
   })
 
-  // Test data for pre-filling
-  const testData: EditCarFormProps = {
-    brand: "Toyota",
-    model: "Corolla",
-    status: "Available",
-    year: 2022,
-    bodyType: "Sedan",
-    fuelType: "Gasoline",
-    transmissionType: "Automatic",
-    dayRentalPrice: 45,
-    carImage: CarImg,
-  }
 
   const formik = useFormik({
     initialValues: testData,
-    //{
-
-    //   brand: "",
-    //   model: "",
-    //   status:"",
-    //   year: "",
-    //   bodyType: "",
-    //   fuelType: "",
-    //   transmissionType: "",
-    //   dayRentalPrice: "",
-    //   carImage: "",
-
-    // } as unknown as EditCarFormProps,
-
     validationSchema: validationSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values: EditCarFormProps, { resetForm }) => {
+    onSubmit: (values: EditCarFormProps) => {
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
 

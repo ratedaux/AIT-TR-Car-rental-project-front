@@ -6,7 +6,7 @@ function BookingComponent({
   carBrand,
   carModel,
   status,
-  price,
+  totalRentCost,
   renterFirstName,
   renterLastName,
   updateBookingDate,
@@ -32,7 +32,7 @@ function BookingComponent({
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Price:</div>
-            <div className="w-3/4">{price} €</div>
+            <div className="w-3/4">{totalRentCost} €</div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Status:</div>

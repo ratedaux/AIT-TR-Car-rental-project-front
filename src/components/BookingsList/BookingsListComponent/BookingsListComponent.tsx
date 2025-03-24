@@ -40,7 +40,7 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
             carBrand={booking.carBrand}
             carModel={booking.carModel}
             status={booking.status}
-            price={booking.price}
+            totalRentCost={booking.totalRentCost}
             renterFirstName={booking.renterFirstName}
             renterLastName={booking.renterLastName}
             updateBookingDate={booking.updateBookingDate}

@@ -171,7 +171,7 @@ function BookingForm() {
           </p>
           <div className="mt-2.5 w-100%">
             <Button
-              name="Calculate Total Cost"
+              name="Calculate Total Cost €"
               type="button"
               onClick={handleCalculateTotalCost}
               disabled={!(formik.values.startDate && formik.values.endDate)}
