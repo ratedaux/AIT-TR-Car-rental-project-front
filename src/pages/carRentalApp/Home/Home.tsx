@@ -2,11 +2,14 @@ import FilterByDatesForm from "components/FilterByDatesForm/FilterByDatesForm";
 import Login from "components/Login/Login";
 import CarComponent from "../../../components/CarComponent/CarComponent";
 import CarList from "components/CarList/CarList";
-import BookingComponent from "components/BookingComponent/BookingComponent";
+
+import BookingComponent from "components/BookingComponent/BookingComponent"
+import BookingForm from "components/BookingForm/BookingForm";
+import EditCarForm from "components/EditCarForm/EditCarForm";
 
 
 // test image remove later
-//import CarImg from "assets/CarImages/corolla-exterieur.jpg"  
+// import CarImg from "assets/CarImages/corolla-exterieur.jpg"  
 
 
 function Home() {
@@ -24,6 +27,7 @@ function Home() {
       fuel: "Electric",
       onMoreDetails: () => console.log("More details about Tesla Model S"),
       onRent: () => console.log("Rent Tesla Model S"),
+      id: 1
     },
     {
       image: "/images/bmw-3-series.jpg",
@@ -35,6 +39,7 @@ function Home() {
       fuel: "Petrol",
       onMoreDetails: () => console.log("More details about BMW 3 Series"),
       onRent: () => console.log("Rent BMW 3 Series"),
+      id: 2
     },
     {
       image: "/images/mercedes-c-class.jpg",
@@ -46,6 +51,7 @@ function Home() {
       fuel: "Diesel",
       onMoreDetails: () => console.log("More details about Mercedes C-Class"),
       onRent: () => console.log("Rent Mercedes C-Class"),
+      id:3
     },
     {
       image: "/images/audi-a4.jpg",
@@ -57,6 +63,7 @@ function Home() {
       fuel: "Petrol",
       onMoreDetails: () => console.log("More details about Audi A4"),
       onRent: () => console.log("Rent Audi A4"),
+      id:4
     },
     {
       image: "/images/ford-mustang.jpg",
@@ -68,6 +75,7 @@ function Home() {
       fuel: "Petrol",
       onMoreDetails: () => console.log("More details about Ford Mustang"),
       onRent: () => console.log("Rent Ford Mustang"),
+      id: 5
     },
     {
       image: "/images/toyota-corolla.jpg",
@@ -79,6 +87,7 @@ function Home() {
       fuel: "Hybrid",
       onMoreDetails: () => console.log("More details about Toyota Corolla"),
       onRent: () => console.log("Rent Toyota Corolla"),
+      id:6
     },
     {
       image: "/images/honda-civic.jpg",
@@ -90,6 +99,7 @@ function Home() {
       fuel: "Petrol",
       onMoreDetails: () => console.log("More details about Honda Civic"),
       onRent: () => console.log("Rent Honda Civic"),
+      id:7
     },
     {
       image: "/images/range-rover-evoque.jpg",
@@ -101,6 +111,7 @@ function Home() {
       fuel: "Diesel",
       onMoreDetails: () => console.log("More details about Range Rover Evoque"),
       onRent: () => console.log("Rent Range Rover Evoque"),
+      id:7
     },
   ];
 
@@ -114,6 +125,7 @@ function Home() {
   //   carStatus: "Available",
   //   dayRentalPrice: 30,
   //   carImage: CarImg,
+  //   id: 8
   // }
 
 
@@ -122,7 +134,16 @@ function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
       <FilterByDatesForm />
+
       <CarList />
+
+
+      <EditCarForm/>
+      <BookingForm/>
+
+
+
+
       {/* remove later test car data*/}
       {/* <CarComponent
         brand={carData.brand}
@@ -134,7 +155,10 @@ function Home() {
         carStatus={carData.carStatus}
         dayRentalPrice={carData.dayRentalPrice}
         carImage={carData.carImage}
+        id={carData.id}
       /> */}
+
+
     </div>
   );
 }

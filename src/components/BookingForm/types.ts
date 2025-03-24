@@ -1,6 +1,6 @@
 export interface RentFormValues {
   startDate: string
   endDate: string
-  pickUpLocation: string
-  totalRentCost: string
+  totalRentCost: number
+  is18:boolean
 }

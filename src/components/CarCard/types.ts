@@ -3,6 +3,7 @@ export interface CarCardProps {
   brand: string
   model: string
   year: number
+
   type: string
   fuelType: string
   transmissionType: string
@@ -11,4 +12,6 @@ export interface CarCardProps {
   carImage?: string
   onMoreDetails?: () => void
   onRent?: () => void
+
+
 }

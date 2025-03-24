@@ -13,7 +13,8 @@ function CarCard({
     dayRentalPrice,
     carImage,
     onMoreDetails,
-    onRent
+    onRent,
+    
 
 }: CarCardProps) {
     return (

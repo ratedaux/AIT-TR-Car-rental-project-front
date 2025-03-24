@@ -1,3 +1,4 @@
+
 export interface BookingProps {
   startDate: string
   endDate: string
@@ -9,4 +10,8 @@ export interface BookingProps {
   renterLastName: string
   updateBookingDate: string
   createBookingDate: string
+
+   id: number
+    
 }
+

@@ -31,7 +31,7 @@ function CarComponent({
   }
 
   return (
-    <div className="flex flex-row w-auto bg-white justify-center rounded-lg ">
+    <div className="flex flex-row w-auto justify-center rounded-lg ">
       {/* right block */}
       <div className="w-2/3 items-center">
         <div className="flex flex-col w-auto m-6 gap-6">
@@ -134,15 +134,23 @@ function CarComponent({
         <div className="w-auto">
           <Button name="Rent" type="button" onClick={() => {}} />
         </div>
+
+{/* Edit car only for Admin */}
+        <div className="w-auto">
+          <Button name="Edit" type="button" onClick={() => {}} />
+        </div>
+
       </div>
 
       {/* close button */}
-      <div>
-        <Button
+      <div className=" mt-6">
+        <div className="w-auto">
+          <Button
           name="X"
           customClasses="!rounded-lg font-semibold !bg-gray-400 hover:!bg-red-700 text-white"
           onClick={handleClose}
         />
+      </div>
       </div>
     </div>
   )
