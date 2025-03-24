@@ -5,6 +5,9 @@ import * as Yup from "yup"
 import { useFormik } from "formik"
 import { useNavigate } from "react-router"
 
+// test image remove later
+import CarImg from "assets/CarImages/corolla-exterieur.jpg"
+
 function EditCarForm() {
   const navigate = useNavigate()
 
@@ -31,7 +34,6 @@ function EditCarForm() {
     carImage: Yup.string().required("Car image is required"),
   })
 
-
   // Test data for pre-filling
   const testData: EditCarFormProps = {
     brand: "Toyota",
@@ -42,12 +44,12 @@ function EditCarForm() {
     fuelType: "Gasoline",
     transmissionType: "Automatic",
     dayRentalPrice: 45,
-    carImage: "", 
+    carImage: CarImg,
   }
 
   const formik = useFormik({
-    initialValues: {
-        testData
+    initialValues: testData,
+    //{
 
     //   brand: "",
     //   model: "",
@@ -59,7 +61,8 @@ function EditCarForm() {
     //   dayRentalPrice: "",
     //   carImage: "",
 
-    } as unknown as EditCarFormProps,
+    // } as unknown as EditCarFormProps,
+
     validationSchema: validationSchema,
     validateOnChange: false,
     validateOnBlur: true,
@@ -76,7 +79,8 @@ function EditCarForm() {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0]
-      formik.setFieldValue("carImage", file) // Set file value in Formik state
+      formik.setFieldValue("carImage", file)
+      // Set file value in Formik state
     }
   }
 
@@ -96,6 +100,7 @@ function EditCarForm() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.brand}
+            readOnly={true}
           />
           <Input
             name="model"
@@ -106,6 +111,7 @@ function EditCarForm() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.model}
+            readOnly={true}
           />
           <Input
             name="status"
@@ -128,6 +134,7 @@ function EditCarForm() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.year}
+            readOnly={true}
           />
           <Input
             name="bodyType"
@@ -138,6 +145,7 @@ function EditCarForm() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.bodyType}
+            readOnly={true}
           />
           <Input
             name="fuelType"
@@ -149,6 +157,7 @@ function EditCarForm() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.fuelType}
+            disabled={true}
           />
           <Input
             name="transmissionType"
@@ -160,6 +169,7 @@ function EditCarForm() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.transmissionType}
+            disabled={true}
           />
           <Input
             name="dayRentalPrice"
@@ -171,24 +181,32 @@ function EditCarForm() {
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.dayRentalPrice}
           />
-          <Input
-            name="carImage"
-            type="file"
-            accept="image/png, image/jpeg"
-            label="Car image"
-            placeholder="Upload car image"
-            //value={formik.values.carImage}
-            onChange={handleFileChange}
-            onBlur={formik.handleBlur}
-            errorMessage={formik.errors.carImage}
-          />
+          <div>
+            {formik.values.carImage &&
+              typeof formik.values.carImage === "string" && (
+                <img
+                  src={formik.values.carImage}
+                  alt="Car"
+                  className="w-32 h-32 object-cover mb-3 rounded-lg"
+                />
+              )}
+            {/* Файл изображения */}
+            <Input
+              name="carImage"
+              type="file"
+              accept="image/png, image/jpeg"
+              label="Car image"
+              placeholder="Upload car image"
+              onChange={handleFileChange}
+              onBlur={formik.handleBlur}
+              errorMessage={formik.errors.carImage}
+              readOnly={true}
+              disabled={true}
+            />
+          </div>
         </div>
         <div className="mt-2.5 w-100%">
-          <Button
-            name="Apply"
-            type="submit"
-            //disabled={!formik.isValid || !formik.values.totalRentCost || formik.isSubmitting}
-          />
+          <Button name="Apply" type="submit" />
         </div>
       </form>
     </div>

@@ -24,4 +24,6 @@ export interface InputProps {
   options?: string[]; // For dropdown options
   onBlur?: (event: ChangeEvent<HTMLInputElement>) => void
   accept?: string
+  readOnly?:boolean
+  disabled?:boolean
 }

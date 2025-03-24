@@ -11,6 +11,8 @@ function Input({
   errorMessage,
   options,
   onBlur,
+  readOnly,
+  disabled,
 }: InputProps) {
 
   
@@ -33,6 +35,7 @@ function Input({
             value={value}
             onChange={onChange}
             onBlur={onBlur}
+            disabled={disabled}   
           >
             {/* Этот option будет вести себя как placeholder */}
             <option value="" disabled selected className="text-gray-500">
@@ -71,6 +74,8 @@ function Input({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          readOnly={readOnly}
+          disabled={disabled}
         />
       </div>
       {errorMessage && (
