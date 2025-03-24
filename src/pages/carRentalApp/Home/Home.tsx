@@ -2,7 +2,7 @@ import FilterByDatesForm from "components/FilterByDatesForm/FilterByDatesForm";
 import Login from "components/Login/Login";
 import CarComponent from "../../../components/CarComponent/CarComponent";
 import CarList from "components/CarList/CarList";
-import BookingComponent from "components/BookingComponent/BookingComponent"
+import BookingComponent from "components/BookingComponent/BookingComponent";
 
 
 // test image remove later
@@ -122,7 +122,7 @@ function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
       <FilterByDatesForm />
-      <CarList cars={cars} />
+      <CarList />
       {/* remove later test car data*/}
       {/* <CarComponent
         brand={carData.brand}
