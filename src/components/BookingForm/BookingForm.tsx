@@ -44,7 +44,9 @@ function BookingForm() {
     totalRentCost: Yup.number()
       .required("Rent cost can't be empty")
       .min(0.01, "Rent cost can't be 0"),
-    is18: Yup.boolean().required("You must be 18 years old to rent a car"),
+    is18: Yup.boolean()
+      .oneOf([true], "You must be 18 years old to rent a car")
+      .required("You must be 18 years old to rent a car"),
   })
 
   const formik = useFormik({
@@ -56,7 +58,7 @@ function BookingForm() {
         return tomorrow.toLocaleDateString("en-CA") // Преобразуем в формат 'yyyy-MM-dd'
       })(),
       totalRentCost: "",
-      is18: "",
+      is18: false,
     } as unknown as RentFormValues,
     validationSchema: validationSchema,
     validateOnChange: true,
@@ -145,29 +147,20 @@ function BookingForm() {
             readOnly={true}
           />
 
-          {/* <Input
-            name="is18"
-            type="checkbox"
-            label="Are you 18?"
-            value={formik.values.is18}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            errorMessage={formik.errors.is18}
-          /> */}
-
-          <div className="flex flex-row items-center gap-6">
-          
-            <Input
-              name="is18"
-              type="checkbox"
-              value={formik.values.is18}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              errorMessage={formik.errors.is18}            
-            />
-            
-            <label htmlFor="is18">Are you already 18 ?</label>
-
+          <div className="flex flex-row gap-6 ">
+            <div className="mt-1">
+              <Input
+                name="is18"
+                type="checkbox"
+                checked={formik.values.is18}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                errorMessage={formik.errors.is18}
+              />
+            </div>
+            <label htmlFor="is18" className="font-semibold m-0 p-0 ">
+              Are you already 18 ?
+            </label>
           </div>
 
           <p className="text-sm text-gray-500 mb-4">

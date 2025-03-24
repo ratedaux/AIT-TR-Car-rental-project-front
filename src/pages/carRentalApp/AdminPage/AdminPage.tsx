@@ -88,10 +88,10 @@ const carsList = [
     model: "Corolla",
     year: 2022,
     type: "Sedan",
-    fuel: "Gasoline",
-    transmission: "Automatic",
-    pricePerDay: 60,
-    image: CarImg,
+    fuelType: "Gasoline",
+    transmissionType: "Automatic",
+    dayRentalPrice: 60,
+    carImage: CarImg,
     onMoreDetails: () => {},
     onRent: () => {},
     id: 1,
@@ -101,10 +101,10 @@ const carsList = [
     model: "BMW",
     year: 2021,
     type: "Sedan",
-    fuel: "Gasoline",
-    transmission: "Automatic",
-    pricePerDay: 30,
-    image: CarImg,
+    fuelType: "Gasoline",
+    transmissionType: "Automatic",
+    dayRentalPrice: 30,
+    carImage: CarImg,
     onMoreDetails: () => {},
     onRent: () => {},
     id: 2,
@@ -114,10 +114,10 @@ const carsList = [
     model: "Honda",
     year: 2020,
     type: "Sedan",
-    fuel: "Gasoline",
-    transmission: "Automatic",
-    pricePerDay: 40,
-    image: CarImg,
+    fuelType: "Gasoline",
+    transmissionType: "Automatic",
+    dayRentalPrice: 40,
+    carImage: CarImg,
     onMoreDetails: () => {},
     onRent: () => {},
     id: 3,
@@ -209,17 +209,16 @@ function AdminPage({ cars }: CarListProps) {
               carArray.map((car) => (
               <div key={car.id}>
                 <CarCard
-                  image={car.image}
-                  brand={car.brand}
-                  model={car.model}
-                  pricePerDay={car.pricePerDay}
-                  transmission={car.transmission}
-                  year={car.year}
-                  fuel={car.fuel}
-                  onMoreDetails={() => {}}
-                  onRent={() => {}}
-                  id={car.id}
-                />
+                    carImage={car.carImage}
+                    brand={car.brand}
+                    model={car.model}
+                    dayRentalPrice={car.dayRentalPrice}
+                    transmissionType={car.transmissionType}
+                    year={car.year}
+                    fuelType={car.fuelType}
+                    onMoreDetails={() => { } }
+                    onRent={() => { } }
+                    id={car.id} type={""}                />
 
                 <div className="m-4 flex flex-row gap-4 justify-end">
                   <div className="">

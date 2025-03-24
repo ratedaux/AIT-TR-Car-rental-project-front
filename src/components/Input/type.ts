@@ -19,7 +19,7 @@ export interface InputProps {
   placeholder?: string
   label?: string
   input_id?: string
-  value?: string | number | boolean
+  value?: string | number 
   errorMessage?: string
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
 
@@ -33,5 +33,7 @@ export interface InputProps {
   accept?: string
   readOnly?:boolean
   disabled?:boolean
+  checked?: boolean;//for checkbox 18
+
 
 }
