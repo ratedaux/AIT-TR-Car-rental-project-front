@@ -152,6 +152,7 @@ function CarComponent({
         />
       </div>
       </div>
+      
     </div>
   )
 }

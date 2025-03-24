@@ -4,6 +4,7 @@ import Input from "components/Input/Input"
 import * as Yup from "yup"
 import { useFormik } from "formik"
 import { useNavigate } from "react-router"
+import { useState } from "react"
 
 // example booking data delete later
 const bookingData = {
@@ -72,6 +73,8 @@ function EditBookingDetailsForm() {
 
       alert("The booking details are updated")
       //  navigate("/account")
+
+
     },
   })
 
@@ -95,6 +98,19 @@ function EditBookingDetailsForm() {
     const totalCost = calculateTotalCost(start, end) // Pass as strings
     formik.setFieldValue("totalRentCost", totalCost) // Update Formik state
   }
+
+    // State to manage the visibility of the window
+    const [isVisible, setIsVisible] = useState(true)
+  
+    // Handle close button click
+    const handleClose = () => {
+      setIsVisible(false) // Set visibility to false, effectively "closing" the window
+    }
+  
+    if (!isVisible) {
+      return null // If not visible, return nothing (effectively hiding the component)
+    }
+  
 
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
@@ -185,15 +201,25 @@ function EditBookingDetailsForm() {
 
         <div className="mb-5">
           <Button
-            name="Recalculate Total Cost €"
+            name="Recalculate Total Cost"
             type="button"
             onClick={handleCalculateTotalCost}
             disabled={!(formik.values.startDate && formik.values.endDate)}
+            customClasses="!w-full !rounded-lg  hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
           />
         </div>
 
         <div className="w-auto">
           <Button name="Apply" type="submit" />
+        </div>
+
+         {/* close button */}
+         <div className="w-auto mt-4">
+          <Button
+            name="Cancel"
+            customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
+            onClick={handleClose}
+          />
         </div>
       </form>
     </div>

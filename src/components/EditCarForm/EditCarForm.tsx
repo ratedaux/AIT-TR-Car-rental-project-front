@@ -7,6 +7,7 @@ import { useNavigate } from "react-router"
 
 // test image remove later
 import CarImg from "assets/CarImages/corolla-exterieur.jpg"
+import { useState } from "react"
 
   // Test data for pre-filling
   const testData: EditCarFormProps = {
@@ -70,6 +71,19 @@ function EditCarForm() {
       // Set file value in Formik state
     }
   }
+
+  // State to manage the visibility of the window
+  const [isVisible, setIsVisible] = useState(true)
+
+  // Handle close button click
+  const handleClose = () => {
+    setIsVisible(false) // Set visibility to false, effectively "closing" the window
+  }
+
+  if (!isVisible) {
+    return null // If not visible, return nothing (effectively hiding the component)
+  }
+
 
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
@@ -194,6 +208,14 @@ function EditCarForm() {
         </div>
         <div className="w-auto">
           <Button name="Apply" type="submit" />
+        </div>
+         {/* close button */}
+         <div className="w-auto mt-4">
+          <Button
+            name="Cancel"
+            customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"
+            onClick={handleClose}
+          />
         </div>
       </form>
     </div>
