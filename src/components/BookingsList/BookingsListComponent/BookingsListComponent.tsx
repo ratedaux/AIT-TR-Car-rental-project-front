@@ -56,13 +56,13 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
                 name="Edit"
               />
             </div>
-            <div>
+            {/* <div>
               <Button
                 type="button"
                 onClick={() => handleDeleteBooking(booking.id)} // Передаем ID для удаления
                 name="Delete"
               />
-            </div>
+            </div> */}
           </div>
         </div>
       ))}
