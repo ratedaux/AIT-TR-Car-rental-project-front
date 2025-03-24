@@ -1,13 +1,34 @@
 import CarFilter from "components/CarFilter/CarFilter";
 import CarCard from "../CarCard/CarCard";
 import { CarCardProps } from "../CarCard/types";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-interface CarListProps {
-    cars: CarCardProps[];
+interface Car {
+    id: number;
+    brand: string;
+    model: string;
+    year: number;
+    type: string;
+    fuelType: string;
+    transmissionType: string;
+    carStatus: string;
+    dayRentalPrice: number;
+    carImage: string;
 }
 
+function CarList() {
+    const [cars, setCars] = useState<Car[]>([]);
 
-function CarList({ cars }: CarListProps) {
+    async function fetchCars() {
+        const response = await axios.get("/api/cars/all");
+        setCars(response.data);
+    }
+
+    useEffect(() => {
+        fetchCars();
+    }, []);
+
     return (
         <div className="max-w-5xl mx-auto h-screen flex">
             {/* Filter sidebar */}
@@ -17,7 +38,7 @@ function CarList({ cars }: CarListProps) {
 
             {/* Cars list */}
             <div className="w-3/4 h-screen overflow-y-auto space-y-6 p-4">
-                {cars.map((car) => (
+                {cars.map(car => (
                     <CarCard key={car.model + car.year} {...car} />
                 ))}
             </div>

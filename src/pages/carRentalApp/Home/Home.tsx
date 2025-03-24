@@ -2,9 +2,11 @@ import FilterByDatesForm from "components/FilterByDatesForm/FilterByDatesForm";
 import Login from "components/Login/Login";
 import CarComponent from "../../../components/CarComponent/CarComponent";
 import CarList from "components/CarList/CarList";
+
 import BookingComponent from "components/BookingComponent/BookingComponent"
 import BookingForm from "components/BookingForm/BookingForm";
 import EditCarForm from "components/EditCarForm/EditCarForm";
+
 
 // test image remove later
 // import CarImg from "assets/CarImages/corolla-exterieur.jpg"  
@@ -132,10 +134,13 @@ function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
       <FilterByDatesForm />
-      <CarList cars={cars} />
+
+      <CarList />
+
 
       <EditCarForm/>
       <BookingForm/>
+
 
 
 

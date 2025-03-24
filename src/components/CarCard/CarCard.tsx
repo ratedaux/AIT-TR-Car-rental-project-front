@@ -2,13 +2,16 @@ import Button from "components/Button/Button";
 import { CarCardProps } from "./types";
 
 function CarCard({
-    image,
+    id,
     brand,
     model,
-    pricePerDay,
-    transmission,
     year,
-    fuel,
+    type,
+    fuelType,
+    transmissionType,
+    carStatus,
+    dayRentalPrice,
+    carImage,
     onMoreDetails,
     onRent,
     
@@ -22,7 +25,7 @@ function CarCard({
                 <div className="w-full sm:w-1/3">
                     <div className="w-full h-full min-h-[200px] overflow-hidden rounded-lg">
                         <img
-                            src={image}
+                            src={carImage}
                             alt={model}
                             className="w-full h-full object-cover"
                         />
@@ -39,7 +42,7 @@ function CarCard({
                         <div className="flex flex-wrap gap-3 text-gray-600 my-4">
                             <div className="flex items-center gap-1">
                                 <i className="fas fa-cog text-gray-700"></i>
-                                <span>{transmission}</span>
+                                <span>{transmissionType}</span>
                             </div>
                             <div className="flex items-center gap-1">
                                 <i className="fas fa-calendar text-gray-700"></i>
@@ -47,7 +50,7 @@ function CarCard({
                             </div>
                             <div className="flex items-center gap-1">
                                 <i className="fas fa-gas-pump text-gray-700"></i>
-                                <span>{fuel}</span>
+                                <span>{fuelType}</span>
                             </div>
                         </div>
                         <div className="hidden lg:block border-b border-gray-200"></div>
@@ -57,7 +60,7 @@ function CarCard({
                     {/* Block with Price and Buttons */}
                     <div className="w-full sm:w-[200px] flex-shrink-0 flex flex-col gap-5 justify-between items-center sm:items-center">
                         <div className="text-2xl font-bold text-red-500 items-center text-center sm:text-right">
-                            €{pricePerDay}
+                            €{dayRentalPrice}
                             <span className="text-sm font-normal text-gray-600 block">per day</span>
                         </div>
                         <div className="flex flex-col gap-3.5 w-full">
