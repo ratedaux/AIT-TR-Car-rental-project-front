@@ -10,7 +10,7 @@ function Input({
   onChange,
   errorMessage,
 
-  autoComplete
+  autoComplete,
 
   options,
   onBlur,
