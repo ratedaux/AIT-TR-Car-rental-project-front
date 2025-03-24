@@ -11,11 +11,21 @@ export interface InputProps {
     | "number"
     | "date"
     | "checkbox"
+    | "file"
+    | "select"
+    
   placeholder?: string
   label?: string
   input_id?: string
-  value: string
+  value?: string | number | boolean
   errorMessage?: string
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
   min?: string
+  
+  options?: string[]; // For dropdown options
+  onBlur?: (event: ChangeEvent<HTMLInputElement>) => void
+  accept?: string
+  readOnly?:boolean
+  disabled?:boolean
+  
 }

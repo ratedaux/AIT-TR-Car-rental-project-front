@@ -11,6 +11,7 @@ function BookingComponent({
   renterLastName,
   updateBookingDate,
   createBookingDate,
+  id
 }: BookingProps) {
   return (
     <div className="m-4 rounded-lg transition-transform duration-300 hover:-translate-y-1">

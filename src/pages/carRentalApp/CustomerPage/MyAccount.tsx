@@ -18,6 +18,7 @@ const bookingData = [
     renterLastName: "Neshyna",
     updateBookingDate: "19.03.2025",
     createBookingDate: "18.03.2025",
+    id:1
   },
   {
     startDate: "24.03.2025",
@@ -30,6 +31,7 @@ const bookingData = [
     renterLastName: "Smith",
     updateBookingDate: "23.03.2025",
     createBookingDate: "22.03.2025",
+    id:2
   },
   {
     startDate: "22.03.2025",
@@ -42,6 +44,7 @@ const bookingData = [
     renterLastName: "Doe",
     updateBookingDate: "21.03.2025",
     createBookingDate: "20.03.2025",
+    id:3
   },
 ]
 
@@ -72,7 +75,7 @@ function CustomerPage() {
   return (
     <div className="flex flex-row w-auto bg-gray-100 justify-center rounded-lg">
       {/* левая часть с навигацией */}
-      <div className="w-1/3 items-center m-6">
+      <div className="w-1/3 items-center m-4">
         <div className="flex flex-col w-auto p-3 rounded-lg rounded-br-lg m-4">
           <div className="bg-black text-white font-bold rounded-tl-lg rounded-tr-lg p-3 ">
             Hi, {customerData.firstName}!

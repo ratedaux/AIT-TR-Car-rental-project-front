@@ -8,4 +8,5 @@ export interface CarCardProps {
   fuel: string
   onMoreDetails: () => void
   onRent: () => void
+  id: number
 }
