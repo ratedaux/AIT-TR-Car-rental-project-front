@@ -18,6 +18,7 @@ const bookingData = [
     renterLastName: "Neshyna",
     updateBookingDate: "19.03.2025",
     createBookingDate: "18.03.2025",
+    id:1
   },
   {
     startDate: "24.03.2025",
@@ -30,6 +31,7 @@ const bookingData = [
     renterLastName: "Smith",
     updateBookingDate: "23.03.2025",
     createBookingDate: "22.03.2025",
+    id:2
   },
   {
     startDate: "22.03.2025",
@@ -42,6 +44,7 @@ const bookingData = [
     renterLastName: "Doe",
     updateBookingDate: "21.03.2025",
     createBookingDate: "20.03.2025",
+    id:3
   },
 ]
 

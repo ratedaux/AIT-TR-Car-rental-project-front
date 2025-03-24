@@ -135,6 +135,7 @@ function Home() {
       <CarList cars={cars} />
 
       <EditCarForm/>
+      <BookingForm/>
 
 
 

@@ -205,7 +205,7 @@ function EditCarForm() {
             />
           </div>
         </div>
-        <div className="mt-2.5 w-100%">
+        <div className="w-auto">
           <Button name="Apply" type="submit" />
         </div>
       </form>
