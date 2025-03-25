@@ -199,7 +199,7 @@ function EditBookingDetailsForm() {
           />
         </div>
 
-        <div className="mb-5">
+        <div className="mb-2.5">
           <Button
             name="Recalculate Total Cost"
             type="button"
@@ -214,7 +214,7 @@ function EditBookingDetailsForm() {
         </div>
 
          {/* close button */}
-         <div className="w-auto mt-4">
+         <div className="w-auto mt-2.5">
           <Button
             name="Cancel"
             customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"

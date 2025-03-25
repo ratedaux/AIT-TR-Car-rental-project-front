@@ -210,7 +210,7 @@ function EditCarForm() {
           <Button name="Apply" type="submit" />
         </div>
          {/* close button */}
-         <div className="w-auto mt-4">
+         <div className="w-auto mt-2.5">
           <Button
             name="Cancel"
             customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"

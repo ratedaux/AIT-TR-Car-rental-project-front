@@ -160,7 +160,7 @@ function BookingForm() {
             readOnly={true}
           />
 
-          <div className="flex flex-row gap-6 ">
+          {/* <div className="flex flex-row gap-6 ">
             <div className="mt-1">
               <Input
                 name="is18"
@@ -174,14 +174,36 @@ function BookingForm() {
             <label htmlFor="is18" className="font-semibold m-0 p-0 ">
               Are you already 18 ?
             </label>
-          </div>
+          </div> */}
 
+          <label className="flex items-center cursor-pointer gap-3">
+            <input
+              type="checkbox"
+              className="form-checkbox h-5 w-5 text-red-500"
+              id="is18"
+              checked={formik.values.is18}
+              onChange={formik.handleChange}
+              name="is18"
+              onBlur={formik.handleBlur}
+            />
+            <span className="ml-2 text-gray-700 font-semibold">
+            Are you already 18 ?
+            </span>
+
+          </label>
+          {formik.errors.is18 && formik.touched.is18 && (
+  <p className="text-red-500 text-sm ">{formik.errors.is18}</p>
+)}
+          
+
+<div className="mt-4">
           <p className="text-sm text-gray-500 mb-4">
             Payment is available only at pick up station.
           </p>
           <p className="text-sm text-gray-500 mb-4">
             You can pick up a car only at the pick up station.
           </p>
+</div>
           <div className="mt-2.5 w-100%">
             <Button
               name="Calculate Total Cost"
@@ -201,7 +223,7 @@ function BookingForm() {
         </div>
        
         {/* close button */}
-        <div className="w-auto mt-4">
+        <div className="w-auto mt-2.5">
           <Button
             name="Cancel"
             customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"

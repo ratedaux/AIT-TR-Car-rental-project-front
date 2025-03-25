@@ -154,7 +154,7 @@ function AddNewCarForm() {
             errorMessage={formik.errors.carImage}
           />
         </div>
-        <div className="mt-2.5 w-100%">
+        <div className="mt-1 w-100%">
           <Button
             name="Save"
             type="submit"
