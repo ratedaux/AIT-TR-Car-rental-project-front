@@ -135,24 +135,20 @@ function CarComponent({
           <Button name="Rent" type="button" onClick={() => {}} />
         </div>
 
-{/* Edit car only for Admin */}
+        {/* Edit car only for Admin */}
         <div className="w-auto">
           <Button name="Edit" type="button" onClick={() => {}} />
         </div>
-
       </div>
 
       {/* close button */}
-      <div className=" mt-6">
-        <div className="w-auto">
-          <Button
+      <div className="mt-6">
+        <Button
           name="X"
-          customClasses="!rounded-lg font-semibold !bg-gray-400 hover:!bg-red-700 text-white"
+          customClasses=" !px-6 !py-6 !rounded-full font-semibold !bg-gray-400 hover:!bg-red-700 text-white"
           onClick={handleClose}
         />
       </div>
-      </div>
-      
     </div>
   )
 }
