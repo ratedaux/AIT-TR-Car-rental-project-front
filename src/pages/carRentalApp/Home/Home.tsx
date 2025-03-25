@@ -6,10 +6,11 @@ import CarList from "components/CarList/CarList";
 import BookingComponent from "components/BookingComponent/BookingComponent"
 import BookingForm from "components/BookingForm/BookingForm";
 import EditCarForm from "components/EditCarForm/EditCarForm";
+import EditBookingDetailsForm from "components/EditBookingDetailsForm/EditBookingDetails";
 
 
 // test image remove later
-// import CarImg from "assets/CarImages/corolla-exterieur.jpg"  
+import CarImg from "assets/CarImages/corolla-exterieur.jpg"  
 
 
 function Home() {
@@ -115,18 +116,18 @@ function Home() {
     },
   ];
 
-  // const carData = {
-  //   brand: "Toyota",
-  //   model: "Corolla",
-  //   year: 2021,
-  //   type: "Sedan",
-  //   fuelType: "Gasoline",
-  //   transmissionType: "Automatic",
-  //   carStatus: "Available",
-  //   dayRentalPrice: 30,
-  //   carImage: CarImg,
-  //   id: 8
-  // }
+  const carData = {
+    brand: "Toyota",
+    model: "Corolla",
+    year: 2021,
+    type: "Sedan",
+    fuelType: "Gasoline",
+    transmissionType: "Automatic",
+    carStatus: "Available",
+    dayRentalPrice: 30,
+    carImage: CarImg,
+    id: 8
+  }
 
 
 
@@ -136,16 +137,12 @@ function Home() {
       <FilterByDatesForm />
 
       <CarList />
-
-
       <EditCarForm/>
       <BookingForm/>
-
-
-
+      <EditBookingDetailsForm/>
 
       {/* remove later test car data*/}
-      {/* <CarComponent
+      <CarComponent
         brand={carData.brand}
         model={carData.model}
         year={carData.year}
@@ -156,7 +153,7 @@ function Home() {
         dayRentalPrice={carData.dayRentalPrice}
         carImage={carData.carImage}
         id={carData.id}
-      /> */}
+      />
 
 
     </div>
