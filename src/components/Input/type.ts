@@ -1,6 +1,12 @@
 import { ChangeEvent } from "react"
 
-type AutocompleteTypes = "email" | "current-password" | "username" | "new-password" | "off" | undefined;
+type AutocompleteTypes =
+  | "email"
+  | "current-password"
+  | "username"
+  | "new-password"
+  | "off"
+  | undefined
 
 export interface InputProps {
   name: string
@@ -15,20 +21,22 @@ export interface InputProps {
     | "checkbox"
     | "file"
     | "select"
-    
+    | "datetime-local"
+
   placeholder?: string
   label?: string
   input_id?: string
-  value?: string | number 
+  value?: string | number
   errorMessage?: string
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
-  autoComplete?: AutocompleteTypes; 
+  autoComplete?: AutocompleteTypes
   min?: string
-  
-  options?: string[] | undefined; // For dropdown options
+  step?: string
+
+  options?: string[] | undefined // For dropdown options
   onBlur?: (event: ChangeEvent<HTMLInputElement>) => void
   accept?: string
-  readOnly?:boolean
-  disabled?:boolean
-  checked?: boolean;//for checkbox 18
- }
+  readOnly?: boolean
+  disabled?: boolean
+  checked?: boolean //for checkbox 18
+}
