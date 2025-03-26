@@ -1,60 +1,61 @@
-import React, { useState } from "react"
-import BookingComponent from "components/BookingComponent/BookingComponent"
+import React, { useEffect, useState } from "react"
 import CustomerComponent from "components/CustomerComponent/CustomerComponent"
 import Button from "components/Button/Button"
 import { useNavigate } from "react-router-dom"
 import BookingsListComponent from "components/BookingsList/BookingsListComponent/BookingsListComponent"
+import { CustomerProps } from "components/CustomerComponent/types"
+import axios from "axios"
 
 // example booking data delete later
-const bookingData = [
-  {
-    startDate: "20.03.2025",
-    endDate: "21.03.2025",
-    carBrand: "Toyota",
-    carModel: "Corolla",
-    status: false,
-    totalRentCost: 50,
-    renterFirstName: "Masha",
-    renterLastName: "Neshyna",
-    updateBookingDate: "19.03.2025",
-    createBookingDate: "18.03.2025",
-    id:1
-  },
-  {
-    startDate: "24.03.2025",
-    endDate: "25.03.2025",
-    carBrand: "Ford",
-    carModel: "Focus",
-    status: true,
-    totalRentCost: 55,
-    renterFirstName: "Anna",
-    renterLastName: "Smith",
-    updateBookingDate: "23.03.2025",
-    createBookingDate: "22.03.2025",
-    id:2
-  },
-  {
-    startDate: "22.03.2025",
-    endDate: "23.03.2025",
-    carBrand: "Honda",
-    carModel: "Civic",
-    status: true,
-    totalRentCost: 60,
-    renterFirstName: "John",
-    renterLastName: "Doe",
-    updateBookingDate: "21.03.2025",
-    createBookingDate: "20.03.2025",
-    id:3
-  },
-]
+// const bookingData = [
+//   {
+//     startDate: "20.03.2025",
+//     endDate: "21.03.2025",
+//     carBrand: "Toyota",
+//     carModel: "Corolla",
+//     status: false,
+//     totalRentCost: 50,
+//     renterFirstName: "Masha",
+//     renterLastName: "Neshyna",
+//     updateBookingDate: "19.03.2025",
+//     createBookingDate: "18.03.2025",
+//     id: 1,
+//   },
+//   {
+//     startDate: "24.03.2025",
+//     endDate: "25.03.2025",
+//     carBrand: "Ford",
+//     carModel: "Focus",
+//     status: true,
+//     totalRentCost: 55,
+//     renterFirstName: "Anna",
+//     renterLastName: "Smith",
+//     updateBookingDate: "23.03.2025",
+//     createBookingDate: "22.03.2025",
+//     id: 2,
+//   },
+//   {
+//     startDate: "22.03.2025",
+//     endDate: "23.03.2025",
+//     carBrand: "Honda",
+//     carModel: "Civic",
+//     status: true,
+//     totalRentCost: 60,
+//     renterFirstName: "John",
+//     renterLastName: "Doe",
+//     updateBookingDate: "21.03.2025",
+//     createBookingDate: "20.03.2025",
+//     id: 3,
+//   },
+// ]
 
-const customerData = {
-  firstName: "Masha",
-  lastName: "Neshyna",
-  email: "test@email.com",
-  drivingLicense: "12345QWERTY",
-  bornDate: "11.11.1111",
-}
+// const customerData = {
+//   firstName: "Masha",
+//   lastName: "Neshyna",
+//   email: "test@email.com",
+//   drivingLicense: "12345QWERTY",
+//   bornDate: "11.11.1111",
+// }
 
 const bookingsListComponent = {}
 
@@ -66,11 +67,22 @@ function CustomerPage() {
     navigate("/") // Replace '/rent' with the actual route you want to navigate to
   }
 
-  const [activeComponent, setActiveComponent] = useState("customerData") // Состояние для выбора компонента
+  const [activeComponent, setActiveComponent] = useState("customerData")
 
   // Функции для отображения компонентов
   const showCustomerData = () => setActiveComponent("customerData")
   const showBookingsList = () => setActiveComponent("bookingsList")
+
+  const [customer, setCustomer] = useState<CustomerProps>()
+
+  async function fetchCustomer() {
+    const response = await axios.get("/api/customers/6")
+    setCustomer(response.data)
+  }
+
+  useEffect(() => {
+    fetchCustomer()
+  }, [])
 
   return (
     <div className="flex flex-row w-auto bg-gray-100 justify-center rounded-lg">
@@ -78,7 +90,7 @@ function CustomerPage() {
       <div className="w-1/3 items-center m-4">
         <div className="flex flex-col w-auto p-3 rounded-lg rounded-br-lg m-4">
           <div className="bg-black text-white font-bold rounded-tl-lg rounded-tr-lg p-3 ">
-            Hi, {customerData.firstName}!
+            Hi, {customer?.firstName}!
           </div>
           <div className="flex flex-col gap-2 w-auto p-3 bg-white ">
             <p className="text-lg"> What's up? </p>
@@ -116,19 +128,18 @@ function CustomerPage() {
 
       {/* правая часть с компонентами */}
       <div className="flex flex-col w-2/3 m-6 gap-6">
-        {/* Отображаем компонент в зависимости от состояния */}
         {activeComponent === "customerData" && (
           <CustomerComponent
-            firstName={customerData.firstName}
-            lastName={customerData.lastName}
-            email={customerData.email}
-            drivingLicense={customerData.drivingLicense}
-            bornDate={customerData.bornDate}
+            firstName={customer?.firstName}
+            lastName={customer?.lastName}
+            email={customer?.email}
+            id={customer?.id}
+            password={customer?.password}
           />
         )}
 
         {activeComponent === "bookingsList" && (
-          <BookingsListComponent bookings={bookingData} />
+          <BookingsListComponent />
         )}
       </div>
     </div>

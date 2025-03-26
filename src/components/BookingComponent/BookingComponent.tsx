@@ -1,17 +1,17 @@
 import { BookingProps } from "./types"
 
 function BookingComponent({
-  startDate,
-  endDate,
-  carBrand,
-  carModel,
-  status,
-  totalRentCost,
-  renterFirstName,
-  renterLastName,
+  rentalStartDate,
+  rentalEndDate,
+  // carBrand,
+  // carModel,
+  booked,
+  totalPrice,
+  // renterFirstName,
+  // renterLastName,
   updateBookingDate,
   createBookingDate,
-  id
+  id,
 }: BookingProps) {
   return (
     <div className="m-4 rounded-lg transition-transform duration-300 hover:-translate-y-1">
@@ -23,32 +23,30 @@ function BookingComponent({
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Car:</div>
             <div className="w-3/4">
-              {carBrand} {carModel}
+              {/* {carBrand} {carModel} */}
             </div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Renter Name:</div>
-            <div className="w-3/4">{renterFirstName} {renterLastName}</div>
-          </div>
-          <div className="flex gap-4">
-            <div className="w-1/4 font-bold">Price:</div>
-            <div className="w-3/4">{totalRentCost} €</div>
-          </div>
-          <div className="flex gap-4">
-            <div className="w-1/4 font-bold">Status:</div>
             <div className="w-3/4">
-              {status}
-              {status ? "Active" : "Closed"}
-              {/* {status === "active" ? "Active" : "Closed"} */}
+              {/* {renterFirstName} {renterLastName} */}
             </div>
           </div>
           <div className="flex gap-4">
+            <div className="w-1/4 font-bold">Price:</div>
+            <div className="w-3/4">{totalPrice} €</div>
+          </div>
+          <div className="flex gap-4">
+            <div className="w-1/4 font-bold">Status:</div>
+            <div className="w-3/4">{booked ? "Active" : "Closed"}</div>
+          </div>
+          <div className="flex gap-4">
             <div className="w-1/4 font-bold">Start Date:</div>
-            <div className="w-3/4">{startDate}</div>
+            <div className="w-3/4">{rentalStartDate}</div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">End Date:</div>
-            <div className="w-3/4">{endDate}</div>
+            <div className="w-3/4">{rentalEndDate}</div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Rent details updated on:</div>

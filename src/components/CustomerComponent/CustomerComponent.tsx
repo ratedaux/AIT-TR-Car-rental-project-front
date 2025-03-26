@@ -4,9 +4,9 @@ function CustomerComponent(
 {firstName,
   lastName,
   email,
-  drivingLicense,
-  bornDate,
-}:CustomerProps
+  id,
+  password
+  }:CustomerProps
 ){
 return(
 
@@ -24,16 +24,7 @@ return(
           <div className="w-1/4 font-bold">Email:</div>
           <div className="w-3/4">{email} </div>
         </div>
-        <div className="flex gap-4">
-          <div className="w-1/4 font-bold">Driving License:</div>
-          <div className="w-3/4">
-            {drivingLicense}
-          </div>
-        </div>
-        <div className="flex gap-4">
-          <div className="w-1/4 font-bold">Born Date:</div>
-          <div className="w-3/4">{bornDate}</div>
-        </div>
+        
         </div>
       </div>
     </div>

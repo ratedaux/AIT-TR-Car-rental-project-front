@@ -1,7 +1,7 @@
 export interface CustomerProps {
+  id: number
   firstName: string
   lastName: string
   email: string
-  drivingLicense:string
-  bornDate: string
-}
+  password: string
+  }
