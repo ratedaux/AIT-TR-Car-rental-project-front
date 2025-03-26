@@ -1,8 +1,21 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import CustomerComponent from "components/CustomerComponent/CustomerComponent"
 import { CustomersListProps } from "./types"
+import axios from "axios"
+import { CustomerProps } from "components/CustomerComponent/types"
 
-const BookingsListComponent: React.FC<CustomersListProps> = ({ customers }) => {
+function CustomerListComponent() {
+  const [customers, setCustomers] = useState<CustomerProps[]>([])
+
+  async function fetchCustomers() {
+    const response = await axios.get("/api/customers/all")
+    setCustomers(response.data)
+  }
+
+  useEffect(() => {
+    fetchCustomers()
+  }, [])
+
   return (
     <div>
       {customers.map((customer, index) => (
@@ -11,13 +24,12 @@ const BookingsListComponent: React.FC<CustomersListProps> = ({ customers }) => {
           lastName={customer.lastName}
           firstName={customer.firstName}
           email={customer.email}
-          drivingLicense={customer.email}
-          bornDate={customer.bornDate}
-          
+          id={customer.id}
+          password={customer.password}
         />
       ))}
     </div>
   )
 }
 
-export default BookingsListComponent
+export default CustomerListComponent

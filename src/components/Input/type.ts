@@ -22,10 +22,7 @@ export interface InputProps {
   value?: string | number 
   errorMessage?: string
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
-
   autoComplete?: AutocompleteTypes; 
-
-
   min?: string
   
   options?: string[] | undefined; // For dropdown options
@@ -34,6 +31,4 @@ export interface InputProps {
   readOnly?:boolean
   disabled?:boolean
   checked?: boolean;//for checkbox 18
-
-
-}
+ }

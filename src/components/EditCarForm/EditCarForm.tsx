@@ -9,18 +9,18 @@ import { useNavigate } from "react-router"
 import CarImg from "assets/CarImages/corolla-exterieur.jpg"
 import { useState } from "react"
 
-  // Test data for pre-filling
-  const testData: EditCarFormProps = {
-    brand: "Toyota",
-    model: "Corolla",
-    status: "Available",
-    year: 2022,
-    bodyType: "Sedan",
-    fuelType: "Gasoline",
-    transmissionType: "Automatic",
-    dayRentalPrice: 45,
-    carImage: CarImg,
-  }
+// Test data for pre-filling
+const testData: EditCarFormProps = {
+  brand: "Toyota",
+  model: "Corolla",
+  status: "Available",
+  year: 2022,
+  bodyType: "Sedan",
+  fuelType: "Gasoline",
+  transmissionType: "Automatic",
+  dayRentalPrice: 45,
+  carImage: CarImg,
+}
 
 function EditCarForm() {
   const navigate = useNavigate()
@@ -47,7 +47,6 @@ function EditCarForm() {
       .required("Price per day is required"),
     carImage: Yup.string().required("Car image is required"),
   })
-
 
   const formik = useFormik({
     initialValues: testData,
@@ -83,7 +82,6 @@ function EditCarForm() {
   if (!isVisible) {
     return null // If not visible, return nothing (effectively hiding the component)
   }
-
 
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
@@ -209,8 +207,8 @@ function EditCarForm() {
         <div className="w-auto">
           <Button name="Apply" type="submit" />
         </div>
-         {/* close button */}
-         <div className="w-auto mt-2.5">
+        {/* close button */}
+        <div className="w-auto mt-2.5">
           <Button
             name="Cancel"
             customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"

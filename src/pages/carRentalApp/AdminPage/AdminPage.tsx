@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import BookingComponent from "components/BookingComponent/BookingComponent"
 import CustomerComponent from "components/CustomerComponent/CustomerComponent"
 import Button from "components/Button/Button"
@@ -13,122 +13,123 @@ import { CarCardProps } from "components/CarCard/types"
 // test image remove later
 import CarImg from "assets/CarImages/corolla-exterieur.jpg"
 import { log } from "console"
+import axios from "axios"
 
 
 // example booking data delete later
-const bookingsList = [
-  {
-    startDate: "20.03.2025",
-    endDate: "21.03.2025",
-    carBrand: "Toyota",
-    carModel: "Corolla",
-    status: false,
-    totalRentCost: 50,
-    renterFirstName: "Masha",
-    renterLastName: "Neshyna",
-    updateBookingDate: "19.03.2025",
-    createBookingDate: "18.03.2025",
-    id: 1,
-  },
-  {
-    startDate: "24.03.2025",
-    endDate: "25.03.2025",
-    carBrand: "Ford",
-    carModel: "Focus",
-    status: true,
-    totalRentCost: 55,
-    renterFirstName: "Anna",
-    renterLastName: "Smith",
-    updateBookingDate: "23.03.2025",
-    createBookingDate: "22.03.2025",
-    id: 2,
-  },
-  {
-    startDate: "22.03.2025",
-    endDate: "23.03.2025",
-    carBrand: "Honda",
-    carModel: "Civic",
-    status: true,
-    totalRentCost: 60,
-    renterFirstName: "John",
-    renterLastName: "Doe",
-    updateBookingDate: "21.03.2025",
-    createBookingDate: "20.03.2025",
-    id: 3,
-  },
-]
+// const bookingsList = [
+//   {
+//     startDate: "20.03.2025",
+//     endDate: "21.03.2025",
+//     carBrand: "Toyota",
+//     carModel: "Corolla",
+//     status: false,
+//     totalRentCost: 50,
+//     renterFirstName: "Masha",
+//     renterLastName: "Neshyna",
+//     updateBookingDate: "19.03.2025",
+//     createBookingDate: "18.03.2025",
+//     id: 1,
+//   },
+//   {
+//     startDate: "24.03.2025",
+//     endDate: "25.03.2025",
+//     carBrand: "Ford",
+//     carModel: "Focus",
+//     status: true,
+//     totalRentCost: 55,
+//     renterFirstName: "Anna",
+//     renterLastName: "Smith",
+//     updateBookingDate: "23.03.2025",
+//     createBookingDate: "22.03.2025",
+//     id: 2,
+//   },
+//   {
+//     startDate: "22.03.2025",
+//     endDate: "23.03.2025",
+//     carBrand: "Honda",
+//     carModel: "Civic",
+//     status: true,
+//     totalRentCost: 60,
+//     renterFirstName: "John",
+//     renterLastName: "Doe",
+//     updateBookingDate: "21.03.2025",
+//     createBookingDate: "20.03.2025",
+//     id: 3,
+//   },
+// ]
 
-const customersList = [
-  {
-    firstName: "Masha",
-    lastName: "Neshyna",
-    email: "test@email.com",
-    drivingLicense: "12345QWERTY",
-    bornDate: "11.11.1111",
-  },
-  {
-    firstName: "Lena",
-    lastName: "Lena",
-    email: "test@email.com",
-    drivingLicense: "12345QWERTY",
-    bornDate: "22.33.4444",
-  },
-  {
-    firstName: "Nastia",
-    lastName: "Nastia",
-    email: "test@email.com",
-    drivingLicense: "12345QWERTY",
-    bornDate: "55.66.7777",
-  },
-]
+// const customersList = [
+//   {
+//     firstName: "Masha",
+//     lastName: "Neshyna",
+//     email: "test@email.com",
+//     drivingLicense: "12345QWERTY",
+//     bornDate: "11.11.1111",
+//   },
+//   {
+//     firstName: "Lena",
+//     lastName: "Lena",
+//     email: "test@email.com",
+//     drivingLicense: "12345QWERTY",
+//     bornDate: "22.33.4444",
+//   },
+//   {
+//     firstName: "Nastia",
+//     lastName: "Nastia",
+//     email: "test@email.com",
+//     drivingLicense: "12345QWERTY",
+//     bornDate: "55.66.7777",
+//   },
+// ]
 
-const carsList = [
-  {
-    brand: "Toyota",
-    model: "Corolla",
-    year: 2022,
-    type: "Sedan",
-    fuelType: "Gasoline",
-    transmissionType: "Automatic",
-    dayRentalPrice: 60,
-    carImage: CarImg,
-    onMoreDetails: () => {},
-    onRent: () => {},
-    id: 1,
-  },
-  {
-    brand: "BMW",
-    model: "BMW",
-    year: 2021,
-    type: "Sedan",
-    fuelType: "Gasoline",
-    transmissionType: "Automatic",
-    dayRentalPrice: 30,
-    carImage: CarImg,
-    onMoreDetails: () => {},
-    onRent: () => {},
-    id: 2,
-  },
-  {
-    brand: "Honda",
-    model: "Honda",
-    year: 2020,
-    type: "Sedan",
-    fuelType: "Gasoline",
-    transmissionType: "Automatic",
-    dayRentalPrice: 40,
-    carImage: CarImg,
-    onMoreDetails: () => {},
-    onRent: () => {},
-    id: 3,
-  },
-]
+// const carsList = [
+//   {
+//     brand: "Toyota",
+//     model: "Corolla",
+//     year: 2022,
+//     type: "Sedan",
+//     fuelType: "Gasoline",
+//     transmissionType: "Automatic",
+//     dayRentalPrice: 60,
+//     carImage: CarImg,
+//     onMoreDetails: () => {},
+//     onRent: () => {},
+//     id: 1,
+//   },
+//   {
+//     brand: "BMW",
+//     model: "BMW",
+//     year: 2021,
+//     type: "Sedan",
+//     fuelType: "Gasoline",
+//     transmissionType: "Automatic",
+//     dayRentalPrice: 30,
+//     carImage: CarImg,
+//     onMoreDetails: () => {},
+//     onRent: () => {},
+//     id: 2,
+//   },
+//   {
+//     brand: "Honda",
+//     model: "Honda",
+//     year: 2020,
+//     type: "Sedan",
+//     fuelType: "Gasoline",
+//     transmissionType: "Automatic",
+//     dayRentalPrice: 40,
+//     carImage: CarImg,
+//     onMoreDetails: () => {},
+//     onRent: () => {},
+//     id: 3,
+//   },
+// ]
 
 interface CarListProps {
   cars: CarCardProps[];
 }
 
-function AdminPage({ cars }: CarListProps) {
+function AdminPage() {
   const navigate = useNavigate() 
   
   const [activeComponent, setActiveComponent] = useState("carsList") // Состояние для выбора компонента
@@ -139,8 +140,18 @@ function AdminPage({ cars }: CarListProps) {
   const showCarsList = () => setActiveComponent("carsList")
   const showAddNewCarForm = () => setActiveComponent("AddNewCarForm")
 
-  const [carArray, setCarArray] = useState(carsList)
-  // const [carArray, setCarArray] = useState<CarCardProps[]>(cars|| [])
+  //const [carArray, setCarArray] = useState(carsList)
+  const [carArray, setCarArray] = useState<CarCardProps[]>([])
+
+async function fetchCars(){
+  const response = await axios.get("/api/cars/all");
+  setCarArray(response.data);
+}
+//add try catch
+useEffect(() => {
+        fetchCars();
+    }, []);
+    
 
   const handleEditCar = (carId: number) => {
     console.log("Edit car with Id:", carId)
@@ -194,11 +205,11 @@ function AdminPage({ cars }: CarListProps) {
       {/* right block with container for components */}
       <div className="flex flex-col w-3/4 m-6">
         {activeComponent === "customersList" && (
-          <CustomersList customers={customersList} />
+          <CustomersList />
         )}
 
         {activeComponent === "bookingsList" && (
-          <BookingsListComponent bookings={bookingsList} />
+          <BookingsListComponent  />
         )}
 
         {activeComponent === "AddNewCarForm" && <AddNewCarForm />}

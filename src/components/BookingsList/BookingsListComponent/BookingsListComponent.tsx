@@ -1,11 +1,12 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import BookingComponent from "components/BookingComponent/BookingComponent"
 import { BookingsListProps } from "./types"
 import Button from "components/Button/Button"
 import { BookingProps } from "components/BookingComponent/types"
+import axios from "axios"
 
-const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
-  const [bookingList, setBookingList] = useState<BookingProps[]>(bookings)
+function BookingsListComponent() {
+  const [bookingList, setBookingList] = useState<BookingProps[]>([])
 
   const handleEditBooking = (bookingId: number) => {
     console.log("Editing booking with ID:", bookingId)
@@ -30,19 +31,29 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
     //   .catch(error => console.error("Error deleting booking:", error));
   }
 
+    async function fetchBookings() {
+    const response = await axios.get("/api/bookings/all")
+    setBookingList(response.data)
+  }
+
+  useEffect(() => {
+    fetchBookings()
+  }, [])
+
+
   return (
     <div>
       {bookingList.map((booking, index) => (
         <div key={booking.id || index}>
           <BookingComponent
-            startDate={booking.startDate}
-            endDate={booking.endDate}
-            carBrand={booking.carBrand}
-            carModel={booking.carModel}
-            status={booking.status}
-            totalRentCost={booking.totalRentCost}
-            renterFirstName={booking.renterFirstName}
-            renterLastName={booking.renterLastName}
+            rentalStartDate={booking.rentalStartDate}
+            rentalEndDate={booking.rentalEndDate}
+            // carBrand={booking.carBrand}
+            // carModel={booking.carModel}
+            booked={booking.booked}
+            totalPrice={booking.totalPrice}
+            // renterFirstName={booking.renterFirstName}
+            // renterLastName={booking.renterLastName}
             updateBookingDate={booking.updateBookingDate}
             createBookingDate={booking.createBookingDate}
             id={booking.id}
