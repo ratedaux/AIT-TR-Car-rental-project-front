@@ -1,9 +1,9 @@
 export interface RegistrationFormValues {
-    userFirstName: string;
-    userLastName: string;
-    userEmail: string;
-    userPassword: string;
-    isChecked: boolean;
+firstName: string;
+lastName: string;
+email: string;
+password: string;
+isChecked: boolean;
   }
   
   export interface UserState {
