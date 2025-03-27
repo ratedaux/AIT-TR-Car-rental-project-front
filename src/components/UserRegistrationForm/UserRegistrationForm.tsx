@@ -2,7 +2,7 @@ import Button from "components/Button/Button"
 import Input from "components/Input/Input"
 import * as Yup from "yup"
 import { useEffect } from "react"
-import car_foto_for_login from "../../assets/car_foto_for-login.jpg"
+import imgRegistrationForm from "../../assets/imgRegistrationForm.jpg"
 import { useFormik } from "formik"
 import { RegisrtationFormValues } from "./types"
 
@@ -22,10 +22,10 @@ function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
   const validationSchema = Yup.object({
     firstName: Yup.string()
       .required("First name is required")
-      .min(2, "First Name must have at least 2 characters"),
+      .min(2, "Must have at least 2 characters"),
     lastName: Yup.string()
       .required("Last name is required")
-      .min(2, "Last Name must have at least 2 characters"),
+      .min(2, "Must have at least 2 characters"),
     email: Yup.string()
       .email("Invalid email format")
       .required("Email is required")
@@ -58,38 +58,38 @@ function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
 
   return (
     <div className="flex justify-center items-center mt-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-[500px] sm:w-[450px] lg:w-[500px] xl:w-[550px] rounded-lg p-8 bg-white max-h-[90vh]">
+      <div className="w-[500px] sm:w-[450px] lg:w-[500px] xl:w-[550px] rounded-lg p-8 bg-white lg:bg-transparent"> {/* bg-white max-h-[90vh] */}
         {" "}
         {/* border border-gray-300 */}
         <h2 className="mt-6 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-900 text-center">
           Create your account
         </h2>
         <form onSubmit={formik.handleSubmit} className="mt-12">
-          <div className="grid gap-6 mb-6 md:grid-cols-2">
-            <div>
+          <div className="grid gap-3 mb-6 md:grid-cols-2">
+            <div className="relative">
               <Input
-                name="userFirstName"
+                name="firstName"
                 placeholder="Enter your first name"
                 value={formik.values.firstName}
                 label="First Name"
                 onChange={formik.handleChange}
               
               />
-              <div className="min-h-[10px] text-red-500 text-sm mt-3">
+              <div className="absolute text-red-500 text-sm top-16">
                 {formik.errors.firstName && formik.touched.firstName
                   ? formik.errors.firstName
                   : ""}
               </div>
             </div>
-            <div>
+            <div className="relative -mb-2">
               <Input
-                name="userLastName"
+                name="lastName"
                 placeholder="Enter your last name"
                 value={formik.values.lastName}
                 label="Last Name"
                 onChange={formik.handleChange}
               />
-              <div className="min-h-[10px] text-red-500 text-sm mt-3">
+              <div className="absolute text-red-500 text-sm top-16">
                 {formik.errors.lastName && formik.touched.lastName
                   ? formik.errors.lastName
                   : ""}
@@ -97,9 +97,9 @@ function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
             </div>
           </div>
 
-          <div>
+          <div className="relative mb-8">
             <Input
-              name="userEmail"
+              name="email"
               type="email"
               placeholder="Enter your email"
               value={formik.values.email}
@@ -107,15 +107,15 @@ function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
               onChange={formik.handleChange}
               autoComplete="email"
             />
-            <div className="min-h-[16px] text-red-500 text-sm mt-3">
+            <div className="absolute text-red-500 text-sm top-4">
               {formik.errors.email && formik.touched.email
                 ? formik.errors.email
                 : ""}
             </div>
           </div>
-          <div>
+          <div >
             <Input
-              name="userPassword"
+              name="password"
               type="password"
               placeholder="Enter your password"
               value={formik.values.password}
@@ -123,14 +123,15 @@ function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
               onChange={formik.handleChange}
               autoComplete="current-password"
             />
-            <div className="min-h-[16px] text-red-500 text-sm mt-3">
+            <div className="text-red-500 text-sm mb-4 h-6">
               {formik.errors.password && formik.touched.password
                 ? formik.errors.password
                 : ""}
             </div>
           </div>
+        
 
-          <label className="flex items-center mb-4 cursor-pointer">
+          <label className="flex items-center mb-4 cursor-pointer mt-[-8px]">
             <input
               type="checkbox"
               className="form-checkbox h-5 w-5 text-red-500"
@@ -165,9 +166,9 @@ function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
         </form>
       </div>
           {img && (
-            <div className="hidden lg:block w-[450px] h-[550px] relative ml-6">
+            <div className="hidden lg:block w-[550px] h-[650px] relative ml-6">
               <img
-        src={car_foto_for_login}
+        src={imgRegistrationForm}
         alt="auto"
         className=" rounded-xl shadow-md w-full h-full object-cover"/*  w-1/3 h-126 rounded-lg ml-6 */
       />
