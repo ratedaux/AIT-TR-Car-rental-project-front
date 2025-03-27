@@ -5,7 +5,7 @@ function BookingComponent({
   rentalEndDate,
   // carBrand,
   // carModel,
-  booked,
+  carStatus,
   totalPrice,
   // renterFirstName,
   // renterLastName,
@@ -38,7 +38,7 @@ function BookingComponent({
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Status:</div>
-            <div className="w-3/4">{booked ? "Active" : "Closed"}</div>
+            <div className="w-3/4">{carStatus}</div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Start Date:</div>

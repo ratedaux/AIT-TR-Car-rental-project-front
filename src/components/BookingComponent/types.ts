@@ -3,7 +3,7 @@ export interface BookingProps {
   rentalEndDate: string
   // carBrand: string
   // carModel: string
-  booked: boolean
+  carStatus: string
   totalPrice: number
   // renterFirstName: string
   // renterLastName: string
