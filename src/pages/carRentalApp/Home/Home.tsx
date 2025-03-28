@@ -3,10 +3,26 @@ import Login from "components/Login/Login";
 import CarComponent from "../../../components/CarComponent/CarComponent";
 import CarList from "components/CarList/CarList";
 
-import BookingComponent from "components/BookingComponent/BookingComponent"
+import BookingComponent from "components/BookingComponent/BookingComponent";
 import BookingForm from "components/BookingForm/BookingForm";
 import EditCarForm from "components/EditCarForm/EditCarForm";
 import EditBookingDetailsForm from "components/EditBookingDetailsForm/EditBookingDetails";
+import { useState } from "react";
+
+import { CarCardProps } from "components/CarCard/types";
+
+// interface Car {
+//   id: number;
+//   brand: string;
+//   model: string;
+//   year: number;
+//   type: string;
+//   fuelType: string;
+//   transmissionType: string;
+//   carStatus: string;
+//   dayRentalPrice: number;
+//   carImage: string;
+// }
 
 
 // test image remove later
@@ -15,121 +31,18 @@ import EditBookingDetailsForm from "components/EditBookingDetailsForm/EditBookin
 
 function Home() {
 
-  //example car data. later object from Backend
+  // const [selectedCar, setSelectedCar] = useState<Car | null>(null);
+  // const [showCarComponent, setShowCarComponent] = useState(false);
 
-  // const cars = [
-  //   {
-  //     image: "/images/tesla-model-s.jpg",
-  //     brand: "Tesla",
-  //     model: "Model S",
-  //     pricePerDay: 120,
-  //     transmission: "Automatic",
-  //     year: 2022,
-  //     fuel: "Electric",
-  //     onMoreDetails: () => console.log("More details about Tesla Model S"),
-  //     onRent: () => console.log("Rent Tesla Model S"),
-  //     id: 1
-  //   },
-  //   {
-  //     image: "/images/bmw-3-series.jpg",
-  //     brand: "BMW",
-  //     model: "3 Series",
-  //     pricePerDay: 90,
-  //     transmission: "Automatic",
-  //     year: 2021,
-  //     fuel: "Petrol",
-  //     onMoreDetails: () => console.log("More details about BMW 3 Series"),
-  //     onRent: () => console.log("Rent BMW 3 Series"),
-  //     id: 2
-  //   },
-  //   {
-  //     image: "/images/mercedes-c-class.jpg",
-  //     brand: "Mercedes-Benz",
-  //     model: "C-Class",
-  //     pricePerDay: 100,
-  //     transmission: "Automatic",
-  //     year: 2021,
-  //     fuel: "Diesel",
-  //     onMoreDetails: () => console.log("More details about Mercedes C-Class"),
-  //     onRent: () => console.log("Rent Mercedes C-Class"),
-  //     id:3
-  //   },
-  //   {
-  //     image: "/images/audi-a4.jpg",
-  //     brand: "Audi",
-  //     model: "A4",
-  //     pricePerDay: 95,
-  //     transmission: "Automatic",
-  //     year: 2022,
-  //     fuel: "Petrol",
-  //     onMoreDetails: () => console.log("More details about Audi A4"),
-  //     onRent: () => console.log("Rent Audi A4"),
-  //     id:4
-  //   },
-  //   {
-  //     image: "/images/ford-mustang.jpg",
-  //     brand: "Ford",
-  //     model: "Mustang",
-  //     pricePerDay: 150,
-  //     transmission: "Manual",
-  //     year: 2020,
-  //     fuel: "Petrol",
-  //     onMoreDetails: () => console.log("More details about Ford Mustang"),
-  //     onRent: () => console.log("Rent Ford Mustang"),
-  //     id: 5
-  //   },
-  //   {
-  //     image: "/images/toyota-corolla.jpg",
-  //     brand: "Toyota",
-  //     model: "Corolla",
-  //     pricePerDay: 70,
-  //     transmission: "Automatic",
-  //     year: 2023,
-  //     fuel: "Hybrid",
-  //     onMoreDetails: () => console.log("More details about Toyota Corolla"),
-  //     onRent: () => console.log("Rent Toyota Corolla"),
-  //     id:6
-  //   },
-  //   {
-  //     image: "/images/honda-civic.jpg",
-  //     brand: "Honda",
-  //     model: "Civic",
-  //     pricePerDay: 80,
-  //     transmission: "Manual",
-  //     year: 2021,
-  //     fuel: "Petrol",
-  //     onMoreDetails: () => console.log("More details about Honda Civic"),
-  //     onRent: () => console.log("Rent Honda Civic"),
-  //     id:7
-  //   },
-  //   {
-  //     image: "/images/range-rover-evoque.jpg",
-  //     brand: "Range Rover",
-  //     model: "Evoque",
-  //     pricePerDay: 130,
-  //     transmission: "Automatic",
-  //     year: 2022,
-  //     fuel: "Diesel",
-  //     onMoreDetails: () => console.log("More details about Range Rover Evoque"),
-  //     onRent: () => console.log("Rent Range Rover Evoque"),
-  //     id:7
-  //   },
-  // ];
+  // const handleMoreDetailsClick = (car: Car) => {
+  //   setSelectedCar(car);
+  //   setShowCarComponent(true);
+  // };
 
-  // const carData = {
-  //   brand: "Toyota",
-  //   model: "Corolla",
-  //   year: 2021,
-  //   type: "Sedan",
-  //   fuelType: "Gasoline",
-  //   transmissionType: "Automatic",
-  //   carStatus: "Available",
-  //   dayRentalPrice: 30,
-  //   carImage: CarImg,
-  //   id: 8
-  // }
-
-
+  // const handleCloseModal = () => {
+  //   setShowCarComponent(false);
+  //   setSelectedCar(null);
+  // };
 
 
   return (
@@ -137,12 +50,26 @@ function Home() {
       <FilterByDatesForm />
 
       <CarList />
-      <EditCarForm/>
+
+      {/* {showCarComponent && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+          <div className="relative bg-white rounded-lg p-6 shadow-lg max-w-2xl w-full">
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+            // onClick={handleCloseMoreDetails}
+            >
+              ✖
+            </button>
+            <CarComponent car={selectedCar as CarCardProps} />
+          </div>
+        </div>
+      )} */}
+      {/* <EditCarForm/>
       <BookingForm/>
-      <EditBookingDetailsForm/>
+      <EditBookingDetailsForm/> */}
 
       {/* remove later test car data*/}
-      <CarComponent
+      {/* <CarComponent
         // brand={carData.brand}
         // model={carData.model}
         // year={carData.year}
@@ -153,7 +80,7 @@ function Home() {
         // dayRentalPrice={carData.dayRentalPrice}
         // carImage={carData.carImage}
         // id={carData.id}
-      />
+      /> */}
 
 
     </div>

@@ -13,6 +13,7 @@ import LoginNotification from 'components/LoginNotification/LoginNotification';
 import MyAccount from 'pages/carRentalApp/CustomerPage/MyAccount';
 import AdminPage from 'pages/carRentalApp/AdminPage/AdminPage';
 import NotFoundPage from 'components/NotFoundPage/NotFoundPage';
+import CarPage from 'pages/CarPage/CarPage';
 
 
 
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path='/login/registration' element={<UserRegistrationForm />} />
           <Route path="/account" element={<MyAccount />} />
+          <Route path="/cars/:id" element={<CarPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<NotFoundPage />} />
 

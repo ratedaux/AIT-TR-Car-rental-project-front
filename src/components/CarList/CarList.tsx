@@ -3,6 +3,9 @@ import CarCard from "../CarCard/CarCard";
 import { CarCardProps } from "../CarCard/types";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useAppDispatch, useAppSelector } from "store/hooks";
+import { rentCarSelectors, rentCarActions } from "store/redux/rentCarSlice/rentCarSlice";
+import { StringParam, useQueryParam } from "use-query-params";
 
 interface Car {
     id: number;
@@ -18,16 +21,9 @@ interface Car {
 }
 
 function CarList() {
-    const [cars, setCars] = useState<Car[]>([]);
+    const { cars, status, error } = useAppSelector(rentCarSelectors.carsData);
 
-    async function fetchCars() {
-        const response = await axios.get("/api/cars/all");
-        setCars(response.data);
-    }
 
-    useEffect(() => {
-        fetchCars();
-    }, []);
 
     return (
         <div className="max-w-5xl mx-auto h-screen flex">
