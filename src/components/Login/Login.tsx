@@ -60,14 +60,14 @@ function Login({ showHeader = true, img = true }: LoginProps) {
 
   return (
     <div className="flex justify-center items-center mt-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full sm:w-[450px] lg:w-[500px] xl:w-[500px] max-w-full rounded-lg p-4 margin: auto bg-white lg:bg-transparent "> {/*  bg-white shadow-lg */}
+      <div className="w-full sm:w-[250px] lg:w-[300px] xl:w-[350px] max-w-full rounded-lg p-4 margin: auto bg-white lg:bg-transparent "> {/*  bg-white shadow-lg */}
         {" "}
         {/* border border-gray-300 */}
         <div className="flex flex-col w-full "> {/* max-w-sm p-6 */}
           {showHeader && (
             <div className="mb-4">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 text-left">Login</h2>
-              <p className=" text-2xl text-left text-gray-600">
+              <h2 className="text-2xl sm:text-3xl lg:text-3xl font-bold mb-2 text-left">Login</h2>
+              <p className=" text-1xl text-left text-gray-600">
                 Login to access your account
               </p>
             </div>
@@ -130,7 +130,7 @@ function Login({ showHeader = true, img = true }: LoginProps) {
         </div>
       </div>
       {img && (
-        <div className="hidden lg:block w-[550px] h-[650px] relative ml-6">
+        <div className="hidden lg:block w-[350px] h-[450px] relative ml-6">
           <img
             src={fotoCar}
             alt="auto"

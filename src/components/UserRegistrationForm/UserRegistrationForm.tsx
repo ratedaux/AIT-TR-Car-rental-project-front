@@ -57,11 +57,11 @@ function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
   })
 
   return (
-    <div className="flex justify-center items-center mt-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-[500px] sm:w-[450px] lg:w-[500px] xl:w-[550px] rounded-lg p-8 bg-white lg:bg-transparent"> {/* bg-white max-h-[90vh] */}
+    <div className="flex justify-center items-center -mt-4 px-4 sm:px-6 lg:px-8">
+      <div className="w-[300px] sm:w-[300px] lg:w-[3500px] xl:w-[400px] rounded-lg p-2 bg-white lg:bg-transparent"> {/* bg-white max-h-[90vh] */}
         {" "}
         {/* border border-gray-300 */}
-        <h2 className="mt-6 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-900 text-center">
+        <h2 className="mt-6 text-xl sm:text-1xl md:text-2xl lg:text-2xl font-semibold text-gray-900 text-center">
           Create your account
         </h2>
         <form onSubmit={formik.handleSubmit} className="mt-12">
@@ -166,7 +166,7 @@ function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
         </form>
       </div>
           {img && (
-            <div className="hidden lg:block w-[550px] h-[650px] relative ml-6">
+            <div className="hidden lg:block w-[350px] h-[450px] relative ml-6">
               <img
         src={imgRegistrationForm}
         alt="auto"
