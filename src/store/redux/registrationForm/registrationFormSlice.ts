@@ -1,37 +1,45 @@
 import { createAppSlice } from "store/createAppSlice"
-import { UserState, RegistrationFormValues } from "./type"
+import { AuthState } from "./type"
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 
-const initialState: UserState = {
-  loading: false,
+const initialState: AuthState = {
+  user: null,
+  token: null,
+  status: 'idle',
   error: null,
-  success: false,
+  success: undefined,
+  loading: undefined
 };
 
+/* 
+export const registerUser = createAsyncThunk(
+ 
+); */
+
 export const userRegisterSlice = createAppSlice({
-  name: 'user',
+  name: 'REGISTRATION',
   initialState,
   reducers: {
-    resetState: (state) => {
-      state.loading = false;
-      state.error = null;
-      state.success = false;
-    },
-    setLoading: (state, action) => {
-      state.loading = action.payload;
-    },
-    setError: (state, action) => {
-      state.error = action.payload;
-    },
-    setSuccess: (state, action) => {
-      state.success = action.payload;
-    },
   },
+ /*  extraReducers:(builder) =>{
+   builder
+   .addCase(registerUser.pending, (state)=>{
+state.status = 'loading';
+   })
+   .addCase(registerUser.fulfilled, (state, action) =>{
+    state.status = 'succeeded';
+    //
+   })
+   .addCase(registerUser.rejected, (state, action) => {
+state.status = 'failed'
+   })
+  }, */
   selectors: {
 
-    selectLoading: (state: UserState) => state.loading,
-    selectError: (state: UserState) => state.error,
-    selectSuccess: (state: UserState) => state.success,
+    selectLoading: (state: AuthState) => state.loading,
+    selectError: (state: AuthState) => state.error,
+    selectSuccess: (state: AuthState) => state.success,
   },
 });
 

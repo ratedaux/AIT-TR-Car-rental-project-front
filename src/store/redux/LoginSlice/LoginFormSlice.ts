@@ -22,16 +22,24 @@ export const loginUser = createAsyncThunk(
 )
 
 
+export const logoutUser = createAsyncThunk(
+  'auth/logoutUser', 
+  async (_, thunkApi) => {
+    try {
+      // запрос на сервер 
+      await axios.post('/api/logout') // ЗАМЕНИТЬ API 
+      return {}
+    } catch (error: any) {
+      return thunkApi.rejectWithValue(error.response?.data?.message || 'Logout failed')
+    }
+  }
+)
+
+
 export const authSlice = createAppSlice({
     name: "AUTH",
     initialState: authInitialState,
-    reducers: {
-      logout: (state: AuthSliceState) => {
-        state.user = null
-        state.error = undefined
-        state.status = "default"
-      },
-    },
+    reducers: {},
     
     extraReducers: (builder) => {
       builder
@@ -48,6 +56,22 @@ export const authSlice = createAppSlice({
           state.status = "error"
           state.error = typeof action.payload === 'string' ? action.payload : 'Unknown error'
         })
+
+
+        // Логаут
+      .addCase(logoutUser.pending, (state) => {
+        state.status = "loading"
+        state.error = undefined
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.status = "default"
+        state.user = null
+        state.error = undefined
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.status = "error"
+        state.error = typeof action.payload === 'string' ? action.payload : 'Unknown error'
+      })
     },
 
     selectors: {
