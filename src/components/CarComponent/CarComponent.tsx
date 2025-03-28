@@ -1,36 +1,36 @@
-import { CarProps } from "./types"
-import Button from "components/Button/Button"
-import fuelIcon from "assets/CarImages/fuel-icon.png"
-import transmissionIcon from "assets/CarImages/transmission-icon.png"
-import yearIcon from "assets/CarImages/year-icon.png"
-import euroIcon from "assets/CarImages/euro-icon.png"
-import carIcon from "assets/CarImages/car-icon.jpg"
-import { useEffect, useState } from "react"
-import axios from "axios"
+import { CarProps } from "./types";
+import Button from "components/Button/Button";
+import fuelIcon from "assets/CarImages/fuel-icon.png";
+import transmissionIcon from "assets/CarImages/transmission-icon.png";
+import yearIcon from "assets/CarImages/year-icon.png";
+import euroIcon from "assets/CarImages/euro-icon.png";
+import carIcon from "assets/CarImages/car-icon.jpg";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function CarComponent() {
   // State to manage the visibility of the window
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(true);
 
   // Handle close button click
   const handleClose = () => {
-    setIsVisible(false) // Set visibility to false, effectively "closing" the window
-  }
+    setIsVisible(false); // Set visibility to false, effectively "closing" the window
+  };
 
   if (!isVisible) {
-    return null // If not visible, return nothing (effectively hiding the component)
+    return null; // If not visible, return nothing (effectively hiding the component)
   }
 
-  const [car, setCar] = useState<CarProps>()
+  const [car, setCar] = useState<CarProps>();
 
   async function fetchCar() {
-    const response = await axios.get("/api/cars/id/6")
-    setCar(response.data)
+    const response = await axios.get("/api/cars/id/6");
+    setCar(response.data);
   }
-  
+
   useEffect(() => {
-    fetchCar()
-  }, [])
+    fetchCar();
+  }, []);
 
   return (
     <div className="flex flex-row w-auto justify-center rounded-lg ">
@@ -134,12 +134,12 @@ function CarComponent() {
         </div>
 
         <div className="w-auto">
-          <Button name="Rent" type="button" onClick={() => {}} />
+          <Button name="Rent" type="button" onClick={() => { }} />
         </div>
 
         {/* Edit car only for Admin */}
         <div className="w-auto">
-          <Button name="Edit" type="button" onClick={() => {}} />
+          <Button name="Edit" type="button" onClick={() => { }} />
         </div>
       </div>
 
@@ -152,6 +152,6 @@ function CarComponent() {
         />
       </div>
     </div>
-  )
+  );
 }
-export default CarComponent
+export default CarComponent;
