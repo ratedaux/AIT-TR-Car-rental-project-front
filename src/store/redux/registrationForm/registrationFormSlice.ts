@@ -1,6 +1,6 @@
 import { createAppSlice } from "store/createAppSlice"
 import { AuthState } from "./type"
-import { createAsyncThunk } from "@reduxjs/toolkit";
+
 
 
 const initialState: AuthState = {
