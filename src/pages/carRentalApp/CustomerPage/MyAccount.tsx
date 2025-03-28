@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import BookingsListComponent from "components/BookingsList/BookingsListComponent/BookingsListComponent"
 import { CustomerProps } from "components/CustomerComponent/types"
 import axios from "axios"
+import { BookingsListProps } from "components/BookingsList/BookingsListComponent/types"
 
 // example booking data delete later
 // const bookingData = [
@@ -57,7 +58,7 @@ import axios from "axios"
 //   bornDate: "11.11.1111",
 // }
 
-const bookingsListComponent = {}
+// const bookingsListComponent = {}
 
 function CustomerPage() {
   const navigate = useNavigate() // Use useNavigate hook to programmatically navigate

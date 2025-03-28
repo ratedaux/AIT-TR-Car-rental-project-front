@@ -21,7 +21,7 @@ function CarList() {
     const [cars, setCars] = useState<Car[]>([]);
 
     async function fetchCars() {
-        const response = await axios.get("/api/cars/all");
+        const response = await axios.get("/api/cars");
         setCars(response.data);
     }
 

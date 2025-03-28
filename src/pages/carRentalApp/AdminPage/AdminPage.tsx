@@ -139,12 +139,12 @@ function AdminPage() {
   const showBookingsList = () => setActiveComponent("bookingsList")
   const showCarsList = () => setActiveComponent("carsList")
   const showAddNewCarForm = () => setActiveComponent("AddNewCarForm")
-
+  
   //const [carArray, setCarArray] = useState(carsList)
   const [carArray, setCarArray] = useState<CarCardProps[]>([])
 
 async function fetchCars(){
-  const response = await axios.get("/api/cars/all");
+  const response = await axios.get("/api/cars");
   setCarArray(response.data);
 }
 //add try catch
