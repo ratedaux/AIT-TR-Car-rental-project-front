@@ -8,6 +8,7 @@ import BookingForm from "components/BookingForm/BookingForm"
 import EditCarForm from "components/EditCarForm/EditCarForm"
 import EditBookingDetailsForm from "components/EditBookingDetailsForm/EditBookingDetails"
 import EditUserForm from "components/EditUserForm/EditUserForm"
+import CustomerListComponent from "components/CustomersListComponent/CustomersList"
 
 // test image remove later
 //import CarImg from "assets/CarImages/corolla-exterieur.jpg"
@@ -151,7 +152,8 @@ function Home() {
       />
 
       <EditUserForm />
-    </div>
+
+      </div>
   )
 }
 

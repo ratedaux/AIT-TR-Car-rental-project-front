@@ -21,7 +21,7 @@ function BookingsListComponent() {
   }
 
   async function fetchBookings() {
-    const response = await axios.get("/api/bookings/all")
+    const response = await axios.get("/api/bookings")
     setBookingList(response.data)
   }
 

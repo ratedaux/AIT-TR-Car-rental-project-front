@@ -9,7 +9,7 @@ function CustomerListComponent() {
   const [customers, setCustomers] = useState<CustomerProps[]>([])
 
   async function fetchCustomers() {
-    const response = await axios.get("/api/customers/all")
+    const response = await axios.get("/api/customers")
     setCustomers(response.data)
   }
 

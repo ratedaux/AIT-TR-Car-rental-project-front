@@ -144,7 +144,7 @@ function AdminPage() {
   const [carArray, setCarArray] = useState<CarCardProps[]>([])
 
 async function fetchCars(){
-  const response = await axios.get("/api/cars/all");
+  const response = await axios.get("/api/cars");
   setCarArray(response.data);
 }
 //add try catch
