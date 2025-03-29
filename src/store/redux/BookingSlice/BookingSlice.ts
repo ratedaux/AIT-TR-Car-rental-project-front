@@ -2,8 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { BookingSliceState } from "./types"
 import axios from "axios"
 
-// const getUserId()=>{}
-
 const bookingInitialState: BookingSliceState = {
   bookingList: [],
   bookingListByUserId: [],
@@ -14,7 +12,7 @@ const bookingInitialState: BookingSliceState = {
     totalPrice: 0,
     updateBookingDate: "",
     createBookingDate: "",
-    id: 0,
+    id: "",
   },
   status: "default",
   error: undefined,
@@ -23,13 +21,11 @@ const bookingInitialState: BookingSliceState = {
 export const bookingSlice = createSlice({
   name: "BookingSLice",
   initialState: bookingInitialState,
-  reducers:
-   create => ({
-    getBooking: 
-    create.asyncThunk(
-      async (arg, thunkApi) => {
+  reducers: create => ({
+    getBookingByBookingId: create.asyncThunk(
+      async (bookingId, thunkApi) => {
         try {
-          const result = await axios.get(`/api/bookings`)
+          const result = await axios.get(`/api/bookings/${bookingId}`)
           return result.data
         } catch (error) {
           return thunkApi.rejectWithValue(error)
@@ -44,13 +40,12 @@ export const bookingSlice = createSlice({
             totalPrice: 0,
             updateBookingDate: "",
             createBookingDate: "",
-            id: 0,
+            id: "",
           }
           state.status = "loading"
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          
           state.bookingData = {
             rentalStartDate: action.payload.rentalStartDate,
             rentalEndDate: action.payload.rentalEndDate,
@@ -60,7 +55,57 @@ export const bookingSlice = createSlice({
             createBookingDate: action.payload.updateBookingDate,
             id: action.payload.id,
           }
-          
+
+          state.status = "success"
+        },
+        rejected: (state: BookingSliceState, action: any) => {
+          state.error = action.payload
+          state.status = "error"
+        },
+      },
+    ),
+    getBookingsByUserId: create.asyncThunk(
+      async (userId, thunkApi) => {
+        try {
+          const result = await axios.get(`/api/customers/all-bookings-id/${userId}`)
+          return result.data
+        } catch (error) {
+          return thunkApi.rejectWithValue(error)
+        }
+      },
+      {
+        pending: (state: BookingSliceState) => {
+          state.bookingListByUserId = []
+          state.status = "loading"
+          state.error = undefined
+        },
+        fulfilled: (state: BookingSliceState, action: any) => {
+          state.bookingListByUserId = action.payload.bookingListByUserId
+          state.status = "success"
+        },
+        rejected: (state: BookingSliceState, action: any) => {
+          state.error = action.payload
+          state.status = "error"
+        },
+      },
+    ),
+    getAllBookings: create.asyncThunk(
+      async (__, thunkApi) => {
+        try {
+          const result = await axios.get(`/api/bookings`)
+          return result.data
+        } catch (error) {
+          return thunkApi.rejectWithValue(error)
+        }
+      },
+      {
+        pending: (state: BookingSliceState) => {
+          state.bookingList = []
+          state.status = "loading"
+          state.error = undefined
+        },
+        fulfilled: (state: BookingSliceState, action: any) => {
+          state.bookingListByUserId = action.payload.bookingList
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
@@ -72,7 +117,13 @@ export const bookingSlice = createSlice({
   }),
 
   selectors: {
-    booking: (state: BookingSliceState) => state,
+   
+    selectBookingData: (state: BookingSliceState) => state.bookingData,
+    selectBookingList: (state: BookingSliceState) => state.bookingList,
+    selectBookingListByUserId: (state: BookingSliceState) => state.bookingListByUserId,
+    selectStatus: (state: BookingSliceState) => state.status,
+    selectError: (state: BookingSliceState) => state.error,
+    
   },
 })
 

@@ -14,5 +14,5 @@ export interface BookingData {
   totalPrice: number
   updateBookingDate: string
   createBookingDate: string
-  id: number
+  id: string
 }

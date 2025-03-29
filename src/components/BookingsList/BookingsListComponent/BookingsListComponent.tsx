@@ -5,7 +5,7 @@ import Button from "components/Button/Button"
 import { BookingProps } from "components/BookingComponent/types"
 import axios from "axios"
 
-function BookingsListComponent() {
+const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
   const [bookingList, setBookingList] = useState<BookingProps[]>([])
 
   const handleEditBooking = (bookingId: number) => {
@@ -19,15 +19,6 @@ function BookingsListComponent() {
       prevBookingList.filter(booking => booking.id !== bookingId),
     )
   }
-
-  async function fetchBookings() {
-    const response = await axios.get("/api/bookings")
-    setBookingList(response.data)
-  }
-
-  useEffect(() => {
-    fetchBookings()
-  }, [])
 
   return (
     <div>
