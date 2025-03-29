@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { BookingSliceState } from "./types"
 import axios from "axios"
+import { EditBookingFormProps } from "components/EditBookingDetailsForm/types"
 
 const bookingInitialState: BookingSliceState = {
   bookingList: [],
@@ -23,9 +24,9 @@ export const bookingSlice = createSlice({
   initialState: bookingInitialState,
   reducers: create => ({
     getBookingByBookingId: create.asyncThunk(
-      async (bookingId, thunkApi) => {
+      async (id, thunkApi) => {
         try {
-          const result = await axios.get(`/api/bookings/${bookingId}`)
+          const result = await axios.get(`/api/bookings/${id}`)
           return result.data
         } catch (error) {
           return thunkApi.rejectWithValue(error)
@@ -114,6 +115,31 @@ export const bookingSlice = createSlice({
         },
       },
     ),
+    extendBooking: create.asyncThunk(
+      async ({ id, updatedData }: { id: string, updatedData: EditBookingFormProps }, thunkApi) => {
+        try {
+          const result = await axios.put(`/api/bookings/extend/${id}`, updatedData)
+          return result.data
+        } catch (error) {
+          return thunkApi.rejectWithValue(error)
+        }
+      },
+      {
+        pending: (state: BookingSliceState) => {
+          state.status = "loading"
+          state.error = undefined
+        },
+        fulfilled: (state: BookingSliceState, action: any) => {
+          state.bookingData = action.payload.updatedData
+          state.status = "success"
+         
+        },
+        rejected: (state: BookingSliceState, action: any) => {
+          state.error = action.payload
+          state.status = "error"
+        },
+      },
+    ),
   }),
 
   selectors: {
@@ -127,5 +153,6 @@ export const bookingSlice = createSlice({
   },
 })
 
+export default bookingSlice.reducer;
 export const bookingActions = bookingSlice.actions
 export const bookingSelectors = bookingSlice.selectors

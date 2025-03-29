@@ -4,22 +4,30 @@ import Input from "components/Input/Input"
 import * as Yup from "yup"
 import { useFormik } from "formik"
 import { useNavigate } from "react-router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  bookingActions,
+  bookingSelectors,
+  
+} from "store/redux/BookingSlice/BookingSlice"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+
 
 // example booking data delete later
-const bookingData = {
-  startDate: "2025-03-24",
-  endDate: "2025-03-25",
-  carBrand: "Toyota",
-  carModel: "Corolla",
-  status: "Active",
-  totalRentCost: 100,
-  renterFirstName: "Masha",
-  renterLastName: "Neshyna",
-  updateBookingDate: "2025-03-25",
-  createBookingDate: "2025-03-25",
-  id: 1,
-}
+// const bookingData = {
+//   startDate: "2025-03-24",
+//   endDate: "2025-03-25",
+//   carBrand: "Toyota",
+//   carModel: "Corolla",
+//   status: "Active",
+//   totalRentCost: 100,
+//   renterFirstName: "Masha",
+//   renterLastName: "Neshyna",
+//   updateBookingDate: "2025-03-25",
+//   createBookingDate: "2025-03-25",
+//   id: 1,
+// }
 
 const costPerDay = 50 // Example cost per day
 
@@ -48,6 +56,7 @@ const calculateTotalCost = (startDate: Date, endDate: Date): number => {
 
 function EditBookingDetailsForm() {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   const today = new Date().toLocaleDateString("en-CA")
   const validationSchema = Yup.object({
@@ -63,8 +72,27 @@ function EditBookingDetailsForm() {
     status: Yup.string().required("Status is required"),
   })
 
+  const bookingData = useAppSelector(bookingSelectors.selectBookingData)
+
+  const handleExtendBooking = (
+    id: string,
+    updatedData: EditBookingFormProps,
+  ) => {
+    dispatch(bookingActions.extendBooking({ id, updatedData }))
+  }
+
+  useEffect(() => {}, [bookingData])
+
   const formik = useFormik({
-    initialValues: bookingData,
+    initialValues: {
+      startDate: bookingData.rentalStartDate || "",
+      endDate: bookingData.rentalEndDate || "",
+      totalRentCost: bookingData.totalPrice || 0,
+      status: bookingData.carStatus || "",
+      updateBookingDate: bookingData.createBookingDate || "",
+      createBookingDate: bookingData.updateBookingDate || "",
+      id: bookingData.id || "",
+    },
     validationSchema: validationSchema,
     validateOnChange: true,
     validateOnBlur: true,
@@ -74,7 +102,7 @@ function EditBookingDetailsForm() {
       alert("The booking details are updated")
       //  navigate("/account")
 
-
+      handleExtendBooking(values.id, values)
     },
   })
 
@@ -99,18 +127,17 @@ function EditBookingDetailsForm() {
     formik.setFieldValue("totalRentCost", totalCost) // Update Formik state
   }
 
-    // State to manage the visibility of the window
-    const [isVisible, setIsVisible] = useState(true)
-  
-    // Handle close button click
-    const handleClose = () => {
-      setIsVisible(false) // Set visibility to false, effectively "closing" the window
-    }
-  
-    if (!isVisible) {
-      return null // If not visible, return nothing (effectively hiding the component)
-    }
-  
+  // State to manage the visibility of the window
+  const [isVisible, setIsVisible] = useState(true)
+
+  // Handle close button click
+  const handleClose = () => {
+    setIsVisible(false) // Set visibility to false, effectively "closing" the window
+  }
+
+  if (!isVisible) {
+    return null // If not visible, return nothing (effectively hiding the component)
+  }
 
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
@@ -213,8 +240,8 @@ function EditBookingDetailsForm() {
           <Button name="Apply" type="submit" />
         </div>
 
-         {/* close button */}
-         <div className="w-auto mt-2.5">
+        {/* close button */}
+        <div className="w-auto mt-2.5">
           <Button
             name="Cancel"
             customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
