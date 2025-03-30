@@ -9,10 +9,8 @@ import { useDispatch, useSelector } from "react-redux"
 import {
   bookingActions,
   bookingSelectors,
-  
 } from "store/redux/BookingSlice/BookingSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
-
 
 // example booking data delete later
 // const bookingData = {
@@ -88,7 +86,9 @@ function EditBookingDetailsForm() {
       startDate: bookingData.rentalStartDate || "",
       endDate: bookingData.rentalEndDate || "",
       totalRentCost: bookingData.totalPrice || 0,
-      status: bookingData.carStatus || "",
+      status: bookingData.bookingStatus || "",
+      carId: bookingData.carId,
+      customerId: bookingData.customerId,
       updateBookingDate: bookingData.createBookingDate || "",
       createBookingDate: bookingData.updateBookingDate || "",
       id: bookingData.id || "",
@@ -139,6 +139,25 @@ function EditBookingDetailsForm() {
     return null // If not visible, return nothing (effectively hiding the component)
   }
 
+  function handleBookingCancel(
+    id: string,
+    updatedData: EditBookingFormProps,
+  ): void {
+    dispatch(bookingActions.cancelBooking({ id, updatedData }))
+    alert("The booking is cancelled")
+    navigate("/account")
+  }
+
+  //visible only when the boooking is cancelled
+  function handlRestoreBooking(
+    id: string,
+    updatedData: EditBookingFormProps,
+  ): void {
+    dispatch(bookingActions.restoreBooking({ id, updatedData }))
+    alert("The cancelled booking is restored")
+    navigate("/account")
+  }
+
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
       <h2 className="text-xl font-bold p-[60px] mb-6">
@@ -149,15 +168,11 @@ function EditBookingDetailsForm() {
           <div className="flex flex-col gap-4 w-full mb-7 ">
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Car:</div>
-              <div className="w-2/3">
-                {bookingData.carBrand} {bookingData.carModel}
-              </div>
+              <div className="w-2/3">{bookingData.carId}</div>
             </div>
             <div className="flex gap-4">
-              <div className="w-1/3 font-bold">Renter Name:</div>
-              <div className="w-2/3">
-                {bookingData.renterFirstName} {bookingData.renterLastName}
-              </div>
+              <div className="w-1/3 font-bold">Renter:</div>
+              <div className="w-2/3">{bookingData.customerId}</div>
             </div>
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Rent details updated on:</div>
@@ -212,11 +227,11 @@ function EditBookingDetailsForm() {
             errorMessage={formik.errors.totalRentCost}
             readOnly={true}
           />
-
+          {/* must be available only for admin  */}
           <Input
             name="status"
             type="select"
-            options={["Active", "Closed"]}
+            options={["Active", "Completed"]}
             label="Status"
             placeholder="Select status"
             value={formik.values.status}
@@ -240,15 +255,41 @@ function EditBookingDetailsForm() {
           <Button name="Apply" type="submit" />
         </div>
 
-        {/* close button */}
-        <div className="w-auto mt-2.5">
-          <Button
-            name="Cancel"
-            customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
-            onClick={handleClose}
-          />
-        </div>
+        {/* cancel booking button */}
+        {formik.values.status === "Active" && (
+          <div className="w-auto mt-2.5">
+            <Button
+              name="Cancel Booking"
+              customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
+              onClick={() =>
+                handleBookingCancel(formik.values.id, formik.values)
+              }
+            />
+          </div>
+        )}
+
+        {/* restore booking button */}
+        {formik.values.status === "Completed" && (
+          <div className="w-auto mt-2.5">
+            <Button
+              name="Restore Booking"
+              customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
+              onClick={() =>
+                handlRestoreBooking(formik.values.id, formik.values)
+              }
+            />
+          </div>
+        )}
       </form>
+
+      {/* close button */}
+      <div className="mt-6">
+        <Button
+          name="X"
+          customClasses="!px-6 !py-6 !rounded-full font-semibold !bg-gray-400 hover:!bg-red-700 text-white"
+          onClick={handleClose}
+        />
+      </div>
     </div>
   )
 }

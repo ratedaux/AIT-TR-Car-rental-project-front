@@ -8,7 +8,7 @@ import axios from "axios"
 import { BookingsListProps } from "components/BookingsList/BookingsListComponent/types"
 import { bookingActions, bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
-import {BookingProps} from "components/BookingComponent/types"
+
 
 // example booking data delete later
 // const bookingData = [

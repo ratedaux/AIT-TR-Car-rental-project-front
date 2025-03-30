@@ -10,7 +10,9 @@ export interface BookingSliceState{
 export interface BookingData {
   rentalStartDate: string
   rentalEndDate: string
-  carStatus: string
+  carId: string,
+  customerId: string,
+  bookingStatus: string
   totalPrice: number
   updateBookingDate: string
   createBookingDate: string
