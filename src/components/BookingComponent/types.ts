@@ -11,5 +11,5 @@ export interface BookingProps {
   // renterLastName: string
   updateBookingDate: string
   createBookingDate: string
-  id: number
+  id: string
 }

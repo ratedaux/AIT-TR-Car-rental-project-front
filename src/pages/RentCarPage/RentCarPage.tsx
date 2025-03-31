@@ -1,8 +1,8 @@
 import { CarCardProps } from "components/CarCard/types"
-import EditCarForm from "components/EditCarForm/EditCarForm"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
+import BookingForm from "components/BookingForm/BookingForm"
 
-const EditCarPage = () => {
+const RentCarPage = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -11,9 +11,9 @@ const EditCarPage = () => {
 
   return (
     <div className="flex flex-row">
-      <EditCarForm car={carDetails} />
+      <BookingForm car={carDetails} />
     </div>
   )
 }
 
-export default EditCarPage
+export default RentCarPage

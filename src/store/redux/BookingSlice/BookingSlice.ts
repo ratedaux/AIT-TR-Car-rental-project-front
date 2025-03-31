@@ -1,6 +1,7 @@
 
 import { BookingSliceState } from "./types"
 import axios from "axios"
+import { BookingProps } from "components/BookingComponent/types"
 import { EditBookingFormProps } from "components/EditBookingDetailsForm/types"
 import { createAppSlice } from "store/createAppSlice"
 
@@ -126,7 +127,7 @@ export const bookingSlice = createAppSlice({
     ),
     extendBooking: create.asyncThunk(
       async (
-        { id, updatedData }: { id: string; updatedData: EditBookingFormProps },
+        { id, updatedData }: { id: string; updatedData: BookingProps },
         thunkApi,
       ) => {
         try {
@@ -157,7 +158,7 @@ export const bookingSlice = createAppSlice({
 
     cancelBooking: create.asyncThunk(
       async (
-        { id, updatedData }: { id: string; updatedData: EditBookingFormProps },
+        { id, updatedData }: { id: string; updatedData: BookingProps },
         thunkApi,
       ) => {
         try {
@@ -188,7 +189,7 @@ export const bookingSlice = createAppSlice({
 
     restoreBooking: create.asyncThunk(
       async (
-        { id, updatedData }: { id: string; updatedData: EditBookingFormProps },
+        { id, updatedData }: { id: string; updatedData: BookingProps },
         thunkApi,
       ) => {
         try {

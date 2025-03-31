@@ -95,16 +95,8 @@ function BookingForm() {
     formik.setFieldValue("totalRentCost", totalCost) // Update Formik state
   }
 
-  // State to manage the visibility of the window
-  const [isVisible, setIsVisible] = useState(true)
-
-  // Handle close button click
   const handleClose = () => {
-    setIsVisible(false) // Set visibility to false, effectively "closing" the window
-  }
-
-  if (!isVisible) {
-    return null // If not visible, return nothing (effectively hiding the component)
+    navigate("/")
   }
 
   return (
@@ -160,22 +152,6 @@ function BookingForm() {
             readOnly={true}
           />
 
-          {/* <div className="flex flex-row gap-6 ">
-            <div className="mt-1">
-              <Input
-                name="is18"
-                type="checkbox"
-                checked={formik.values.is18}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                errorMessage={formik.errors.is18}
-              />
-            </div>
-            <label htmlFor="is18" className="font-semibold m-0 p-0 ">
-              Are you already 18 ?
-            </label>
-          </div> */}
-
           <label className="flex items-center cursor-pointer gap-3">
             <input
               type="checkbox"
@@ -187,23 +163,21 @@ function BookingForm() {
               onBlur={formik.handleBlur}
             />
             <span className="ml-2 text-gray-700 font-semibold">
-            Are you already 18 ?
+              Are you already 18 ?
             </span>
-
           </label>
           {formik.errors.is18 && formik.touched.is18 && (
-  <p className="text-red-500 text-sm ">{formik.errors.is18}</p>
-)}
-          
+            <p className="text-red-500 text-sm ">{formik.errors.is18}</p>
+          )}
 
-<div className="mt-4">
-          <p className="text-sm text-gray-500 mb-4">
-            Payment is available only at pick up station.
-          </p>
-          <p className="text-sm text-gray-500 mb-4">
-            You can pick up a car only at the pick up station.
-          </p>
-</div>
+          <div className="mt-4">
+            <p className="text-sm text-gray-500 mb-4">
+              Payment is available only at pick up station.
+            </p>
+            <p className="text-sm text-gray-500 mb-4">
+              You can pick up a car only at the pick up station.
+            </p>
+          </div>
           <div className="mt-2.5 w-100%">
             <Button
               name="Calculate Total Cost"
@@ -221,7 +195,7 @@ function BookingForm() {
             //disabled={!formik.isValid || !formik.values.totalRentCost || formik.isSubmitting}
           />
         </div>
-       
+
         {/* close button */}
         <div className="w-auto mt-2.5">
           <Button

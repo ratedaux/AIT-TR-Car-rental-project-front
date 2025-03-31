@@ -8,12 +8,15 @@ import carIcon from "assets/CarImages/car-icon.jpg";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { CarCardProps } from "components/CarCard/types";
+import { useNavigate } from "react-router-dom";
 
 interface CarComponentProps {
   car: CarCardProps;
 }
 
 function CarComponent({ car }: CarComponentProps) {
+  const navigate = useNavigate()
+
   // State to manage the visibility of the window
   // const [isVisible, setIsVisible] = useState(true);
 
@@ -36,6 +39,16 @@ function CarComponent({ car }: CarComponentProps) {
   // useEffect(() => {
   //   fetchCar();
   // }, []);
+
+   const handleEditCar = (carId: string, carDetails: CarCardProps) => {
+      console.log("Edit car with Id:", carId)
+      navigate(`/edit-car/${carId}`, { state: { carDetails } })
+    }
+
+    const handleRentCar = (carId: string) => {
+      navigate(`/rent-car/${carId}`)
+    }
+
 
   return (
     <div className="flex flex-row w-auto justify-center rounded-lg ">
@@ -139,12 +152,12 @@ function CarComponent({ car }: CarComponentProps) {
         </div>
 
         <div className="w-auto">
-          <Button name="Rent" type="button" onClick={() => { }} />
+          <Button name="Rent" type="button" onClick={() => handleRentCar(car.id)} />
         </div>
 
         {/* Edit car only for Admin */}
         <div className="w-auto">
-          <Button name="Edit" type="button" onClick={() => { }} />
+          <Button name="Edit" type="button" onClick={() => handleEditCar(car.id,car)} />
         </div>
       </div>
 
