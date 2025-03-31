@@ -1,3 +1,4 @@
+
 import Button from "components/Button/Button";
 import { CarCardProps } from "./types";
 import { useNavigate } from "react-router-dom";
@@ -88,11 +89,8 @@ function CarCard({
                             />
                         </div>
                     </div>
-
-                </div>
-            </div>
-            {/* Modal Overlay */}
-            {/* {showCarComponent && (
+                    {/* Modal Overlay */}
+                    {/* {showCarComponent && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
                     <div className="relative bg-white rounded-lg p-6 shadow-lg max-w-2xl w-full">
                         <button
@@ -105,8 +103,10 @@ function CarCard({
                     </div>
                 </div>
             )} */}
-            {/* {showCarComponent && <CarComponent />}
+                    {/* {showCarComponent && <CarComponent />}
             {showBookingForm && <BookingForm />} */}
+                </div>
+            </div>
         </div>
     );
 }

@@ -1,9 +1,13 @@
 import Button from "components/Button/Button"
 import Input from "components/Input/Input"
 import { Link } from "react-router-dom"
-import car_foto_for_login from "../../assets/car_foto_for-login.jpg"
+import fotoCar from "../../assets/fotoCar.jpg"
 import * as Yup from "yup"
 import { useFormik } from "formik"
+
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+import Loader from "components/Loader/Loader"
 
 type LoginProps = {
   showHeader?: boolean
@@ -28,7 +32,16 @@ const validationSchema = Yup.object().shape({
     ),
 })
 
+
+
 function Login({ showHeader = true, img = true }: LoginProps) {
+
+  const dispatch = useAppDispatch();
+
+  const user = useAppSelector(authSelectors.userData)
+  const status = useAppSelector(authSelectors.authStatus)
+  const error = useAppSelector(authSelectors.authError)
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -37,27 +50,35 @@ function Login({ showHeader = true, img = true }: LoginProps) {
     validationSchema,
     validateOnChange: false,
     onSubmit: values => {
-      console.table(values) // временно для проверки
-      formik.resetForm()
+       // временно для проверки
+      console.table(values);
+  dispatch(authActions.loginUser({email: values.email, password: values.password})); 
+   
+
+      formik.resetForm();
     },
   })
 
   return (
-    <div className="flex justify-center items-center">
-      <div className="w-[450px] rounded-lg p-4 bg-white ">
+    <div className="flex justify-center items-center -mt-4 px-4 sm:px-6 lg:px-8">
+      <div className="w-full sm:w-[250px] lg:w-[300px] xl:w-[350px] max-w-full rounded-lg p-4 margin: auto bg-white lg:bg-transparent ">
         {" "}
-        {/* border border-gray-300 */}
-        <div className="flex flex-col w-full max-w-sm p-6">
+        {/*  bg-white shadow-lg */} {/* border border-gray-300 */}
+        <div className="flex flex-col w-full ">
+          {" "}
+          {/* max-w-sm p-6 */}
           {showHeader && (
             <div className="mb-4">
-              <h2 className="text-2xl font-bold mb-2 text-left">Login</h2>
-              <p className=" text-left text-gray-600">
+              <h2 className="text-1xl sm:text-1xl lg:text-3xl font-bold mb-2 text-left">
+                Login
+              </h2>
+              <p className=" text-1xl text-left text-gray-600">
                 Login to access your account
               </p>
             </div>
           )}
           <form onSubmit={formik.handleSubmit} className="mb-4">
-            <div className="mb-4 mt-6 w-full">
+            <div className="mb-6 mt-8 w-full">
               <Input
                 name="email"
                 type="email"
@@ -67,13 +88,13 @@ function Login({ showHeader = true, img = true }: LoginProps) {
                 onChange={formik.handleChange}
                 autoComplete="email"
               />
-              <div className="min-h-[16px] text-red-500 text-sm mt-3">
+              <div className="text-red-500 text-sm sm:text-base mt-3">
                 {formik.errors.email && formik.touched.email
                   ? formik.errors.email
                   : ""}
               </div>
             </div>
-            <div className="mb-4 mt-6 w-full">
+            <div className="relative mb-6 mt-8 pb-4 w-full">
               <Input
                 name="password"
                 type="password"
@@ -83,14 +104,31 @@ function Login({ showHeader = true, img = true }: LoginProps) {
                 onChange={formik.handleChange}
                 autoComplete="current-password"
               />
-              <div className="min-h-[16px] text-red-500 text-sm mt-1">
+              <div className="absolute text-red-500 text-sm sm:text-base mt-1 left-0 bottom-[-20px]">
                 {formik.errors.password && formik.touched.password
                   ? formik.errors.password
                   : ""}
               </div>
             </div>
 
-            <Button type="submit" name="Login" />
+            <Button
+              type="submit"
+              name="Login"
+              disabled={!formik.values.email || !formik.values.password}
+            />
+
+            {/*  ошибка с redux */}
+            {error && (
+              <div className="text-red-500 text-sm sm:text-base mt-3">
+                {error}
+              </div>
+            )}
+
+            {status === "loading" && (
+              <div className="flex justify-center items-center mt-4">
+                <Loader />
+              </div>
+            )}
           </form>
           <p className="text-center mt-4">
             Don’t have an account?{" "}
@@ -101,11 +139,11 @@ function Login({ showHeader = true, img = true }: LoginProps) {
         </div>
       </div>
       {img && (
-        <div className="w-[450px] h-[550px] relative ml-6">
+        <div className="hidden lg:block w-[350px] h-[450px] relative ml-6">
           <img
-            src={car_foto_for_login}
+            src={fotoCar}
             alt="auto"
-            className="w-200 rounded-xl shadow-md w-full h-full object-cover"
+            className="rounded-xl shadow-md w-full h-full object-cover"
           />
         </div>
       )}
@@ -113,6 +151,8 @@ function Login({ showHeader = true, img = true }: LoginProps) {
   )
 }
 
-
-export default Login;
+export default Login
+function loginUser(arg0: { email: string; password: string }): any {
+  throw new Error("Function not implemented.")
+}
 

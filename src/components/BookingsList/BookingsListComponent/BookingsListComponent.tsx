@@ -4,42 +4,30 @@ import { BookingsListProps } from "./types"
 import Button from "components/Button/Button"
 import { BookingProps } from "components/BookingComponent/types"
 import axios from "axios"
+import { useNavigate } from "react-router"
 
-function BookingsListComponent() {
+const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
+  const navigate = useNavigate()
+
   const [bookingList, setBookingList] = useState<BookingProps[]>([])
 
   const handleEditBooking = (bookingId: number) => {
     console.log("Editing booking with ID:", bookingId)
+    //edit page opens
+    navigate("/edit-booking")
   }
 
-  const handleDeleteBooking = (bookingId: number) => {
-    console.log("Deleting booking with ID:", bookingId)
+  // const handleDeleteBooking = (bookingId: number) => {
+  //   console.log("Deleting booking with ID:", bookingId)
 
-    setBookingList(prevBookingList =>
-      prevBookingList.filter(booking => booking.id !== bookingId),
-    )
+  //   setBookingList(prevBookingList =>
+  //     prevBookingList.filter(booking => booking.id !== bookingId),
+  //   )
 
-    //   // Пример вызова API для удаления (например, через fetch или axios)
-    // fetch(`/api/bookings/${bookingId}`, {
-    //   method: "DELETE",
-    // })
-    //   .then(response => response.json())
-    //   .then(() => {
-    //     // Если удаление прошло успешно, обновляем список
-    //     setBookingList(prevBookingList.filter((booking) => booking.id !== bookingId));
-    //   })
-    //   .catch(error => console.error("Error deleting booking:", error));
-  }
+  //   alert("The car booking is deleted")
+  // }
 
-    async function fetchBookings() {
-    const response = await axios.get("/api/bookings/all")
-    setBookingList(response.data)
-  }
-
-  useEffect(() => {
-    fetchBookings()
-  }, [])
-
+  
 
   return (
     <div>
@@ -48,9 +36,11 @@ function BookingsListComponent() {
           <BookingComponent
             rentalStartDate={booking.rentalStartDate}
             rentalEndDate={booking.rentalEndDate}
+            carId={booking.carId}
+            customerId={booking.customerId}
             // carBrand={booking.carBrand}
             // carModel={booking.carModel}
-            booked={booking.booked}
+            bookingStatus={booking.bookingStatus}
             totalPrice={booking.totalPrice}
             // renterFirstName={booking.renterFirstName}
             // renterLastName={booking.renterLastName}
@@ -60,17 +50,17 @@ function BookingsListComponent() {
           />
 
           <div className="m-4 flex flex-row gap-4 justify-end">
-            <div className="">
+            <div>
               <Button
                 type="button"
-                onClick={() => handleEditBooking(booking.id)} // Передаем ID для редактирования
-                name="Edit"
+                onClick={() => handleEditBooking(booking.id)}
+                name="Edit"              
               />
             </div>
             {/* <div>
               <Button
                 type="button"
-                onClick={() => handleDeleteBooking(booking.id)} // Передаем ID для удаления
+                onClick={() => handleDeleteBooking(booking.id)} 
                 name="Delete"
               />
             </div> */}
