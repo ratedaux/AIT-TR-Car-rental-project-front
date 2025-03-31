@@ -1,8 +1,8 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+
 import { BookingSliceState } from "./types"
 import axios from "axios"
-
-// const getUserId()=>{}
+import { EditBookingFormProps } from "components/EditBookingDetailsForm/types"
+import { createAppSlice } from "store/createAppSlice"
 
 const bookingInitialState: BookingSliceState = {
   bookingList: [],
@@ -10,26 +10,26 @@ const bookingInitialState: BookingSliceState = {
   bookingData: {
     rentalStartDate: "",
     rentalEndDate: "",
-    carStatus: "",
+    carId: "",
+    customerId: "",
+    bookingStatus: "",
     totalPrice: 0,
     updateBookingDate: "",
     createBookingDate: "",
-    id: 0,
+    id: "",
   },
   status: "default",
   error: undefined,
 }
 
-export const bookingSlice = createSlice({
+export const bookingSlice = createAppSlice({
   name: "BookingSLice",
   initialState: bookingInitialState,
-  reducers:
-   create => ({
-    getBooking: 
-    create.asyncThunk(
-      async (arg, thunkApi) => {
+  reducers: create => ({
+    getBookingByBookingId: create.asyncThunk(
+      async (id, thunkApi) => {
         try {
-          const result = await axios.get(`/api/bookings`)
+          const result = await axios.get(`/api/bookings/${id}`)
           return result.data
         } catch (error) {
           return thunkApi.rejectWithValue(error)
@@ -40,27 +40,30 @@ export const bookingSlice = createSlice({
           state.bookingData = {
             rentalStartDate: "",
             rentalEndDate: "",
-            carStatus: "",
+            carId: "",
+            customerId: "",
+            bookingStatus: "",
             totalPrice: 0,
             updateBookingDate: "",
             createBookingDate: "",
-            id: 0,
+            id: "",
           }
           state.status = "loading"
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          
           state.bookingData = {
             rentalStartDate: action.payload.rentalStartDate,
             rentalEndDate: action.payload.rentalEndDate,
-            carStatus: action.payload.carStatus,
+            carId: action.payload.carId,
+            customerId: action.payload.customerId,
+            bookingStatus: action.payload.bookingStatus,
             totalPrice: action.payload.totalPrice,
             updateBookingDate: action.payload.updateBookingDate,
             createBookingDate: action.payload.updateBookingDate,
             id: action.payload.id,
           }
-          
+
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
@@ -69,12 +72,163 @@ export const bookingSlice = createSlice({
         },
       },
     ),
+    getBookingsByUserId: create.asyncThunk(
+      async (userId, thunkApi) => {
+        try {
+          const result = await axios.get(
+            `/api/customers/all-bookings-id/${userId}`,
+          )
+          return result.data
+        } catch (error) {
+          return thunkApi.rejectWithValue(error)
+        }
+      },
+      {
+        pending: (state: BookingSliceState) => {
+          state.bookingListByUserId = []
+          state.status = "loading"
+          state.error = undefined
+        },
+        fulfilled: (state: BookingSliceState, action: any) => {
+          state.bookingListByUserId = action.payload.bookingListByUserId
+          state.status = "success"
+        },
+        rejected: (state: BookingSliceState, action: any) => {
+          state.error = action.payload
+          state.status = "error"
+        },
+      },
+    ),
+    getAllBookings: create.asyncThunk(
+      async (__, thunkApi) => {
+        try {
+          const result = await axios.get(`/api/bookings`)
+          return result.data
+        } catch (error) {
+          return thunkApi.rejectWithValue(error)
+        }
+      },
+      {
+        pending: (state: BookingSliceState) => {
+          state.bookingList = []
+          state.status = "loading"
+          state.error = undefined
+        },
+        fulfilled: (state: BookingSliceState, action: any) => {
+          state.bookingListByUserId = action.payload.bookingList
+          state.status = "success"
+        },
+        rejected: (state: BookingSliceState, action: any) => {
+          state.error = action.payload
+          state.status = "error"
+        },
+      },
+    ),
+    extendBooking: create.asyncThunk(
+      async (
+        { id, updatedData }: { id: string; updatedData: EditBookingFormProps },
+        thunkApi,
+      ) => {
+        try {
+          const result = await axios.put(
+            `/api/bookings/extend/${id}`,
+            updatedData
+          )
+          return result.data
+        } catch (error) {
+          return thunkApi.rejectWithValue(error)
+        }
+      },
+      {
+        pending: (state: BookingSliceState) => {
+          state.status = "loading"
+          state.error = undefined
+        },
+        fulfilled: (state: BookingSliceState, action: any) => {
+          state.bookingData = action.payload.updatedData
+          state.status = "success"
+        },
+        rejected: (state: BookingSliceState, action: any) => {
+          state.error = action.payload
+          state.status = "error"
+        },
+      },
+    ),
+
+    cancelBooking: create.asyncThunk(
+      async (
+        { id, updatedData }: { id: string; updatedData: EditBookingFormProps },
+        thunkApi,
+      ) => {
+        try {
+          const result = await axios.put(
+            `/api/bookings/cancel/${id}`,
+            updatedData,
+          )
+          return result.data
+        } catch (error) {
+          return thunkApi.rejectWithValue(error)
+        }
+      },
+      {
+        pending: (state: BookingSliceState) => {
+          state.status = "loading"
+          state.error = undefined
+        },
+        fulfilled: (state: BookingSliceState, action: any) => {
+          state.bookingData = action.payload.updatedData
+          state.status = "success"
+        },
+        rejected: (state: BookingSliceState, action: any) => {
+          state.error = action.payload
+          state.status = "error"
+        },
+      },
+    ),
+
+    restoreBooking: create.asyncThunk(
+      async (
+        { id, updatedData }: { id: string; updatedData: EditBookingFormProps },
+        thunkApi,
+      ) => {
+        try {
+          const result = await axios.put(
+            `/api/bookings/restore/${id}`,
+            updatedData,
+          )
+          return result.data
+        } catch (error) {
+          return thunkApi.rejectWithValue(error)
+        }
+      },
+      {
+        pending: (state: BookingSliceState) => {
+          state.status = "loading"
+          state.error = undefined
+        },
+        fulfilled: (state: BookingSliceState, action: any) => {
+          state.bookingData = action.payload.updatedData
+          state.status = "success"
+        },
+        rejected: (state: BookingSliceState, action: any) => {
+          state.error = action.payload
+          state.status = "error"
+        },
+      },
+    ),
+
   }),
 
   selectors: {
-    booking: (state: BookingSliceState) => state,
+    selectBookingData: (state: BookingSliceState) => state.bookingData,
+    selectBookingList: (state: BookingSliceState) => state.bookingList,
+    selectBookingListByUserId: (state: BookingSliceState) =>
+      state.bookingListByUserId,
+    selectStatus: (state: BookingSliceState) => state.status,
+    selectError: (state: BookingSliceState) => state.error,
   },
 })
 
+export default bookingSlice.reducer
 export const bookingActions = bookingSlice.actions
 export const bookingSelectors = bookingSlice.selectors

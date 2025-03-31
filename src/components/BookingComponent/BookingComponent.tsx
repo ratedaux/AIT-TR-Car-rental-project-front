@@ -5,8 +5,10 @@ function BookingComponent({
   rentalEndDate,
   // carBrand,
   // carModel,
-  carStatus,
+  carId,
+  customerId,
   totalPrice,
+  bookingStatus,
   // renterFirstName,
   // renterLastName,
   updateBookingDate,
@@ -23,13 +25,13 @@ function BookingComponent({
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Car:</div>
             <div className="w-3/4">
-              {/* {carBrand} {carModel} */}
+              {carId}
             </div>
           </div>
           <div className="flex gap-4">
-            <div className="w-1/4 font-bold">Renter Name:</div>
+            <div className="w-1/4 font-bold">Renter:</div>
             <div className="w-3/4">
-              {/* {renterFirstName} {renterLastName} */}
+              {customerId}
             </div>
           </div>
           <div className="flex gap-4">
@@ -38,7 +40,7 @@ function BookingComponent({
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Status:</div>
-            <div className="w-3/4">{carStatus}</div>
+            <div className="w-3/4">{bookingStatus}</div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Start Date:</div>

@@ -6,6 +6,9 @@ import BookingsListComponent from "components/BookingsList/BookingsListComponent
 import { CustomerProps } from "components/CustomerComponent/types"
 import axios from "axios"
 import { BookingsListProps } from "components/BookingsList/BookingsListComponent/types"
+import { bookingActions, bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+
 
 // example booking data delete later
 // const bookingData = [
@@ -60,21 +63,25 @@ import { BookingsListProps } from "components/BookingsList/BookingsListComponent
 
 // const bookingsListComponent = {}
 
-function CustomerPage() {
-  const navigate = useNavigate() // Use useNavigate hook to programmatically navigate
+ const userId = ()=>{}
 
-  // Handle Rent button click
+function CustomerPage() {
+  const navigate = useNavigate() 
+  const dispatch = useAppDispatch()
+   
   const handleRentButtonClick = () => {
-    navigate("/") // Replace '/rent' with the actual route you want to navigate to
+    navigate("/") 
   }
 
   const [activeComponent, setActiveComponent] = useState("customerData")
 
-  // Функции для отображения компонентов
   const showCustomerData = () => setActiveComponent("customerData")
   const showBookingsList = () => setActiveComponent("bookingsList")
 
   const [customer, setCustomer] = useState<CustomerProps>()
+  const [bookings, setBookings] = useState<BookingsListProps>()
+
+ 
 
   async function fetchCustomer() {
     const response = await axios.get("/api/customers/6")
@@ -85,6 +92,14 @@ function CustomerPage() {
     fetchCustomer()
   }, [])
 
+
+
+  const bookingListByUserId = useAppSelector(bookingSelectors.selectBookingListByUserId)
+
+  useEffect(() => {}
+  , [bookingListByUserId]);
+
+ 
   return (
     <div className="flex flex-row w-auto bg-gray-100 justify-center rounded-lg">
       {/* левая часть с навигацией */}
@@ -140,7 +155,7 @@ function CustomerPage() {
         )}
 
         {activeComponent === "bookingsList" && (
-          <BookingsListComponent />
+          <BookingsListComponent bookings={bookingListByUserId} />
         )}
       </div>
     </div>

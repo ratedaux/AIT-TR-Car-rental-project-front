@@ -13,7 +13,7 @@ import LoginNotification from 'components/LoginNotification/LoginNotification';
 import MyAccount from 'pages/carRentalApp/CustomerPage/MyAccount';
 import AdminPage from 'pages/carRentalApp/AdminPage/AdminPage';
 import NotFoundPage from 'components/NotFoundPage/NotFoundPage';
-
+import EditBookingPage from 'pages/carRentalApp/EditBoookingPage/EditBookingPage';
 
 
 const App = () => {
@@ -28,6 +28,7 @@ const App = () => {
           <Route path="/account" element={<MyAccount />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<NotFoundPage />} />
+          <Route path="/edit-booking" element={<EditBookingPage/>}/>
 
 
         </Routes>
