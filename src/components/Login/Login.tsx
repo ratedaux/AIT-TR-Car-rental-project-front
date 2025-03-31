@@ -4,9 +4,9 @@ import { Link } from "react-router-dom"
 import fotoCar from "../../assets/fotoCar.jpg"
 import * as Yup from "yup"
 import { useFormik } from "formik"
-import { useDispatch, useSelector } from "react-redux"
-import { authSelectors } from "store/redux/LoginSlice/LoginFormSlice"
-import { useAppSelector } from "store/hooks"
+
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
+import { useAppDispatch, useAppSelector } from "store/hooks"
 import Loader from "components/Loader/Loader"
 
 type LoginProps = {
@@ -36,12 +36,11 @@ const validationSchema = Yup.object().shape({
 
 function Login({ showHeader = true, img = true }: LoginProps) {
 
-  const user = useAppSelector(authSelectors.userData);  
-  const status = useAppSelector(authSelectors.authStatus);  
-  const error = useAppSelector(authSelectors.authError);
+  const dispatch = useAppDispatch();
 
-  const dispatch = useDispatch();
-
+  const user = useAppSelector(authSelectors.userData)
+  const status = useAppSelector(authSelectors.authStatus)
+  const error = useAppSelector(authSelectors.authError)
 
   const formik = useFormik({
     initialValues: {
@@ -51,22 +50,28 @@ function Login({ showHeader = true, img = true }: LoginProps) {
     validationSchema,
     validateOnChange: false,
     onSubmit: values => {
-      console.table(values) // временно для проверки
-      formik.resetForm()
+       // временно для проверки
+      console.table(values);
+  dispatch(authActions.loginUser({email: values.email, password: values.password})); 
+   
+
+      formik.resetForm();
     },
   })
 
-
-
   return (
     <div className="flex justify-center items-center -mt-4 px-4 sm:px-6 lg:px-8">
-      <div className="w-full sm:w-[250px] lg:w-[300px] xl:w-[350px] max-w-full rounded-lg p-4 margin: auto bg-white lg:bg-transparent "> {/*  bg-white shadow-lg */}
+      <div className="w-full sm:w-[250px] lg:w-[300px] xl:w-[350px] max-w-full rounded-lg p-4 margin: auto bg-white lg:bg-transparent ">
         {" "}
-        {/* border border-gray-300 */}
-        <div className="flex flex-col w-full "> {/* max-w-sm p-6 */}
+        {/*  bg-white shadow-lg */} {/* border border-gray-300 */}
+        <div className="flex flex-col w-full ">
+          {" "}
+          {/* max-w-sm p-6 */}
           {showHeader && (
             <div className="mb-4">
-              <h2 className="text-1xl sm:text-1xl lg:text-3xl font-bold mb-2 text-left">Login</h2>
+              <h2 className="text-1xl sm:text-1xl lg:text-3xl font-bold mb-2 text-left">
+                Login
+              </h2>
               <p className=" text-1xl text-left text-gray-600">
                 Login to access your account
               </p>
@@ -105,15 +110,19 @@ function Login({ showHeader = true, img = true }: LoginProps) {
                   : ""}
               </div>
             </div>
-            
-            <Button type="submit" name="Login" 
-            disabled={
-              !formik.values.email ||
-              !formik.values.password
-            } />
-  
-           {/*  ошибка с redux */}
-            {error && <div className="text-red-500 text-sm sm:text-base mt-3">{error}</div>}
+
+            <Button
+              type="submit"
+              name="Login"
+              disabled={!formik.values.email || !formik.values.password}
+            />
+
+            {/*  ошибка с redux */}
+            {error && (
+              <div className="text-red-500 text-sm sm:text-base mt-3">
+                {error}
+              </div>
+            )}
 
             {status === "loading" && (
               <div className="flex justify-center items-center mt-4">
@@ -142,6 +151,8 @@ function Login({ showHeader = true, img = true }: LoginProps) {
   )
 }
 
-
-export default Login;
+export default Login
+function loginUser(arg0: { email: string; password: string }): any {
+  throw new Error("Function not implemented.")
+}
 
