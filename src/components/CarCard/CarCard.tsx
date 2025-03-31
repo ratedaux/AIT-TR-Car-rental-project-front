@@ -1,3 +1,4 @@
+
 import Button from "components/Button/Button";
 import { CarCardProps } from "./types";
 import { useState } from "react";
@@ -79,33 +80,34 @@ function CarCard({
                         <div className="hidden lg:block border-b border-gray-200"></div>
                     </div>
 
-
-                    {/* Block with Price and Buttons */}
-                    <div className="w-full sm:w-[200px] flex-shrink-0 flex flex-col gap-5 justify-between items-center sm:items-center">
-                        <div className="text-2xl font-bold text-red-500 items-center text-center sm:text-right">
-                            €{dayRentalPrice}
-                            <span className="text-sm font-normal text-gray-600 block">per day</span>
-                        </div>
-                        <div className="flex flex-col gap-3.5 w-full">
-                            <Button
-                                name="More Details"
-                                customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold !bg-gray-100 !text-gray-700 hover:!bg-gray-200 transition-colors duration-300"
-                                onClick={handleMoreDetailsClick}
-                            />
-                            <Button
-                                name="RENT"
-                                customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
-                                onClick={handleRentClick}
-                            />
-                        </div>
-                    </div>
-
-                </div>
+          {/* Block with Price and Buttons */}
+          <div className="w-full sm:w-[200px] flex-shrink-0 flex flex-col gap-5 justify-between items-center sm:items-center">
+            <div className="text-2xl font-bold text-red-500 items-center text-center sm:text-right">
+              €{dayRentalPrice}
+              <span className="text-sm font-normal text-gray-600 block">
+                per day
+              </span>
             </div>
+            <div className="flex flex-col gap-3.5 w-full">
+              <Button
+                name="More Details"
+                customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold !bg-gray-100 !text-gray-700 hover:!bg-gray-200 transition-colors duration-300"
+                onClick={onMoreDetails}
+              />
+              <Button
+                name="RENT"
+                customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
+                onClick={onRent}
+              />
+            </div>
+
             {showCarComponent && <CarComponent />}
             {showBookingForm && <BookingForm />}
         </div>
-    );
-}
+        </div>
+        </div>
+        </div>
+)}
+  
 
 export default CarCard;

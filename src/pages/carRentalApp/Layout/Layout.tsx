@@ -9,7 +9,7 @@ function Layout({ children }: LayoutProps) {
     const isHomePage = location.pathname === '/';
 
     return (
-        <div className="flex flex-col min-h-screen w-full bg-gray-100">
+        <div className="flex flex-col min-h-screen w-full bg-gray-100 overflow-x-hidden">
             {/* Header */}
             <header className="relative bg-cover bg-center h-64 shadow-md border-b-[7px] border-red-600"
                 style={{

@@ -2,31 +2,45 @@ import Button from "components/Button/Button"
 import Input from "components/Input/Input"
 import * as Yup from "yup"
 import { useEffect } from "react"
-import car_foto_for_login from "../../assets/car_foto_for-login.jpg"
+import imgRegistrationForm from "../../assets/imgRegistrationForm.jpg"
 import { useFormik } from "formik"
 import { RegisrtationFormValues } from "./types"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
+import NotificationMessage from "components/Notification/Notification"
+import Loader from "components/Loader/Loader"
 
-function UserRegistrationForm() {
+type UserRegistrationFormProps = {
+  img?: boolean
+}
+
+function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
   useEffect(() => {
     // Прокрутка страницы вверх
     window.scrollTo(0, 0)
   }, [])
 
+  const dispatch = useAppDispatch()
+
+  const status = useAppSelector(authSelectors.authStatus)
+  const registerError = useAppSelector(authSelectors.registerError)
+  const registerMessage = useAppSelector(authSelectors.registerMessage)
+
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 
   const validationSchema = Yup.object({
-    userFirstName: Yup.string()
+    firstName: Yup.string()
       .required("First name is required")
-      .min(2, "First Name must have at least 2 characters"),
-    userLastName: Yup.string()
+      .min(2, "Must have at least 2 characters"),
+    lastName: Yup.string()
       .required("Last name is required")
-      .min(2, "Last Name must have at least 2 characters"),
-    userEmail: Yup.string()
+      .min(2, "Must have at least 2 characters"),
+    email: Yup.string()
       .email("Invalid email format")
       .required("Email is required")
       .typeError("Email must be a string"),
-    userPassword: Yup.string()
+    password: Yup.string()
       .required("Password is required")
       .min(8, "Password must be at least 8 characters")
       .matches(
@@ -37,95 +51,96 @@ function UserRegistrationForm() {
 
   const formik = useFormik({
     initialValues: {
-      userFirstName: "",
-      userLastName: "",
-      userEmail: "",
-      userPassword: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
       isChecked: false,
     } as RegisrtationFormValues,
     validationSchema,
     validateOnChange: false,
+
     onSubmit: (values: RegisrtationFormValues) => {
       console.table(values) // временно
-      /* dispatch(registerUser(values)); */
+      dispatch(authActions.registerNewCustomer(values))
       formik.resetForm()
     },
   })
 
   return (
-    <div className="flex justify-center items-center">
-      <div className="w-[500px] rounded-lg p-8 bg-white ">
+    <div className="flex justify-center items-center -mt-4 px-4 sm:px-6 lg:px-8">
+      <div className="w-[300px] sm:w-[300px] lg:w-[3500px] xl:w-[400px] rounded-lg p-2 bg-white lg:bg-transparent">
         {" "}
-        {/* border border-gray-300 */}
-        <h2 className="mt-6 text-3xl font-semibold text-gray-900 text-center">
+        {/* bg-white max-h-[90vh] */} {/* border border-gray-300 */}
+        <h2 className="mt-6 text-xl sm:text-1xl md:text-2xl lg:text-2xl font-semibold text-gray-900 text-center">
           Create your account
         </h2>
         <form onSubmit={formik.handleSubmit} className="mt-12">
-          <div className="grid gap-6 mb-6 md:grid-cols-2">
-            <div>
+          <div className="grid gap-3 mb-6 md:grid-cols-2">
+            <div className="relative">
               <Input
-                name="userFirstName"
+                name="firstName"
                 placeholder="Enter your first name"
-                value={formik.values.userFirstName}
+                value={formik.values.firstName}
                 label="First Name"
                 onChange={formik.handleChange}
               />
-              <div className="min-h-[10px] text-red-500 text-sm mt-3">
-                {formik.errors.userFirstName && formik.touched.userFirstName
-                  ? formik.errors.userFirstName
+              <div className="absolute text-red-500 text-sm top-16">
+                {formik.errors.firstName && formik.touched.firstName
+                  ? formik.errors.firstName
                   : ""}
               </div>
             </div>
-            <div>
+            <div className="relative -mb-2">
               <Input
-                name="userLastName"
+                name="lastName"
                 placeholder="Enter your last name"
-                value={formik.values.userLastName}
+                value={formik.values.lastName}
                 label="Last Name"
                 onChange={formik.handleChange}
               />
-              <div className="min-h-[10px] text-red-500 text-sm mt-3">
-                {formik.errors.userLastName && formik.touched.userLastName
-                  ? formik.errors.userLastName
+              <div className="absolute text-red-500 text-sm top-16">
+                {formik.errors.lastName && formik.touched.lastName
+                  ? formik.errors.lastName
                   : ""}
               </div>
             </div>
           </div>
 
-          <div>
+          <div className="relative mb-8">
             <Input
-              name="userEmail"
+              name="email"
               type="email"
               placeholder="Enter your email"
-              value={formik.values.userEmail}
+              value={formik.values.email}
               label="Email"
               onChange={formik.handleChange}
               autoComplete="email"
             />
-            <div className="min-h-[16px] text-red-500 text-sm mt-3">
-              {formik.errors.userEmail && formik.touched.userEmail
-                ? formik.errors.userEmail
+            <div className="absolute text-red-500 text-sm top-4">
+              {formik.errors.email && formik.touched.email
+                ? formik.errors.email
                 : ""}
             </div>
           </div>
           <div>
             <Input
-              name="userPassword"
+              name="password"
               type="password"
               placeholder="Enter your password"
-              value={formik.values.userPassword}
+              value={formik.values.password}
               label="Password"
               onChange={formik.handleChange}
               autoComplete="current-password"
             />
-            <div className="min-h-[16px] text-red-500 text-sm mt-3">
-              {formik.errors.userPassword && formik.touched.userPassword
-                ? formik.errors.userPassword
+            <div className="text-red-500 text-sm mb-4 h-6">
+              {formik.errors.password && formik.touched.password
+                ? formik.errors.password
                 : ""}
             </div>
           </div>
 
-          <label className="flex items-center mb-4 cursor-pointer">
+          <label className="flex items-center mb-4 cursor-pointer mt-[-8px]">
             <input
               type="checkbox"
               className="form-checkbox h-5 w-5 text-red-500"
@@ -151,19 +166,34 @@ function UserRegistrationForm() {
             type="submit"
             disabled={
               !formik.values.isChecked ||
-              !formik.values.userFirstName ||
-              !formik.values.userLastName ||
-              !formik.values.userEmail ||
-              !formik.values.userPassword
+              !formik.values.firstName ||
+              !formik.values.lastName ||
+              !formik.values.email ||
+              !formik.values.password
             }
           />
         </form>
       </div>
-      <img
-        src={car_foto_for_login}
-        alt="auto"
-        className="w-1/3 h-126 rounded-lg ml-6"
-      />
+      {status === "loading" && (
+        <div className="flex justify-center items-center mt-4">
+          <Loader />
+        </div>
+      )}
+      {registerMessage && (
+        <NotificationMessage type="success" message={registerMessage} />
+      )}
+      {registerError && (
+        <NotificationMessage type="error" message={registerError} />
+      )}
+      {img && (
+        <div className="hidden lg:block w-[350px] h-[450px] relative ml-6">
+          <img
+            src={imgRegistrationForm}
+            alt="auto"
+            className=" rounded-xl shadow-md w-full h-full object-cover" /*  w-1/3 h-126 rounded-lg ml-6 */
+          />
+        </div>
+      )}
     </div>
   )
 }
