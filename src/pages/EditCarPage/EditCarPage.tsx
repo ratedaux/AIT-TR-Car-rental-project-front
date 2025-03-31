@@ -1,18 +1,27 @@
 import Button from "components/Button/Button"
+import { CarCardProps } from "components/CarCard/types"
 import EditCarForm from "components/EditCarForm/EditCarForm"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
+import {EditCarFormProps} from "components/EditCarForm/types"
+
+ 
 
 const EditCarPage = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const carDetails = location.state as CarCardProps;
+  const { id } = useParams();
 
   const handleClose = () => {
     navigate("/account")
+    //decide correct path
   }
 
   return (
     <div className="flex flex-row">
-      <EditCarForm />
+      <EditCarForm car ={carDetails}/>
       {/* close button */}
       <div className="mt-6">
         <Button

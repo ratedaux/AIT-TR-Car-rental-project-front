@@ -4,27 +4,39 @@ import Input from "components/Input/Input"
 import * as Yup from "yup"
 import { useFormik } from "formik"
 import { useNavigate } from "react-router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 // test image remove later
 import CarImg from "assets/CarImages/corolla-exterieur.jpg"
+import { CarCardProps } from "components/CarCard/types"
 
 
 // Test data for pre-filling
-const testData: EditCarFormProps = {
+const testData: CarCardProps = {
   brand: "Toyota",
   model: "Corolla",
-  status: "Available",
+  carStatus: "Available",
   year: 2022,
-  bodyType: "Sedan",
+  type: "Sedan",
   fuelType: "Gasoline",
   transmissionType: "Automatic",
   dayRentalPrice: 45,
-  carImage: CarImg,
+  image: CarImg,
+  id: "1"
 }
 
-function EditCarForm() {
+const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
   const navigate = useNavigate()
+
+  const [formData, setFormData] = useState<CarCardProps>(car || testData);
+
+  useEffect(() => {
+    if (car) {
+      setFormData(car); 
+    } 
+  }, [car]);
+
+  
 
   const validationSchema = Yup.object({
     brand: Yup.string().required("Car brand is required"),
@@ -50,11 +62,11 @@ function EditCarForm() {
   })
 
   const formik = useFormik({
-    initialValues: testData,
+    initialValues: formData,
     validationSchema: validationSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values: EditCarFormProps) => {
+    onSubmit: (values: CarCardProps) => {
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
 
@@ -72,18 +84,13 @@ function EditCarForm() {
     }
   }
 
-  // State to manage the visibility of the window
-  const [isVisible, setIsVisible] = useState(true)
-
+  
   // Handle close button click
   const handleClose = () => {
-    setIsVisible(false) // Set visibility to false, effectively "closing" the window
+    navigate("/admin")
   }
 
-  if (!isVisible) {
-    return null // If not visible, return nothing (effectively hiding the component)
-  }
-
+  
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
       <h2 className="text-xl font-bold p-[60px] mb-6">
@@ -119,10 +126,10 @@ function EditCarForm() {
             options={["Available", "Not Available"]}
             label="Status"
             placeholder="Select car status"
-            value={formik.values.status}
+            value={formik.values.carStatus}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            errorMessage={formik.errors.status}
+            errorMessage={formik.errors.carStatus}
           />
 
           <Input
@@ -141,10 +148,10 @@ function EditCarForm() {
             type="text"
             label="Body type"
             placeholder="Enter car body type"
-            value={formik.values.bodyType}
+            value={formik.values.type}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            errorMessage={formik.errors.bodyType}
+            errorMessage={formik.errors.type}
             readOnly={true}
           />
           <Input
@@ -182,10 +189,10 @@ function EditCarForm() {
             errorMessage={formik.errors.dayRentalPrice}
           />
           <div>
-            {formik.values.carImage &&
-              typeof formik.values.carImage === "string" && (
+            {formik.values.image &&
+              typeof formik.values.image === "string" && (
                 <img
-                  src={formik.values.carImage}
+                  src={formik.values.image}
                   alt="Car"
                   className="w-32 h-32 object-cover mb-3 rounded-lg"
                 />
@@ -199,7 +206,7 @@ function EditCarForm() {
               placeholder="Upload car image"
               onChange={handleFileChange}
               onBlur={formik.handleBlur}
-              errorMessage={formik.errors.carImage}
+              errorMessage={formik.errors.image}
               readOnly={true}
               disabled={true}
             />
