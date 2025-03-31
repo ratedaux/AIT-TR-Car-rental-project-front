@@ -14,6 +14,8 @@ import { CarCardProps } from "components/CarCard/types"
 import CarImg from "assets/CarImages/corolla-exterieur.jpg"
 import { log } from "console"
 import axios from "axios"
+import { useAppSelector } from "store/hooks"
+import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
 
 
 // example booking data delete later
@@ -134,7 +136,6 @@ function AdminPage() {
   
   const [activeComponent, setActiveComponent] = useState("carsList") // Состояние для выбора компонента
 
-  // Функции для отображения компонентов
   const showCustomersList = () => setActiveComponent("customersList")
   const showBookingsList = () => setActiveComponent("bookingsList")
   const showCarsList = () => setActiveComponent("carsList")
@@ -161,6 +162,13 @@ useEffect(() => {
     console.log("Delete car with Id:", carId)
     setCarArray(prevCarArray => prevCarArray.filter(car => car.id !== carId))
   }
+
+  const bookingList = useAppSelector(bookingSelectors.selectBookingList)
+
+  useEffect(() => {}
+  , [bookingList]);
+
+
 
   return (
     <div className="flex flex-row w-auto bg-gray-100 justify-center rounded-lg">
@@ -209,7 +217,7 @@ useEffect(() => {
         )}
 
         {activeComponent === "bookingsList" && (
-          <BookingsListComponent  />
+          <BookingsListComponent bookings={bookingList} />
         )}
 
         {activeComponent === "AddNewCarForm" && <AddNewCarForm />}
