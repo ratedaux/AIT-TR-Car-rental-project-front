@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
-import logo from '../../../assets/logo.svg';
-import mainImg from '../../../assets/mainImg.jpg';
+import logo from '../../assets/logo.svg';
+import mainImg from '../../assets/mainImg.jpg';
 import { LayoutProps } from './types';
 
 

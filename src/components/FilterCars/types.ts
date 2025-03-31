@@ -1,4 +1,4 @@
-export interface FilterByDatesFormValues {
+export interface FilterCarsValues {
   startDateTime: string
   endDateTime: string
   minPrice: number

@@ -3,11 +3,20 @@ import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
 
 import { userRegisterSlice } from "./redux/registrationForm/registrationFormSlice"
-import { brandsSlice, carsSlice } from "./redux/rentCarSlice/rentCarSlice"
+import {
+  bodyTypesSlice,
+  brandsSlice,
+  carsSlice,
+} from "./redux/rentCarSlice/rentCarSlice"
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-const rootReducer = combineSlices(carsSlice, brandsSlice, userRegisterSlice)
+const rootReducer = combineSlices(
+  carsSlice,
+  brandsSlice,
+  bodyTypesSlice,
+  userRegisterSlice,
+)
 
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>

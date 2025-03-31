@@ -1,5 +1,10 @@
 import { createAppSlice } from "store/createAppSlice"
-import { brandsSliceState, Car, rentCarSliceState } from "./types"
+import {
+  bodyTypesSliceState,
+  brandsSliceState,
+  Car,
+  rentCarSliceState,
+} from "./types"
 import axios from "axios"
 
 const initialCarState: rentCarSliceState = {
@@ -23,6 +28,8 @@ export const carsSlice = createAppSlice({
           maxPrice: number
           brands: string[]
           bodyTypes: string[]
+          fuelTypes: string[]
+          transmissionTypes: string[]
         },
         thunkApi,
       ) => {
@@ -32,12 +39,13 @@ export const carsSlice = createAppSlice({
           params.append("endDateTime", filters.endDateTime)
           params.append("minPrice", filters.minPrice.toString())
           params.append("maxPrice", filters.maxPrice.toString())
-          filters.brands.forEach(brand => params.append("brands", brand)),
-            filters.bodyTypes.forEach(bodyType =>
-              params.append("bodyTypes", bodyType),
-            )
+          filters.brands.forEach(brand => params.append("brand", brand))
+          filters.bodyTypes.forEach(bodyType => params.append("type", bodyType))
+          filters.fuelTypes.forEach(fuelType => params.append("fuel", fuelType))
+          filters.transmissionTypes.forEach(transmissionType =>
+            params.append("transmissionType", transmissionType),
+          )
 
-          // const response = await axios.get<Car[]>(CARS_URL)
           const response = await axios.get<Car[]>(
             `${CARS_URL}?${params.toString()}`,
           )
@@ -106,8 +114,49 @@ export const brandsSlice = createAppSlice({
   },
 })
 
+const initialBodyTypesState: bodyTypesSliceState = {
+  bodyTypes: [],
+  status: "idle",
+  error: undefined,
+}
+export const bodyTypesSlice = createAppSlice({
+  name: "bodyTypes",
+  initialState: initialBodyTypesState,
+  reducers: create => ({
+    fetchTypes: create.asyncThunk(
+      async (_, thunkApi) => {
+        try {
+          const response = await axios.get<string[]>("/api/cars/types")
+          return response.data
+        } catch (error: any) {
+          return thunkApi.rejectWithValue(error.response?.data || error.message)
+        }
+      },
+      {
+        pending: (state: bodyTypesSliceState) => {
+          state.error = undefined
+          state.status = "loading"
+        },
+        fulfilled: (state: bodyTypesSliceState, action: any) => {
+          state.status = "success"
+          state.bodyTypes = action.payload
+        },
+        rejected: (state: bodyTypesSliceState, action: any) => {
+          state.error = action.payload || "Something went wrong..."
+          state.status = "error"
+        },
+      },
+    ),
+  }),
+  selectors: {
+    bodyTypesData: (state: bodyTypesSliceState) => state.bodyTypes,
+  },
+})
 export const rentCarActions = carsSlice.actions
 export const rentCarSelectors = carsSlice.selectors
 
 export const brandsActions = brandsSlice.actions
 export const brandsSelectors = brandsSlice.selectors
+
+export const bodyTypesActions = bodyTypesSlice.actions
+export const bodyTypesSelectors = bodyTypesSlice.selectors

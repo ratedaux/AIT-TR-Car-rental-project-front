@@ -1,8 +1,6 @@
 import Button from "components/Button/Button";
 import { CarCardProps } from "./types";
-import { useState } from "react";
-import CarComponent from "components/CarComponent/CarComponent";
-import BookingForm from "components/BookingForm/BookingForm";
+import { useNavigate } from "react-router-dom";
 
 function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -19,28 +17,13 @@ function CarCard({
     carStatus,
     dayRentalPrice,
     image,
-    onMoreDetails,
-    onRent,
 }: CarCardProps) {
 
-    // const [showCarComponent, setShowCarComponent] = useState(false);
-    // const [showBookingForm, setShowBookingForm] = useState(false);
+    const navigate = useNavigate();
 
-    // const handleMoreDetailsClick = () => {
-    //     setShowCarComponent(true);
-    // };
-    // const handleRentClick = () => {
-    //     setShowBookingForm(true);
-    // };
-
-    // const handleCloseMoreDetails = () => {
-    //     setShowCarComponent(false);
-    // };
-    // const handleCloseRent = () => {
-    //     setShowBookingForm(false);
-    // };
-
-
+    const handleMoreDetailsClick = () => {
+        navigate(`/cars/${id}`, { state: { id, brand, model, year, type, fuelType, transmissionType, carStatus, dayRentalPrice, image } });
+    };
     return (
         <div className="bg-white rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:-translate-y-1 w-full p-6">
             <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
@@ -96,7 +79,7 @@ function CarCard({
                             <Button
                                 name="More Details"
                                 customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold !bg-gray-100 !text-gray-700 hover:!bg-gray-200 transition-colors duration-300"
-                                onClick={() => { }}
+                                onClick={handleMoreDetailsClick}
                             />
                             <Button
                                 name="RENT"

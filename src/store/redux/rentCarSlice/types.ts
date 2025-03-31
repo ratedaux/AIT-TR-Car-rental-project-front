@@ -22,3 +22,9 @@ export interface brandsSliceState {
   status: "idle" | "loading" | "success" | "error"
   error: any
 }
+
+export interface bodyTypesSliceState {
+  bodyTypes: string[]
+  status: "idle" | "loading" | "success" | "error"
+  error: any
+}
