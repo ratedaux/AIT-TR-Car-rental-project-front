@@ -11,7 +11,7 @@ import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
 import { CarCardProps } from "components/CarCard/types"
 
 // test image remove later
-// import CarImg from "assets/CarImages/corolla-exterieur.jpg"
+import CarImg from "assets/CarImages/corolla-exterieur.jpg"
 import { log } from "console"
 import axios from "axios"
 import { useAppSelector } from "store/hooks"
@@ -84,47 +84,44 @@ import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
 //   },
 // ]
 
-// const carsList = [
-//   {
-//     brand: "Toyota",
-//     model: "Corolla",
-//     year: 2022,
-//     type: "Sedan",
-//     fuelType: "Gasoline",
-//     transmissionType: "Automatic",
-//     dayRentalPrice: 60,
-//     carImage: CarImg,
-//     onMoreDetails: () => {},
-//     onRent: () => {},
-//     id: 1,
-//   },
-//   {
-//     brand: "BMW",
-//     model: "BMW",
-//     year: 2021,
-//     type: "Sedan",
-//     fuelType: "Gasoline",
-//     transmissionType: "Automatic",
-//     dayRentalPrice: 30,
-//     carImage: CarImg,
-//     onMoreDetails: () => {},
-//     onRent: () => {},
-//     id: 2,
-//   },
-//   {
-//     brand: "Honda",
-//     model: "Honda",
-//     year: 2020,
-//     type: "Sedan",
-//     fuelType: "Gasoline",
-//     transmissionType: "Automatic",
-//     dayRentalPrice: 40,
-//     carImage: CarImg,
-//     onMoreDetails: () => {},
-//     onRent: () => {},
-//     id: 3,
-//   },
-// ]
+const carsList = [
+  {
+    brand: "Toyota",
+    model: "Corolla",
+    year: 2022,
+    type: "Sedan",
+    fuelType: "Gasoline",
+    transmissionType: "Automatic",
+    dayRentalPrice: 60,
+    image: CarImg,
+    id: "1",
+    carStatus: "Available",
+  },
+  {
+    brand: "BMW",
+    model: "BMW",
+    year: 2021,
+    type: "Sedan",
+    fuelType: "Gasoline",
+    transmissionType: "Automatic",
+    dayRentalPrice: 30,
+    image: CarImg,
+    id: "2",
+    carStatus: "",
+  },
+  {
+    brand: "Honda",
+    model: "Honda",
+    year: 2020,
+    type: "Sedan",
+    fuelType: "Gasoline",
+    transmissionType: "Automatic",
+    dayRentalPrice: 40,
+    image: CarImg,
+    id: "3",
+    carStatus: "Not Available",
+  },
+]
 
 interface CarListProps {
   cars: CarCardProps[]
@@ -140,8 +137,9 @@ function AdminPage() {
   const showCarsList = () => setActiveComponent("carsList")
   const showAddNewCarForm = () => setActiveComponent("AddNewCarForm")
 
-  //const [carArray, setCarArray] = useState(carsList)
-  const [carArray, setCarArray] = useState<CarCardProps[]>([])
+  const [carArray, setCarArray] = useState(carsList)
+  // const [carArray, setCarArray] = useState<CarCardProps[]>([])
+  //now tested with test data car list
 
   async function fetchCars() {
     const response = await axios.get("/api/cars")
@@ -230,8 +228,8 @@ function AdminPage() {
                     transmissionType={car.transmissionType}
                     year={car.year}
                     fuelType={car.fuelType}
-                    onMoreDetails={() => {}}
-                    onRent={() => {}}
+                    // onMoreDetails={() => {}}
+                    // onRent={() => {}}
                     id={car.id}
                     type={""}
                   />

@@ -14,22 +14,22 @@ const EditCarPage = () => {
   const carDetails = location.state as CarCardProps;
   const { id } = useParams();
 
-  const handleClose = () => {
-    navigate("/account")
-    //decide correct path
-  }
+//   const handleClose = () => {
+//     navigate("/account")
+//     //decide correct path
+//   }
 
   return (
     <div className="flex flex-row">
       <EditCarForm car ={carDetails}/>
       {/* close button */}
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <Button
           name="X"
           customClasses="!px-6 !py-6 !rounded-full font-semibold !bg-gray-400 hover:!bg-red-700 text-white"
           onClick={handleClose}
         />
-      </div>
+      </div> */}
     </div>
   )
 }

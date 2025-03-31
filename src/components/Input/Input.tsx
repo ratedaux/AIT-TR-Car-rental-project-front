@@ -40,7 +40,7 @@ function Input({
             disabled={disabled}   
           >
             {/* Этот option будет вести себя как placeholder */}
-            <option value="" disabled selected className="text-gray-500">
+            <option value="" disabled className="text-gray-500">
               {placeholder}
             </option>
             {options?.map((option, index) => (
@@ -76,9 +76,7 @@ function Input({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-
           autoComplete={autoComplete}
-
           readOnly={readOnly}
           disabled={disabled}
 

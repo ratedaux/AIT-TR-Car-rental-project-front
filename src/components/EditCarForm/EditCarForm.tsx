@@ -3,7 +3,7 @@ import Button from "components/Button/Button"
 import Input from "components/Input/Input"
 import * as Yup from "yup"
 import { useFormik } from "formik"
-import { useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 import { useEffect, useState } from "react"
 
 // test image remove later
@@ -12,27 +12,29 @@ import { CarCardProps } from "components/CarCard/types"
 
 
 // Test data for pre-filling
-const testData: CarCardProps = {
-  brand: "Toyota",
-  model: "Corolla",
-  carStatus: "Available",
-  year: 2022,
-  type: "Sedan",
-  fuelType: "Gasoline",
-  transmissionType: "Automatic",
-  dayRentalPrice: 45,
-  image: CarImg,
-  id: "1"
-}
+// const testData: CarCardProps = {
+//   brand: "Toyota",
+//   model: "Corolla",
+//   carStatus: "Available",
+//   year: 2022,
+//   type: "Sedan",
+//   fuelType: "Gasoline",
+//   transmissionType: "Automatic",
+//   dayRentalPrice: 45,
+//   image: CarImg,
+//   id: "1"
+// }
 
 const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { carDetails } = location.state || {};
 
-  const [formData, setFormData] = useState<CarCardProps>(car || testData);
+  const [formData, setFormData] = useState<CarCardProps>(carDetails);
 
   useEffect(() => {
-    if (car) {
-      setFormData(car); 
+    if (carDetails) {
+      setFormData(carDetails); 
     } 
   }, [car]);
 
@@ -41,7 +43,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
   const validationSchema = Yup.object({
     brand: Yup.string().required("Car brand is required"),
     model: Yup.string().required("Car model is required"),
-    status: Yup.string().required("Status is required"),
+    carStatus: Yup.string().required("Status is required"),
     year: Yup.number()
       .min(1900, "Year must be at least 1900 or later")
       .max(
@@ -49,7 +51,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
         `Year must be at most ${new Date().getFullYear()}`,
       )
       .required("Year when car was produced is required"),
-    bodyType: Yup.string().required("Car body type is required"),
+    type: Yup.string().required("Car body type is required"),
     fuelType: Yup.string().required("Car fuel type is required"),
     transmissionType: Yup.string().required(
       "Car transmission type is required",
@@ -58,7 +60,8 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
       .positive("Price must be more than 0")
       .min(0.01, "Price must be more than 0")
       .required("Price per day is required"),
-    carImage: Yup.string().required("Car image is required"),
+    image: Yup.string().required("Car image is required"),
+    
   })
 
   const formik = useFormik({
@@ -71,7 +74,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
       console.log("Errors:", formik.errors)
 
       alert("The car is edited")
-      //navigate("/admin")
+      navigate("/admin")
     },
   })
 
@@ -79,7 +82,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0]
-      formik.setFieldValue("carImage", file)
+      formik.setFieldValue("image", file)
       // Set file value in Formik state
     }
   }
@@ -121,7 +124,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
             readOnly={true}
           />
           <Input
-            name="status"
+            name="carStatus"
             type="select"
             options={["Available", "Not Available"]}
             label="Status"
@@ -144,7 +147,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
             readOnly={true}
           />
           <Input
-            name="bodyType"
+            name="type"
             type="text"
             label="Body type"
             placeholder="Enter car body type"
@@ -199,7 +202,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
               )}
             {/* Файл изображения */}
             <Input
-              name="carImage"
+              name="image"
               type="file"
               accept="image/png, image/jpeg"
               label="Car image"
