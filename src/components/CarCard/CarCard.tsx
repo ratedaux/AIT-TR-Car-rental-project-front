@@ -1,9 +1,7 @@
 
 import Button from "components/Button/Button";
 import { CarCardProps } from "./types";
-import { useState } from "react";
-import CarComponent from "components/CarComponent/CarComponent";
-import BookingForm from "components/BookingForm/BookingForm";
+import { useNavigate } from "react-router-dom";
 
 function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -19,23 +17,14 @@ function CarCard({
     transmissionType,
     carStatus,
     dayRentalPrice,
-    carImage,
-    onMoreDetails,
-    onRent,
-
-
+    image,
 }: CarCardProps) {
 
-    const [showCarComponent, setShowCarComponent] = useState(false);
-    const [showBookingForm, setShowBookingForm] = useState(false);
+    const navigate = useNavigate();
 
     const handleMoreDetailsClick = () => {
-        setShowCarComponent(true);
+        navigate(`/cars/${id}`, { state: { id, brand, model, year, type, fuelType, transmissionType, carStatus, dayRentalPrice, image } });
     };
-    const handleRentClick = () => {
-        setShowBookingForm(true);
-    };
-
     return (
         <div className="bg-white rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:-translate-y-1 w-full p-6">
             <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
@@ -44,7 +33,7 @@ function CarCard({
                 <div className="w-full sm:w-1/3">
                     <div className="w-full h-full min-h-[200px] overflow-hidden rounded-lg">
                         <img
-                            src={carImage}
+                            src={image}
                             alt={capitalizeFirstLetter(model)}
                             className="w-full h-full object-cover"
                         />
@@ -96,38 +85,30 @@ function CarCard({
                             <Button
                                 name="RENT"
                                 customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
-                                onClick={handleRentClick}
+                                onClick={() => { }}
                             />
                         </div>
                     </div>
-
-          {/* Block with Price and Buttons */}
-          <div className="w-full sm:w-[200px] flex-shrink-0 flex flex-col gap-5 justify-between items-center sm:items-center">
-            <div className="text-2xl font-bold text-red-500 items-center text-center sm:text-right">
-              €{dayRentalPrice}
-              <span className="text-sm font-normal text-gray-600 block">
-                per day
-              </span>
+                    {/* Modal Overlay */}
+                    {/* {showCarComponent && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+                    <div className="relative bg-white rounded-lg p-6 shadow-lg max-w-2xl w-full">
+                        <button
+                            className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+                            onClick={handleCloseMoreDetails}
+                        >
+                            ✖
+                        </button>
+                        <CarComponent car={{ id, brand, model, year, fuelType, transmissionType, dayRentalPrice, image, type, carStatus }} />
+                    </div>
+                </div>
+            )} */}
+                    {/* {showCarComponent && <CarComponent />}
+            {showBookingForm && <BookingForm />} */}
+                </div>
             </div>
-            <div className="flex flex-col gap-3.5 w-full">
-              <Button
-                name="More Details"
-                customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold !bg-gray-100 !text-gray-700 hover:!bg-gray-200 transition-colors duration-300"
-                onClick={onMoreDetails}
-              />
-              <Button
-                name="RENT"
-                customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
-                onClick={onRent}
-              />
-            </div>
-
-            {showCarComponent && <CarComponent />}
-            {showBookingForm && <BookingForm />}
         </div>
-      </div>
-    </div>
-  )
+    );
 }
 
-export default CarCard
+export default CarCard;

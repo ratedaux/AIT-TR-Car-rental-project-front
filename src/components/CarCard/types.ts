@@ -1,17 +1,14 @@
 export interface CarCardProps {
-  id: number
+  id: string
   brand: string
   model: string
-  year: number
-
+  year?: number
   type: string
   fuelType: string
   transmissionType: string
   carStatus?: string
   dayRentalPrice: number
-  carImage?: string
+  image: string
   onMoreDetails?: () => void
   onRent?: () => void
-
-
 }

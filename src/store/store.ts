@@ -1,18 +1,23 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit"
 import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
-import { rentCarSlice } from "./redux/rentCarSlice/rentCarSlice"
+import {
+  bodyTypesSlice,
+  brandsSlice,
+  carsSlice,
+} from "./redux/rentCarSlice/rentCarSlice"
 import { authSlice } from "./redux/AuthSlice/authSlice"
-// import {bookingSlice} from "./redux/BookingSlice/BookingSlice"
-import {bookingSlice} from "./redux/BookingSlice/BookingSlice"
-
+import { bookingSlice } from "./redux/BookingSlice/BookingSlice"
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-
-const rootReducer = combineSlices(rentCarSlice, authSlice)
-const rootReducer = combineSlices( rentCarSlice, bookingSlice)
-
+const rootReducer = combineSlices(
+  carsSlice,
+  brandsSlice,
+  bodyTypesSlice,
+  authSlice,
+  bookingSlice,
+)
 
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>
