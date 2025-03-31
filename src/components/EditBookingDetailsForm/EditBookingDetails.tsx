@@ -66,7 +66,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
       .min(today, "Start date cannot be in the past"),
       rentalEndDate: Yup.date()
       .required("End date is required")
-      .min(Yup.ref("startDate"), "End date must be later than start date"),
+      .min(Yup.ref("rentalStartDate"), "End date must be later than start date"),
       totalPrice: Yup.number()
       .required("Rent cost can't be empty")
       .min(0.01, "Rent cost can't be 0"),
@@ -115,7 +115,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
 
   // Сбрасываем стоимость аренды, если изменяется дата начала или конца
   const handleDateChange = () => {
-    formik.setFieldValue("totalRentCost", 0)
+    formik.setFieldValue("totalPrice", 0)
   }
 
   const handleCalculateTotalCost = () => {
@@ -131,7 +131,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
     const end = new Date(rentalEndDate)
 
     const totalCost = calculateTotalCost(start, end) // Pass as strings
-    formik.setFieldValue("totalRentCost", totalCost) // Update Formik state
+    formik.setFieldValue("totalPrice", totalCost) // Update Formik state
   }
 
  
@@ -181,7 +181,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
           </div>
 
           <Input
-            name="startDate"
+            name="rentalStartDate"
             type="date"
             label="Start date"
             placeholder="Select start date"
@@ -198,7 +198,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
             }
           />
           <Input
-            name="endDate"
+            name="rentalEndDate"
             type="date"
             label="End date"
             placeholder="Select end date"
@@ -213,7 +213,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
             }
           />
           <Input
-            name="totalRentCost"
+            name="totalPrice"
             type="number"
             label="Total Rent Cost €"
             placeholder="Click button to display total cost"
@@ -225,7 +225,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
           />
           {/* must be available only for admin  */}
           <Input
-            name="status"
+            name="bookingStatus"
             type="select"
             options={["Active", "Completed"]}
             label="Status"

@@ -1,9 +1,15 @@
+import { BookingProps } from "components/BookingComponent/types"
 import Button from "components/Button/Button"
-import EditCarForm from "components/EditCarForm/EditCarForm"
-import { useNavigate } from "react-router-dom"
+import EditBookingDetailsForm from "components/EditBookingDetailsForm/EditBookingDetails"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 
 const EditBookingPage = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const bookingDetails = location.state as BookingProps
+  const { id } = useParams()
+
   
     // Handle close button click
     const handleClose = () => {
@@ -12,7 +18,7 @@ const EditBookingPage = () => {
   
   return (
     <div className="flex flex-row">
-    <EditCarForm/>
+    <EditBookingDetailsForm/>
       {/* close button */}
       <div className="mt-6">
         <Button

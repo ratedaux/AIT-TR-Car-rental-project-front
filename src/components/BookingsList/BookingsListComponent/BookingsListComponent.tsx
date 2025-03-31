@@ -8,9 +8,11 @@ import { useNavigate } from "react-router"
 const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
   const navigate = useNavigate()
 
-  const [bookingList, setBookingList] = useState<BookingProps[]>([])
+  const [bookingList, setBookingList] = useState<BookingProps[]>(bookings)
+  //const [bookingList, setBookingList] = useState<BookingProps[]>([])
+  //for testing
 
-  const handleEditBooking = (bookingId: number, bookingDetails: BookingProps) => {
+  const handleEditBooking = (bookingId: string, bookingDetails: BookingProps) => {
     console.log("Editing booking with ID:", bookingId)
     navigate(`/edit-booking/${bookingId}`, {state: {bookingDetails}})
   }

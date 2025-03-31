@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react"
-import BookingComponent from "components/BookingComponent/BookingComponent"
-import CustomerComponent from "components/CustomerComponent/CustomerComponent"
 import Button from "components/Button/Button"
 import { useNavigate } from "react-router-dom"
 import BookingsListComponent from "components/BookingsList/BookingsListComponent/BookingsListComponent"
@@ -18,47 +16,53 @@ import { useAppSelector } from "store/hooks"
 import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
 
 // example booking data delete later
-// const bookingsList = [
-//   {
-//     startDate: "20.03.2025",
-//     endDate: "21.03.2025",
-//     carBrand: "Toyota",
-//     carModel: "Corolla",
-//     status: false,
-//     totalRentCost: 50,
-//     renterFirstName: "Masha",
-//     renterLastName: "Neshyna",
-//     updateBookingDate: "19.03.2025",
-//     createBookingDate: "18.03.2025",
-//     id: 1,
-//   },
-//   {
-//     startDate: "24.03.2025",
-//     endDate: "25.03.2025",
-//     carBrand: "Ford",
-//     carModel: "Focus",
-//     status: true,
-//     totalRentCost: 55,
-//     renterFirstName: "Anna",
-//     renterLastName: "Smith",
-//     updateBookingDate: "23.03.2025",
-//     createBookingDate: "22.03.2025",
-//     id: 2,
-//   },
-//   {
-//     startDate: "22.03.2025",
-//     endDate: "23.03.2025",
-//     carBrand: "Honda",
-//     carModel: "Civic",
-//     status: true,
-//     totalRentCost: 60,
-//     renterFirstName: "John",
-//     renterLastName: "Doe",
-//     updateBookingDate: "21.03.2025",
-//     createBookingDate: "20.03.2025",
-//     id: 3,
-//   },
-// ]
+const bookingsList = [
+  {
+    rentalStartDate: "2025-04-02",
+    rentalEndDate: "2025-04-04",
+    // carBrand: "Toyota",
+    // carModel: "Corolla",
+    bookingStatus: "Active",
+    totalPrice: 50,
+    // renterFirstName: "Masha",
+    // renterLastName: "Neshyna",
+    updateBookingDate: "19.03.2025",
+    createBookingDate: "18.03.2025",
+    id: "1",
+    carId: 1,
+  customerId: 1
+  },
+  {
+    rentalStartDate: " 2025-04-04",
+    rentalEndDate: "2025-04-04",
+    // carBrand: "Ford",
+    // carModel: "Focus",
+    bookingStatus: "Active",
+    totalPrice: 55,
+    // renterFirstName: "Anna",
+    // renterLastName: "Smith",
+    updateBookingDate: "23.03.2025",
+    createBookingDate: "22.03.2025",
+    id: "2",
+    carId: 2,
+  customerId: 2
+  },
+  {
+    rentalStartDate: "2025-04-04",
+    rentalEndDate: "2025-04-04",
+    // carBrand: "Honda",
+    // carModel: "Civic",
+    bookingStatus: "Active",
+    totalPrice: 60,
+    // renterFirstName: "John",
+    // renterLastName: "Doe",
+    updateBookingDate: "21.03.2025",
+    createBookingDate: "20.03.2025",
+    id: "3",
+    carId: 3,
+  customerId: 3
+  },
+]
 
 // const customersList = [
 //   {
@@ -140,6 +144,9 @@ function AdminPage() {
   const [carArray, setCarArray] = useState(carsList)
   // const [carArray, setCarArray] = useState<CarCardProps[]>([])
   //now tested with test data car list
+  const [bookings, setBookings] = useState(bookingsList)
+  useEffect(()=>{setBookings})
+  //delete later
 
   async function fetchCars() {
     const response = await axios.get("/api/cars")
@@ -161,9 +168,9 @@ function AdminPage() {
     //TODO add dispatch
   }
 
-  const bookingList = useAppSelector(bookingSelectors.selectBookingList)
+  //const bookingList = useAppSelector(bookingSelectors.selectBookingList)
 
-  useEffect(() => {}, [bookingList])
+  //useEffect(() => {}, [bookingList])
 
   return (
     <div className="flex flex-row w-auto bg-gray-100 justify-center rounded-lg">
@@ -210,7 +217,8 @@ function AdminPage() {
         {activeComponent === "customersList" && <CustomersList />}
 
         {activeComponent === "bookingsList" && (
-          <BookingsListComponent bookings={bookingList} />
+          <BookingsListComponent bookings={bookings} />
+          //<BookingsListComponent bookings={bookingsList} />
         )}
 
         {activeComponent === "AddNewCarForm" && <AddNewCarForm />}
