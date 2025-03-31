@@ -6,18 +6,18 @@ import { FilterByDatesFormValues } from "./types";
 export default function FilterByDatesForm() {
 
     const schema = Yup.object().shape({
-        startDate: Yup.date()
-            .min(new Date(), 'Start date cannot be in the past')
-            .required('Start date is required'),
-        endDate: Yup.date()
-            .min(Yup.ref('startDate'), 'End date must be later than start date')
-            .required('End date is required'),
+        startDateTime: Yup.date()
+            .min(new Date(new Date().setHours(0, 0, 0, 0)), 'Start date and time cannot be in the past')
+            .required('Start date and time is required'),
+        endDateTime: Yup.date()
+            .min(Yup.ref('startDateTime'), 'End date and time must be later than start date and time')
+            .required('End date and time is required'),
     });
 
     const formik = useFormik({
         initialValues: {
-            startDate: "",
-            endDate: ""
+            startDateTime: "",
+            endDateTime: ""
         } as FilterByDatesFormValues,
         validationSchema: schema,
         validateOnChange: false,
@@ -33,26 +33,26 @@ export default function FilterByDatesForm() {
             <form className="flex flex-col md:flex-row gap-4 mt-5 items-stretch p-7" onSubmit={formik.handleSubmit}>
                 <div className="flex-1">
                     <Input
-                        name="startDate"
-                        type="date"
-                        label="Pick-up Date"
-                        input_id="startDate"
-                        value={formik.values.startDate}
+                        name="startDateTime"
+                        type="datetime-local"
+                        label="Pick-up Date and Time"
+                        input_id="startDateTime"
+                        value={formik.values.startDateTime}
                         onChange={formik.handleChange}
-                        errorMessage={formik.errors.startDate}
+                        errorMessage={formik.errors.startDateTime}
                         min={today}
                     />
                 </div>
                 <div className="flex-1">
                     <Input
-                        name="endDate"
-                        type="date"
-                        label="Return Date"
-                        input_id="endDate"
-                        value={formik.values.endDate}
+                        name="endDateTime"
+                        type="datetime-local"
+                        label="Return Date and Time"
+                        input_id="endDateTime"
+                        value={formik.values.endDateTime}
                         onChange={formik.handleChange}
-                        errorMessage={formik.errors.endDate}
-                        min={formik.values.startDate || today}
+                        errorMessage={formik.errors.endDateTime}
+                        min={formik.values.startDateTime || today}
                     />
                 </div>
                 <div className="md: w-48">

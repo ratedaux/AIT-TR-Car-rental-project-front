@@ -3,6 +3,8 @@ import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
 import { rentCarSlice } from "./redux/rentCarSlice/rentCarSlice"
 import { authSlice } from "./redux/AuthSlice/authSlice"
+// import {bookingSlice} from "./redux/BookingSlice/BookingSlice"
+
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.

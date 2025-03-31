@@ -1,4 +1,4 @@
 export interface FilterByDatesFormValues {
-  startDate: string
-  endDate: string
+  startDateTime: string
+  endDateTime: string
 }

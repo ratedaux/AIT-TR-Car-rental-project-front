@@ -1,20 +1,19 @@
-import FilterByDatesForm from "components/FilterByDatesForm/FilterByDatesForm";
-import Login from "components/Login/Login";
-import CarComponent from "../../../components/CarComponent/CarComponent";
-import CarList from "components/CarList/CarList";
+import FilterByDatesForm from "components/FilterByDatesForm/FilterByDatesForm"
+import Login from "components/Login/Login"
+import CarComponent from "../../../components/CarComponent/CarComponent"
+import CarList from "components/CarList/CarList"
 
 import BookingComponent from "components/BookingComponent/BookingComponent"
-import BookingForm from "components/BookingForm/BookingForm";
-import EditCarForm from "components/EditCarForm/EditCarForm";
-import EditBookingDetailsForm from "components/EditBookingDetailsForm/EditBookingDetails";
-
+import BookingForm from "components/BookingForm/BookingForm"
+import EditCarForm from "components/EditCarForm/EditCarForm"
+import EditBookingDetailsForm from "components/EditBookingDetailsForm/EditBookingDetails"
+import EditUserForm from "components/EditUserForm/EditUserForm"
+import CustomerListComponent from "components/CustomersListComponent/CustomersList"
 
 // test image remove later
-//import CarImg from "assets/CarImages/corolla-exterieur.jpg"  
-
+//import CarImg from "assets/CarImages/corolla-exterieur.jpg"
 
 function Home() {
-
   //example car data. later object from Backend
 
   // const cars = [
@@ -129,35 +128,33 @@ function Home() {
   //   id: 8
   // }
 
-
-
-
   return (
     <div className="container mx-auto px-4 py-8">
       <FilterByDatesForm />
 
       <CarList />
-      <EditCarForm/>
-      <BookingForm/>
-      <EditBookingDetailsForm/>
+      <EditCarForm />
+      <BookingForm />
+      <EditBookingDetailsForm />
 
       {/* remove later test car data*/}
       <CarComponent
-        // brand={carData.brand}
-        // model={carData.model}
-        // year={carData.year}
-        // type={carData.type}
-        // fuelType={carData.fuelType}
-        // transmissionType={carData.transmissionType}
-        // carStatus={carData.carStatus}
-        // dayRentalPrice={carData.dayRentalPrice}
-        // carImage={carData.carImage}
-        // id={carData.id}
+      // brand={carData.brand}
+      // model={carData.model}
+      // year={carData.year}
+      // type={carData.type}
+      // fuelType={carData.fuelType}
+      // transmissionType={carData.transmissionType}
+      // carStatus={carData.carStatus}
+      // dayRentalPrice={carData.dayRentalPrice}
+      // carImage={carData.carImage}
+      // id={carData.id}
       />
 
+      <EditUserForm />
 
-    </div>
-  );
+      </div>
+  )
 }
 
-export default Home;
+export default Home

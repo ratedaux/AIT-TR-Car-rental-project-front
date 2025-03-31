@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-//import '@fortawesome/fontawesome-free/css/all.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 import './src/styles/globalStyle.css';
 import Layout from 'pages/carRentalApp/Layout/Layout';
@@ -26,7 +26,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path='/login/registration' element={<UserRegistrationForm />} />
           <Route path="/account" element={<MyAccount />} />
-          <Route path="/admin" element={<AdminPage/>}/>
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<NotFoundPage />} />
 
 

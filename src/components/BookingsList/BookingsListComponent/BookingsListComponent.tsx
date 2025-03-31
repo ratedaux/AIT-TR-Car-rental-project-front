@@ -18,28 +18,16 @@ function BookingsListComponent() {
     setBookingList(prevBookingList =>
       prevBookingList.filter(booking => booking.id !== bookingId),
     )
-
-    //   // Пример вызова API для удаления (например, через fetch или axios)
-    // fetch(`/api/bookings/${bookingId}`, {
-    //   method: "DELETE",
-    // })
-    //   .then(response => response.json())
-    //   .then(() => {
-    //     // Если удаление прошло успешно, обновляем список
-    //     setBookingList(prevBookingList.filter((booking) => booking.id !== bookingId));
-    //   })
-    //   .catch(error => console.error("Error deleting booking:", error));
   }
 
-    async function fetchBookings() {
-    const response = await axios.get("/api/bookings/all")
+  async function fetchBookings() {
+    const response = await axios.get("/api/bookings")
     setBookingList(response.data)
   }
 
   useEffect(() => {
     fetchBookings()
   }, [])
-
 
   return (
     <div>
@@ -50,7 +38,7 @@ function BookingsListComponent() {
             rentalEndDate={booking.rentalEndDate}
             // carBrand={booking.carBrand}
             // carModel={booking.carModel}
-            booked={booking.booked}
+            carStatus={booking.carStatus}
             totalPrice={booking.totalPrice}
             // renterFirstName={booking.renterFirstName}
             // renterLastName={booking.renterLastName}
@@ -60,20 +48,20 @@ function BookingsListComponent() {
           />
 
           <div className="m-4 flex flex-row gap-4 justify-end">
-            <div className="">
+            <div>
               <Button
                 type="button"
                 onClick={() => handleEditBooking(booking.id)} // Передаем ID для редактирования
                 name="Edit"
               />
             </div>
-            {/* <div>
+            <div>
               <Button
                 type="button"
                 onClick={() => handleDeleteBooking(booking.id)} // Передаем ID для удаления
                 name="Delete"
               />
-            </div> */}
+            </div>
           </div>
         </div>
       ))}
