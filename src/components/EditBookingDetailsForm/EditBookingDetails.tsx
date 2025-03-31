@@ -61,16 +61,16 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
 
   const today = new Date().toLocaleDateString("en-CA")
   const validationSchema = Yup.object({
-    startDate: Yup.date()
+    rentalStartDate: Yup.date()
       .required("Start date is required")
       .min(today, "Start date cannot be in the past"),
-    endDate: Yup.date()
+      rentalEndDate: Yup.date()
       .required("End date is required")
       .min(Yup.ref("startDate"), "End date must be later than start date"),
-    totalRentCost: Yup.number()
+      totalPrice: Yup.number()
       .required("Rent cost can't be empty")
       .min(0.01, "Rent cost can't be 0"),
-    status: Yup.string().required("Status is required"),
+      bookingStatus: Yup.string().required("Status is required"),
   })
 
   // const bookingData = useAppSelector(bookingSelectors.selectBookingData)
