@@ -127,18 +127,7 @@ function EditBookingDetailsForm() {
     formik.setFieldValue("totalRentCost", totalCost) // Update Formik state
   }
 
-  // State to manage the visibility of the window
-  const [isVisible, setIsVisible] = useState(true)
-
-  // Handle close button click
-  const handleClose = () => {
-    setIsVisible(false) // Set visibility to false, effectively "closing" the window
-  }
-
-  if (!isVisible) {
-    return null // If not visible, return nothing (effectively hiding the component)
-  }
-
+ 
   function handleBookingCancel(
     id: string,
     updatedData: EditBookingFormProps,
@@ -282,14 +271,14 @@ function EditBookingDetailsForm() {
         )}
       </form>
 
-      {/* close button */}
+      {/* close button
       <div className="mt-6">
         <Button
           name="X"
           customClasses="!px-6 !py-6 !rounded-full font-semibold !bg-gray-400 hover:!bg-red-700 text-white"
           onClick={handleClose}
         />
-      </div>
+      </div> */}
     </div>
   )
 }

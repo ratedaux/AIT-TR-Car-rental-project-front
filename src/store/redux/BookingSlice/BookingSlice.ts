@@ -1,7 +1,8 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+
 import { BookingSliceState } from "./types"
 import axios from "axios"
 import { EditBookingFormProps } from "components/EditBookingDetailsForm/types"
+import { createAppSlice } from "store/createAppSlice"
 
 const bookingInitialState: BookingSliceState = {
   bookingList: [],
@@ -21,7 +22,7 @@ const bookingInitialState: BookingSliceState = {
   error: undefined,
 }
 
-export const bookingSlice = createSlice({
+export const bookingSlice = createAppSlice({
   name: "BookingSLice",
   initialState: bookingInitialState,
   reducers: create => ({
