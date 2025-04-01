@@ -10,7 +10,9 @@ import MyAccount from 'pages/CustomerPage/MyAccount';
 import NotFoundPage from 'components/NotFoundPage/NotFoundPage';
 import CarPage from 'pages/CarPage/CarPage';
 import AdminPage from 'pages/AdminPage/AdminPage';
+import EditCarPage from 'pages/EditCarPage/EditCarPage';
 import EditBookingPage from 'pages/EditBoookingPage/EditBookingPage';
+
 
 
 
@@ -28,6 +30,7 @@ const App = () => {
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/edit-booking" element={<EditBookingPage />} />
+          <Route path="/edit-car" element={<EditCarPage />} />
 
 
         </Routes>
