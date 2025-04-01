@@ -12,7 +12,7 @@ const initialAuthState: AuthSliceState = {
 
 const LOGIN_URL = "/api/auth/login"
 const LOGOUT_URL = "/api/auth/logout"
-const REGISTER_URL = "/api/auth/"
+const REGISTER_URL = "/api/auth/register"
 
 export const authSlice = createAppSlice({
   name: "AUTH",
