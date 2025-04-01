@@ -209,7 +209,7 @@ function AdminPage() {
                 )}
 
                 {activeComponent === "bookingsList" && (
-                    <BookingsListComponent />
+                    <BookingsListComponent bookings={[]} />
                 )}
 
                 {activeComponent === "AddNewCarForm" && <AddNewCarForm />}

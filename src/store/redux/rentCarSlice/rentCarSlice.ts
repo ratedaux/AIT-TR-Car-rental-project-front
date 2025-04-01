@@ -1,16 +1,13 @@
 import { createAppSlice } from "store/createAppSlice"
-import {
-  bodyTypesSliceState,
-  brandsSliceState,
-  Car,
-  rentCarSliceState,
-} from "./types"
+import { Car, RentCarSliceState } from "./types"
 import axios from "axios"
+import { number } from "yup"
 
-const initialCarState: rentCarSliceState = {
+const initialCarState: RentCarSliceState = {
   cars: [],
   status: "default",
   error: undefined,
+  priceRange: [20, 100],
 }
 
 const CARS_URL = "/api/cars/filter"
@@ -55,108 +52,32 @@ export const carsSlice = createAppSlice({
         }
       },
       {
-        pending: (state: rentCarSliceState) => {
+        pending: (state: RentCarSliceState) => {
           state.error = undefined
           state.status = "loading"
         },
-        fulfilled: (state: rentCarSliceState, action: any) => {
+        fulfilled: (state: RentCarSliceState, action: any) => {
           state.status = "success"
           state.cars = action.payload
         },
-        rejected: (state: rentCarSliceState, action: any) => {
+        rejected: (state: RentCarSliceState, action: any) => {
           state.error = action.payload || "Something went wrong..."
           state.status = "error"
         },
       },
     ),
+    setPriceRange: create.reducer(
+      (state: RentCarSliceState, action: { payload: [number, number] }) => {
+        state.priceRange = action.payload
+      },
+    ),
   }),
+
   selectors: {
-    carsData: (state: rentCarSliceState) => state,
+    carsData: (state: RentCarSliceState) => state,
+    selectPriceRange: (state: RentCarSliceState) => state.priceRange,
   },
 })
 
-const initialBrandsState: brandsSliceState = {
-  brands: [],
-  status: "idle",
-  error: undefined,
-}
-export const brandsSlice = createAppSlice({
-  name: "brands",
-  initialState: initialBrandsState,
-  reducers: create => ({
-    fetchBrands: create.asyncThunk(
-      async (_, thunkApi) => {
-        try {
-          const response = await axios.get<string[]>("/api/cars/brands")
-          return response.data
-        } catch (error: any) {
-          return thunkApi.rejectWithValue(error.response?.data || error.message)
-        }
-      },
-      {
-        pending: (state: brandsSliceState) => {
-          state.error = undefined
-          state.status = "loading"
-        },
-        fulfilled: (state: brandsSliceState, action: any) => {
-          state.status = "success"
-          state.brands = action.payload
-        },
-        rejected: (state: brandsSliceState, action: any) => {
-          state.error = action.payload || "Something went wrong..."
-          state.status = "error"
-        },
-      },
-    ),
-  }),
-  selectors: {
-    brandsData: (state: brandsSliceState) => state.brands,
-  },
-})
-
-const initialBodyTypesState: bodyTypesSliceState = {
-  bodyTypes: [],
-  status: "idle",
-  error: undefined,
-}
-export const bodyTypesSlice = createAppSlice({
-  name: "bodyTypes",
-  initialState: initialBodyTypesState,
-  reducers: create => ({
-    fetchTypes: create.asyncThunk(
-      async (_, thunkApi) => {
-        try {
-          const response = await axios.get<string[]>("/api/cars/types")
-          return response.data
-        } catch (error: any) {
-          return thunkApi.rejectWithValue(error.response?.data || error.message)
-        }
-      },
-      {
-        pending: (state: bodyTypesSliceState) => {
-          state.error = undefined
-          state.status = "loading"
-        },
-        fulfilled: (state: bodyTypesSliceState, action: any) => {
-          state.status = "success"
-          state.bodyTypes = action.payload
-        },
-        rejected: (state: bodyTypesSliceState, action: any) => {
-          state.error = action.payload || "Something went wrong..."
-          state.status = "error"
-        },
-      },
-    ),
-  }),
-  selectors: {
-    bodyTypesData: (state: bodyTypesSliceState) => state.bodyTypes,
-  },
-})
 export const rentCarActions = carsSlice.actions
 export const rentCarSelectors = carsSlice.selectors
-
-export const brandsActions = brandsSlice.actions
-export const brandsSelectors = brandsSlice.selectors
-
-export const bodyTypesActions = bodyTypesSlice.actions
-export const bodyTypesSelectors = bodyTypesSlice.selectors

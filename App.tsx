@@ -4,17 +4,13 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import './src/styles/globalStyle.css';
 import Layout from 'pages/Layout/Layout';
 import Home from 'pages/Home/Home';
-
-import BookingForm from 'components/BookingForm/BookingForm';
 import Login from 'components/Login/Login';
 import UserRegistrationForm from 'components/UserRegistrationForm/UserRegistrationForm';
-
-import LoginNotification from 'components/LoginNotification/LoginNotification';
 import MyAccount from 'pages/CustomerPage/MyAccount';
 import NotFoundPage from 'components/NotFoundPage/NotFoundPage';
-import EditBookingPage from 'pages/carRentalApp/EditBoookingPage/EditBookingPage';
 import CarPage from 'pages/CarPage/CarPage';
 import AdminPage from 'pages/AdminPage/AdminPage';
+import EditBookingPage from 'pages/EditBoookingPage/EditBookingPage';
 
 
 
