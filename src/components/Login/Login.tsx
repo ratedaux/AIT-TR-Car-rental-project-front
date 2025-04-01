@@ -8,6 +8,7 @@ import { useFormik } from "formik"
 import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import Loader from "components/Loader/Loader"
+import NotificationMessage from "components/Notification/Notification"
 
 type LoginProps = {
   showHeader?: boolean
@@ -21,7 +22,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string()
     .required("Field email is required")
     .email("Field must be a valid email")
-    .max(40, "Max 20 symbols")
+    .max(40, "Max 40 symbols")
     .min(10, "Min 10 symbols")
     .typeError("Email must be string"),
   password: Yup.string()
@@ -32,15 +33,13 @@ const validationSchema = Yup.object().shape({
     ),
 })
 
-
-
 function Login({ showHeader = true, img = true }: LoginProps) {
-
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   const user = useAppSelector(authSelectors.userData)
   const status = useAppSelector(authSelectors.authStatus)
-  const error = useAppSelector(authSelectors.authError)
+  const loginError = useAppSelector(authSelectors.loginError)
+  const successMessage = useAppSelector(authSelectors.successMessage)
 
   const formik = useFormik({
     initialValues: {
@@ -50,29 +49,29 @@ function Login({ showHeader = true, img = true }: LoginProps) {
     validationSchema,
     validateOnChange: false,
     onSubmit: values => {
-       // временно для проверки
-      console.table(values);
-  dispatch(authActions.loginUser({email: values.email, password: values.password})); 
-   
+      // временно для проверки
+      console.table(values)
+      dispatch(
+        authActions.loginUser({
+          email: values.email,
+          password: values.password,
+        }),
+      )
 
-      formik.resetForm();
+      formik.resetForm()
     },
   })
 
   return (
     <div className="flex justify-center items-center -mt-4 px-4 sm:px-6 lg:px-8">
-      <div className="w-full sm:w-[250px] lg:w-[300px] xl:w-[350px] max-w-full rounded-lg p-4 margin: auto bg-white lg:bg-transparent ">
-        {" "}
-        {/*  bg-white shadow-lg */} {/* border border-gray-300 */}
-        <div className="flex flex-col w-full ">
-          {" "}
-          {/* max-w-sm p-6 */}
+      <div className="w-full sm:w-[250px] lg:w-[300px] xl:w-[350px] max-w-full rounded-lg p-4 bg-white lg:bg-transparent">
+        <div className="flex flex-col w-full">
           {showHeader && (
             <div className="mb-4">
               <h2 className="text-1xl sm:text-1xl lg:text-3xl font-bold mb-2 text-left">
                 Login
               </h2>
-              <p className=" text-1xl text-left text-gray-600">
+              <p className="text-1xl text-left text-gray-600">
                 Login to access your account
               </p>
             </div>
@@ -94,6 +93,7 @@ function Login({ showHeader = true, img = true }: LoginProps) {
                   : ""}
               </div>
             </div>
+
             <div className="relative mb-6 mt-8 pb-4 w-full">
               <Input
                 name="password"
@@ -104,7 +104,7 @@ function Login({ showHeader = true, img = true }: LoginProps) {
                 onChange={formik.handleChange}
                 autoComplete="current-password"
               />
-              <div className="absolute text-red-500 text-sm sm:text-base mt-1 left-0 bottom-[-20px]">
+              <div className="absolute text-red-500 text-xs sm:text-sm mt-1 left-0 bottom-[-20px]">
                 {formik.errors.password && formik.touched.password
                   ? formik.errors.password
                   : ""}
@@ -117,17 +117,15 @@ function Login({ showHeader = true, img = true }: LoginProps) {
               disabled={!formik.values.email || !formik.values.password}
             />
 
-            {/*  ошибка с redux */}
-            {error && (
-              <div className="text-red-500 text-sm sm:text-base mt-3">
-                {error}
-              </div>
-            )}
-
             {status === "loading" && (
               <div className="flex justify-center items-center mt-4">
                 <Loader />
               </div>
+            )}
+
+            {loginError && <NotificationMessage type="error" message={loginError} />}
+            {successMessage && (
+              <NotificationMessage type="success" message={successMessage} />
             )}
           </form>
           <p className="text-center mt-4">
@@ -152,7 +150,3 @@ function Login({ showHeader = true, img = true }: LoginProps) {
 }
 
 export default Login
-function loginUser(arg0: { email: string; password: string }): any {
-  throw new Error("Function not implemented.")
-}
-
