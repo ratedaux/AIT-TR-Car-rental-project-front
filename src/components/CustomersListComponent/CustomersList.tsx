@@ -1,70 +1,67 @@
-import React, { useEffect, useState } from "react";
-import CustomerComponent from "components/CustomerComponent/CustomerComponent";
-import { CustomersListProps } from "./types";
-import axios from "axios";
-import { CustomerProps } from "components/CustomerComponent/types";
-import Button from "components/Button/Button";
+import React, { useEffect, useState } from "react"
+import CustomerComponent from "components/CustomerComponent/CustomerComponent"
+import { CustomersListProps } from "./types"
+import { CustomerProps } from "components/CustomerComponent/types"
+import Button from "components/Button/Button"
+import { useNavigate } from "react-router-dom"
 
-function CustomerListComponent() {
-  const [customers, setCustomers] = useState<CustomerProps[]>([]);
+const CustomerListComponent: React.FC<CustomersListProps> = ({ users }) => {
+  const navigate = useNavigate()
 
-  async function fetchCustomers() {
-    const response = await axios.get("/api/customers");
-    setCustomers(response.data);
+  const [customers, setCustomers] = useState<CustomerProps[]>(users)
+  // const [customers, setCustomers] = useState<CustomerProps[]>([]);
+
+  // async function fetchCustomers() {
+  //   const response = await axios.get("/api/customers");
+  //   setCustomers(response.data);
+  // }
+
+  // useEffect(() => {
+  //   fetchCustomers();
+  // }, []);
+
+  const handleEditCustomer = (
+    customerId: string,
+    customerData: CustomerProps,
+  ) => {
+    console.log("Editing customer with ID:", customerId)
+    navigate(`/edit-user/${customerId}`, { state: { customerData } })
   }
 
-  useEffect(() => {
-    fetchCustomers();
-  }, []);
-
-  const handleEditCustomer = (customerId: number) => {
-    console.log("Editing customer with ID:", customerId);
-  };
-
-  const handleDeleteCustomer = (customerId: number) => {
-    console.log("Deleting customer with ID:", customerId);
+  const handleDeleteCustomer = (customerId: string) => {
+    console.log("Deleting customer with ID:", customerId)
 
     setCustomers(prevCustomers =>
-      prevCustomers.filter(customer => customer.id !== customerId.toString()),
-    );
-  };
+      prevCustomers.filter(customer => customer.id !== customerId),
+    )
+    //dispatch api slice
+  }
 
   return (
     <div>
       {customers.map((customer, index) => (
-        <div key={customer.id}>
+        <div key={customer.id || index}>
           <CustomerComponent
-            key={index}
             lastName={customer.lastName}
             firstName={customer.firstName}
             email={customer.email}
             id={customer.id}
             password={customer.password}
+            role={customer.role}
           />
           <div className="m-4 flex flex-row gap-4 justify-end">
             <div>
               <Button
                 type="button"
-                onClick={() => {
-                  if (typeof customer.id === 'number') {
-                    handleEditCustomer(customer.id);
-                  } else {
-                    console.error("Customer ID is undefined or not a number");
-                  }
-                }}
+                onClick={() => handleEditCustomer(customer.id, customer)}
                 name="Edit"
               />
             </div>
             <div>
               <Button
                 type="button"
-                onClick={() => {
-                  if (typeof customer.id === 'number') {
-                    handleDeleteCustomer(customer.id);
-                  } else {
-                    console.error("Customer ID is undefined or not a number");
-                  }
-                }}
+                customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
+                onClick={() => handleDeleteCustomer(customer.id)}
                 name="Delete"
               />
             </div>
@@ -72,7 +69,7 @@ function CustomerListComponent() {
         </div>
       ))}
     </div>
-  );
+  )
 }
 
-export default CustomerListComponent;
+export default CustomerListComponent

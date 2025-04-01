@@ -83,14 +83,14 @@ function CustomerPage() {
 
  
 
-  async function fetchCustomer() {
-    const response = await axios.get("/api/customers/6")
-    setCustomer(response.data)
-  }
+  // async function fetchCustomer() {
+  //   const response = await axios.get("/api/customers/6")
+  //   setCustomer(response.data)
+  // }
 
-  useEffect(() => {
-    fetchCustomer()
-  }, [])
+  // useEffect(() => {
+  //   fetchCustomer()
+  // }, [])
 
 
 
@@ -155,7 +155,7 @@ function CustomerPage() {
         )}
 
         {activeComponent === "bookingsList" && (
-          <BookingsListComponent bookings={bookingListByUser} />
+          <BookingsListComponent bookings={bookingListByUserId} />
         )}
       </div>
     </div>

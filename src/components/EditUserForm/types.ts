@@ -1,7 +1,9 @@
 export interface EditUserFormProps {
-    firstName: string
-    lastName: string
-    email: string
-    password: string
+    id?: string
+  firstName?: string
+  lastName?: string
+  email?: string
+  password?: string
+  role?:string
     }
   

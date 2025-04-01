@@ -4,4 +4,5 @@ export interface CustomerProps {
   lastName?: string
   email?: string
   password?: string
+  role?:string
 }

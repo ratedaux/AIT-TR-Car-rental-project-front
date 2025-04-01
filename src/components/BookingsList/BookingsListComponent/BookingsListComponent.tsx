@@ -12,9 +12,12 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
   //const [bookingList, setBookingList] = useState<BookingProps[]>([])
   //for testing
 
-  const handleEditBooking = (bookingId: string, bookingDetails: BookingProps) => {
+  const handleEditBooking = (
+    bookingId: string,
+    bookingDetails: BookingProps,
+  ) => {
     console.log("Editing booking with ID:", bookingId)
-    navigate(`/edit-booking/${bookingId}`, {state: {bookingDetails}})
+    navigate(`/edit-booking/${bookingId}`, { state: { bookingDetails } })
   }
 
   // const handleDeleteBooking = (bookingId: number) => {
@@ -26,8 +29,6 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
 
   //   alert("The car booking is deleted")
   // }
-
-  
 
   return (
     <div>
@@ -55,7 +56,7 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
               <Button
                 type="button"
                 onClick={() => handleEditBooking(booking.id, booking)}
-                name="Edit"              
+                name="Edit"
               />
             </div>
             {/* <div>

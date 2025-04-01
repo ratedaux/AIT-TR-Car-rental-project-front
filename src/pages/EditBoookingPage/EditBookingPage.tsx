@@ -12,9 +12,9 @@ const EditBookingPage = () => {
 
   
     // Handle close button click
-    const handleClose = () => {
-      navigate("/account")
-    }
+    // const handleClose = () => {
+    //   navigate("/account")
+    // }
   
   return (
     <div className="flex flex-row">

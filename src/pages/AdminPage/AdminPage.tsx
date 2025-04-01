@@ -66,29 +66,29 @@ const bookingsList = [
   },
 ]
 
-// const customersList = [
-//   {
-//     firstName: "Masha",
-//     lastName: "Neshyna",
-//     email: "test@email.com",
-//     drivingLicense: "12345QWERTY",
-//     bornDate: "11.11.1111",
-//   },
-//   {
-//     firstName: "Lena",
-//     lastName: "Lena",
-//     email: "test@email.com",
-//     drivingLicense: "12345QWERTY",
-//     bornDate: "22.33.4444",
-//   },
-//   {
-//     firstName: "Nastia",
-//     lastName: "Nastia",
-//     email: "test@email.com",
-//     drivingLicense: "12345QWERTY",
-//     bornDate: "55.66.7777",
-//   },
-// ]
+const customersList = [
+  {
+    firstName: "Masha",
+    lastName: "Neshyna",
+    email: "test@email.com",
+   role:"Admin",
+   id: "1"
+  },
+  {
+    firstName: "Lena",
+    lastName: "Lena",
+    email: "test@email.com",
+    role:"Customer",
+    id:"2"
+  },
+  {
+    firstName: "Nastia",
+    lastName: "Nastia",
+    email: "test@email.com",
+    role:"Customer",
+    id:"3"
+  },
+]
 
 const carsList = [
   {
@@ -150,7 +150,11 @@ function AdminPage() {
   const [bookings, setBookings] = useState(bookingsList)
   useEffect(()=>{setBookings})
   //delete later
+  // const [users, setUsers] = useState(customersList)
+  // useEffect(()=>{setUsers})
 
+
+// delete fetch later and replace to slice dispatch or sloce selector
   async function fetchCars() {
     const response = await axios.get("/api/cars")
     setCarArray(response.data)
@@ -219,7 +223,7 @@ function AdminPage() {
 
       {/* right block with container for components */}
       <div className="flex flex-col w-3/4 m-6">
-        {activeComponent === "customersList" && <CustomersList />}
+        {activeComponent === "customersList" && <CustomersList users={customersList} />}
 
         {activeComponent === "bookingsList" && (
           <BookingsListComponent bookings={bookings} />
