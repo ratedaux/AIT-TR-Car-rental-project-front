@@ -2,17 +2,12 @@ import Button from "components/Button/Button"
 import { CustomerProps } from "./types"
 import { useNavigate } from "react-router-dom"
 
-// const customerId = 1
+// const customerId = 1 and user{}
 //get by slice data to my account
 
-function CustomerComponent({
-  firstName,
-  lastName,
-  email,
-  role,
-  id,
-  password,
-}: CustomerProps) {
+
+function CustomerComponent({ customerData }: { customerData: CustomerProps }) {
+  const { firstName, lastName, email, role, id, password } = customerData;
   const navigate = useNavigate()
 
   const handleEditCustomer = (
@@ -41,10 +36,10 @@ function CustomerComponent({
             <div className="w-3/4">{email} </div>
           </div>
           {/* only admin can see role */}
-          <div className="flex gap-4">
+          {/* <div className="flex gap-4">
             <div className="w-1/4 font-bold">Role:</div>
             <div className="w-3/4">{role} </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -53,7 +48,8 @@ function CustomerComponent({
         {/* this button must be available only for user */}
         <Button
           type="button"
-          onClick={() => handleEditCustomer(customer.id, customer)}
+          // onClick={() => handleEditCustomer(testCustomer.id, testCustomer)}
+          onClick={() => handleEditCustomer(id, customerData)}
           name="Edit"
         />
       </div>

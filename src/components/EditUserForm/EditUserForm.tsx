@@ -96,14 +96,13 @@ const EditUserForm: React.FC<EditUserFormProps> = ({customer}) => {
 
           <Input
             name="password"
-            type="password"
+            type="text"
             label="Password"
             placeholder="Enter Password"
             value={formik.values.password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.password}
-            
           />
         </div>
         <div className="w-auto">

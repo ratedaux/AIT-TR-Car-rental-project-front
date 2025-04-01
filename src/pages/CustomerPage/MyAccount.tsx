@@ -61,6 +61,15 @@ import { useAppDispatch, useAppSelector } from "store/hooks"
 //   bornDate: "11.11.1111",
 // }
 
+const testCustomer = {
+  firstName: "Masha",
+  lastName: "Masha",
+  email: "test@email.com",
+  password: "1113456781",
+  id:"67",
+  role:"Customer"
+}
+
 // const bookingsListComponent = {}
 
  const userId = ()=>{}
@@ -78,9 +87,11 @@ function CustomerPage() {
   const showCustomerData = () => setActiveComponent("customerData")
   const showBookingsList = () => setActiveComponent("bookingsList")
 
-  const [customer, setCustomer] = useState<CustomerProps>()
+  //const [customer, setCustomer] = useState<CustomerProps>()
   const [bookings, setBookings] = useState<BookingsListProps>()
 
+  const [customer, setCustomer] = useState(testCustomer)
+  //this is for test delete later
  
 
   // async function fetchCustomer() {
@@ -145,12 +156,12 @@ function CustomerPage() {
       {/* правая часть с компонентами */}
       <div className="flex flex-col w-2/3 m-6 gap-6">
         {activeComponent === "customerData" && (
-          <CustomerComponent
-            firstName={customer?.firstName}
-            lastName={customer?.lastName}
-            email={customer?.email}
-            id={customer?.id}
-            password={customer?.password}
+          <CustomerComponent customerData={testCustomer}
+            // firstName={customer?.firstName}
+            // lastName={customer?.lastName}
+            // email={customer?.email}
+            // id={customer?.id}
+            // password={customer?.password}
           />
         )}
 
