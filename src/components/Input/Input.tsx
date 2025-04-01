@@ -37,7 +37,7 @@ function Input({
             disabled={disabled}
           >
             {/* Этот option будет вести себя как placeholder */}
-            <option value="" disabled className="text-gray-500">
+            <option value="" disabled selected className="text-gray-500">
               {placeholder}
             </option>
             {options?.map((option, index) => (

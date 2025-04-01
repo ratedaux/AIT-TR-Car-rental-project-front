@@ -37,6 +37,7 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
             rentalStartDate={booking.rentalStartDate}
             rentalEndDate={booking.rentalEndDate}
             carId={booking.carId}
+            carStatus={booking.carStatus}
             customerId={booking.customerId}
             // carBrand={booking.carBrand}
             // carModel={booking.carModel}
