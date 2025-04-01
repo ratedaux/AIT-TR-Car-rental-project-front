@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react"
-import BookingComponent from "components/BookingComponent/BookingComponent"
-import CustomerComponent from "components/CustomerComponent/CustomerComponent"
-import Button from "components/Button/Button"
-import { useNavigate } from "react-router-dom"
-import BookingsListComponent from "components/BookingsList/BookingsListComponent/BookingsListComponent"
-import CustomersList from "components/CustomersListComponent/CustomersList"
+import React, { useEffect, useState } from "react";
+import BookingComponent from "components/BookingComponent/BookingComponent";
+import CustomerComponent from "components/CustomerComponent/CustomerComponent";
+import Button from "components/Button/Button";
+import { useNavigate } from "react-router-dom";
+import BookingsListComponent from "components/BookingsList/BookingsListComponent/BookingsListComponent";
+import CustomersList from "components/CustomersListComponent/CustomersList";
 // import CarFilter from "components/CarFilter/CarFilter"
-import CarCard from "components/CarCard/CarCard"
-import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
-import { CarCardProps } from "components/CarCard/types"
+import CarCard from "components/CarCard/CarCard";
+import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm";
+import { CarCardProps } from "components/CarCard/types";
 
 // test image remove later
-import CarImg from "assets/CarImages/corolla-exterieur.jpg"
-import { log } from "console"
-import axios from "axios"
-import { useAppSelector } from "store/hooks"
-import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
+import CarImg from "assets/CarImages/corolla-exterieur.jpg";
+import { log } from "console";
+import axios from "axios";
+import { useAppSelector } from "store/hooks";
+import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice";
 
 
 // example booking data delete later
@@ -132,42 +132,42 @@ interface CarListProps {
 }
 
 function AdminPage() {
-  const navigate = useNavigate() 
-  
-  const [activeComponent, setActiveComponent] = useState("carsList") // Состояние для выбора компонента
+  const navigate = useNavigate();
 
-  const showCustomersList = () => setActiveComponent("customersList")
-  const showBookingsList = () => setActiveComponent("bookingsList")
-  const showCarsList = () => setActiveComponent("carsList")
-  const showAddNewCarForm = () => setActiveComponent("AddNewCarForm")
-  
+  const [activeComponent, setActiveComponent] = useState("carsList"); // Состояние для выбора компонента
+
+  const showCustomersList = () => setActiveComponent("customersList");
+  const showBookingsList = () => setActiveComponent("bookingsList");
+  const showCarsList = () => setActiveComponent("carsList");
+  const showAddNewCarForm = () => setActiveComponent("AddNewCarForm");
+
   //const [carArray, setCarArray] = useState(carsList)
-  const [carArray, setCarArray] = useState<CarCardProps[]>([])
+  const [carArray, setCarArray] = useState<CarCardProps[]>([]);
 
-async function fetchCars(){
-  const response = await axios.get("/api/cars");
-  setCarArray(response.data);
-}
-//add try catch
-useEffect(() => {
-        fetchCars();
-    }, []);
-    
+  async function fetchCars() {
+    const response = await axios.get("/api/cars");
+    setCarArray(response.data);
+  }
+  //add try catch
+  useEffect(() => {
+    fetchCars();
+  }, []);
 
-    const handleEditCar = (carId: string) => {
-      console.log("Edit car with Id:", carId)
-      navigate(`/edit-car/${carId}`);
-    }
+
+  const handleEditCar = (carId: string) => {
+    console.log("Edit car with Id:", carId);
+    navigate(`/edit-car/${carId}`);
+  };
 
   const handleDeleteCar = (carId: string) => {
-    console.log("Delete car with Id:", carId)
-    setCarArray(prevCarArray => prevCarArray.filter(car => car.id !== carId))
-  }
+    console.log("Delete car with Id:", carId);
+    setCarArray(prevCarArray => prevCarArray.filter(car => car.id !== carId));
+  };
 
-  const bookingList = useAppSelector(bookingSelectors.selectBookingList)
+  const bookingList = useAppSelector(bookingSelectors.selectBookingList);
 
-  useEffect(() => {}
-  , [bookingList]);
+  useEffect(() => { }
+    , [bookingList]);
 
 
 
@@ -211,61 +211,61 @@ useEffect(() => {
         {/* <div>{activeComponent === "carsList" && <CarFilter />}</div>
       </div> */}
 
-      {/* right block with container for components */}
-      <div className="flex flex-col w-3/4 m-6">
-        {activeComponent === "customersList" && (
-          <CustomersList />
-        )}
+        {/* right block with container for components */}
+        <div className="flex flex-col w-3/4 m-6">
+          {activeComponent === "customersList" && (
+            <CustomersList />
+          )}
 
-        {activeComponent === "bookingsList" && (
-          <BookingsListComponent bookings={bookingList} />
-        )}
+          {activeComponent === "bookingsList" && (
+            <BookingsListComponent bookings={bookingList} />
+          )}
 
-        {activeComponent === "AddNewCarForm" && <AddNewCarForm />}
+          {activeComponent === "AddNewCarForm" && <AddNewCarForm />}
 
-        {activeComponent === "carsList" && (
-          <div className="w-auto h-screen overflow-y-auto space-y-6 p-4">
-            {carArray && carArray.length > 0 ? (
-              carArray.map((car) => (
-              <div key={car.id}>
-                <CarCard
-                    image={car.image}
-                    brand={car.brand}
-                    model={car.model}
-                    dayRentalPrice={car.dayRentalPrice}
-                    transmissionType={car.transmissionType}
-                    year={car.year}
-                    fuelType={car.fuelType}
-                    onMoreDetails={() => { } }
-                    onRent={() => { } }
-                    id={car.id} type={""}                />
+          {activeComponent === "carsList" && (
+            <div className="w-auto h-screen overflow-y-auto space-y-6 p-4">
+              {carArray && carArray.length > 0 ? (
+                carArray.map((car) => (
+                  <div key={car.id}>
+                    <CarCard
+                      image={car.image}
+                      brand={car.brand}
+                      model={car.model}
+                      dayRentalPrice={car.dayRentalPrice}
+                      transmissionType={car.transmissionType}
+                      year={car.year}
+                      fuelType={car.fuelType}
+                      onMoreDetails={() => { }}
+                      onRent={() => { }}
+                      id={car.id} type={""} />
 
-                <div className="m-4 flex flex-row gap-4 justify-end">
-                  <div className="">
-                    <Button
-                      type="button"
-                      onClick={() => handleEditCar(car.id)}
-                      name="Edit"
-                    />
+                    <div className="m-4 flex flex-row gap-4 justify-end">
+                      <div className="">
+                        <Button
+                          type="button"
+                          onClick={() => handleEditCar(car.id)}
+                          name="Edit"
+                        />
+                      </div>
+                      <div>
+                        <Button
+                          type="button"
+                          onClick={() => handleDeleteCar(car.id)}
+                          name="Delete"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <Button
-                      type="button"
-                      onClick={() => handleDeleteCar(car.id)}
-                      name="Delete"
-                    />
-                  </div>
-                </div>
-              </div>
-              ))
-              ) :  (
-                 <p>No cars available</p>
-            )}
-          </div>
-        )}
+                ))
+              ) : (
+                <p>No cars available</p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
-    </div>
-  )
+  );
 }
-export default AdminPage
+export default AdminPage;

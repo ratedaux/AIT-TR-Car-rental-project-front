@@ -5,19 +5,22 @@ import * as Yup from 'yup';
 import { FilterCarsValues } from "./types";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { useEffect, useState } from "react";
-import { bodyTypesActions, bodyTypesSelectors, brandsActions, brandsSelectors, rentCarActions, rentCarSelectors } from "store/redux/rentCarSlice/rentCarSlice";
+import { rentCarActions, rentCarSelectors } from "store/redux/rentCarSlice/rentCarSlice";
 import CarCard from "components/CarCard/CarCard";
 import Slider from "rc-slider";
 import 'rc-slider/assets/index.css';
+import { bodyTypesSelectors, bodyTypesActions } from "store/redux/BodyTypeSlice/bodyTypeSlice";
+import { brandsSelectors, brandsActions } from "store/redux/BrandsSlice/brandsSlice";
 
 export default function FilterCars() {
     const dispatch = useAppDispatch();
     const { cars } = useAppSelector(rentCarSelectors.carsData);
     const brands = useAppSelector(brandsSelectors.brandsData);
+    const priceRange = useAppSelector(rentCarSelectors.selectPriceRange);
     const types = useAppSelector(bodyTypesSelectors.bodyTypesData);
 
     const [showFilters, setShowFilters] = useState(false);
-    const [priceRange, setPriceRange] = useState<[number, number]>([20, 100]);
+    //const [priceRange, setPriceRange] = useState<[number, number]>([20, 100]);
     const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
     const [selectedBodyTypes, setSelectedBodyTypes] = useState<string[]>([]);
     const [selectedFuelTypes, setSelectedFuelTypes] = useState<string[]>([]);
@@ -66,7 +69,8 @@ export default function FilterCars() {
 
     const handleSliderChange = (value: number | number[]) => {
         if (Array.isArray(value)) {
-            setPriceRange(value as [number, number]);
+            dispatch(rentCarActions.setPriceRange(value as [number, number]));
+            //setPriceRange(value as [number, number]);
         }
     };
 
@@ -137,7 +141,8 @@ export default function FilterCars() {
         setSelectedBodyTypes([]);
         setSelectedFuelTypes([]);
         setSelectedTransmissionTypes([]),
-            setPriceRange([20, 100]);
+            dispatch(rentCarActions.setPriceRange([20, 100]));
+        //setPriceRange([20, 100]);
     }, [formik.values.startDateTime, formik.values.endDateTime]);
 
     const today = new Date().toISOString().split("T")[0];

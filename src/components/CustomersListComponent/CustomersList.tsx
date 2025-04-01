@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from "react"
-import CustomerComponent from "components/CustomerComponent/CustomerComponent"
-import { CustomersListProps } from "./types"
-import axios from "axios"
-import { CustomerProps } from "components/CustomerComponent/types"
-import Button from "components/Button/Button"
+import React, { useEffect, useState } from "react";
+import CustomerComponent from "components/CustomerComponent/CustomerComponent";
+import { CustomersListProps } from "./types";
+import axios from "axios";
+import { CustomerProps } from "components/CustomerComponent/types";
+import Button from "components/Button/Button";
 
 function CustomerListComponent() {
-  const [customers, setCustomers] = useState<CustomerProps[]>([])
+  const [customers, setCustomers] = useState<CustomerProps[]>([]);
 
   async function fetchCustomers() {
-    const response = await axios.get("/api/customers")
-    setCustomers(response.data)
+    const response = await axios.get("/api/customers");
+    setCustomers(response.data);
   }
 
   useEffect(() => {
-    fetchCustomers()
-  }, [])
+    fetchCustomers();
+  }, []);
 
   const handleEditCustomer = (customerId: number) => {
-    console.log("Editing customer with ID:", customerId)
-  }
+    console.log("Editing customer with ID:", customerId);
+  };
 
   const handleDeleteCustomer = (customerId: number) => {
-    console.log("Deleting customer with ID:", customerId)
+    console.log("Deleting customer with ID:", customerId);
 
     setCustomers(prevCustomers =>
-      prevCustomers.filter(customer => customer.id !== customerId),
-    )
-  }
+      prevCustomers.filter(customer => customer.id !== customerId.toString()),
+    );
+  };
 
   return (
     <div>
@@ -45,14 +45,26 @@ function CustomerListComponent() {
             <div>
               <Button
                 type="button"
-                onClick={() => handleEditCustomer(customer.id)}
+                onClick={() => {
+                  if (typeof customer.id === 'number') {
+                    handleEditCustomer(customer.id);
+                  } else {
+                    console.error("Customer ID is undefined or not a number");
+                  }
+                }}
                 name="Edit"
               />
             </div>
             <div>
               <Button
                 type="button"
-                onClick={() => handleDeleteCustomer(customer.id)}
+                onClick={() => {
+                  if (typeof customer.id === 'number') {
+                    handleDeleteCustomer(customer.id);
+                  } else {
+                    console.error("Customer ID is undefined or not a number");
+                  }
+                }}
                 name="Delete"
               />
             </div>
@@ -60,7 +72,7 @@ function CustomerListComponent() {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
-export default CustomerListComponent
+export default CustomerListComponent;
