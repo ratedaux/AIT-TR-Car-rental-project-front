@@ -42,12 +42,13 @@ const CustomerListComponent: React.FC<CustomersListProps> = ({ users }) => {
       {customers.map((customer, index) => (
         <div key={customer.id || index}>
           <CustomerComponent
-            lastName={customer.lastName}
-            firstName={customer.firstName}
-            email={customer.email}
-            id={customer.id}
-            password={customer.password}
-            role={customer.role}
+            customer={customer}
+            // lastName={customer.lastName}
+            // firstName={customer.firstName}
+            // email={customer.email}
+            // id={customer.id}
+            // password={customer.password}
+            // role={customer.role}
           />
           <div className="m-4 flex flex-row gap-4 justify-end">
             <div>

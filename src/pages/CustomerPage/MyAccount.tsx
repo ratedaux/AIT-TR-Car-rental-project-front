@@ -3,8 +3,6 @@ import CustomerComponent from "components/CustomerComponent/CustomerComponent"
 import Button from "components/Button/Button"
 import { useNavigate } from "react-router-dom"
 import BookingsListComponent from "components/BookingsList/BookingsListComponent/BookingsListComponent"
-import { CustomerProps } from "components/CustomerComponent/types"
-import axios from "axios"
 import { BookingsListProps } from "components/BookingsList/BookingsListComponent/types"
 import { bookingActions, bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
@@ -156,7 +154,8 @@ function CustomerPage() {
       {/* правая часть с компонентами */}
       <div className="flex flex-col w-2/3 m-6 gap-6">
         {activeComponent === "customerData" && (
-          <CustomerComponent customerData={testCustomer}
+          <CustomerComponent 
+          customer={customer}
             // firstName={customer?.firstName}
             // lastName={customer?.lastName}
             // email={customer?.email}

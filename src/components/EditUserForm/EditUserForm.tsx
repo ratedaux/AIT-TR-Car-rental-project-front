@@ -7,13 +7,6 @@ import { EditUserFormProps } from "./types"
 import { useLocation, useNavigate } from "react-router-dom"
 import { CustomerProps } from "components/CustomerComponent/types"
 
-// const testCustomer = {
-//   firstName: "Masha",
-//   lastName: "Neshyna",
-//   email: "test@email.com",
-//   password: "1111",
-// }
-
 const EditUserForm: React.FC<EditUserFormProps> = ({customer}) => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -39,7 +32,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({customer}) => {
     validationSchema: validationSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values: EditUserFormProps) => {
+    onSubmit: (values: CustomerProps) => {
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
       

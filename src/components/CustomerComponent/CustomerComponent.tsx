@@ -5,11 +5,26 @@ import { useNavigate } from "react-router-dom"
 // const customerId = 1 and user{}
 //get by slice data to my account
 
+export interface CustomerDataProps{
+  customer?: CustomerProps
+}
 
-function CustomerComponent({ customerData }: { customerData: CustomerProps }) {
-  const { firstName, lastName, email, role, id, password } = customerData;
+// function CustomerComponent({firstName, lastName, email, role, id, password }:CustomerProps) {
+   function CustomerComponent({ customer }:  CustomerDataProps ) {
+  // function CustomerComponent({ customerData }: { customerData: CustomerProps }) {
+  // const { firstName, lastName, email, role, id, password } = customerData;
   const navigate = useNavigate()
 
+  // const {
+  //   firstName = '',
+  //   lastName = '',
+  //   email = '',
+  //   role = '',
+  //   id = '',
+  //   password = ''
+  // } = customerData || {}; 
+
+  
   const handleEditCustomer = (
     customerId: string,
     customerData: CustomerProps,
@@ -28,12 +43,12 @@ function CustomerComponent({ customerData }: { customerData: CustomerProps }) {
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Customer Name:</div>
             <div className="w-3/4">
-              {firstName} {lastName}
+              {customer?.firstName} {customer?.lastName}
             </div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Email:</div>
-            <div className="w-3/4">{email} </div>
+            <div className="w-3/4">{customer?.email} </div>
           </div>
           {/* only admin can see role */}
           {/* <div className="flex gap-4">
@@ -49,7 +64,7 @@ function CustomerComponent({ customerData }: { customerData: CustomerProps }) {
         <Button
           type="button"
           // onClick={() => handleEditCustomer(testCustomer.id, testCustomer)}
-          onClick={() => handleEditCustomer(id, customerData)}
+          onClick={() => handleEditCustomer(customer?.id, customer)}
           name="Edit"
         />
       </div>
