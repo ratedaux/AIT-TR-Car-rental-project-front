@@ -10,7 +10,6 @@ import { useEffect, useState } from "react"
 import CarImg from "assets/CarImages/corolla-exterieur.jpg"
 import { CarCardProps } from "components/CarCard/types"
 
-
 // Test data for pre-filling
 // const testData: CarCardProps = {
 //   brand: "Toyota",
@@ -26,19 +25,17 @@ import { CarCardProps } from "components/CarCard/types"
 // }
 
 const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { carDetails } = location.state || {};
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { carDetails } = location.state || {}
 
-  const [formData, setFormData] = useState<CarCardProps>(carDetails);
+  const [formData, setFormData] = useState<CarCardProps>(carDetails)
 
   useEffect(() => {
     if (carDetails) {
-      setFormData(carDetails); 
-    } 
-  }, [car]);
-
-  
+      setFormData(carDetails)
+    }
+  }, [car])
 
   const validationSchema = Yup.object({
     brand: Yup.string().required("Car brand is required"),
@@ -61,7 +58,6 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
       .min(0.01, "Price must be more than 0")
       .required("Price per day is required"),
     image: Yup.string().required("Car image is required"),
-    
   })
 
   const formik = useFormik({
@@ -87,13 +83,11 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
     }
   }
 
-  
   // Handle close button click
   const handleClose = () => {
     navigate("/admin")
   }
 
-  
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
       <h2 className="text-xl font-bold p-[60px] mb-6">
@@ -126,7 +120,13 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
           <Input
             name="carStatus"
             type="select"
-            options={["Available", "Not Available"]}
+            options={[
+              "AVAILABLE",
+              "RENTED",
+              "UNDER_REPAIR",
+              "REMOVER_FROM_RENT",
+              "UNDER_INSPECTION",
+            ]}
             label="Status"
             placeholder="Select car status"
             value={formik.values.carStatus}
@@ -192,14 +192,13 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
             errorMessage={formik.errors.dayRentalPrice}
           />
           <div>
-            {formik.values.image &&
-              typeof formik.values.image === "string" && (
-                <img
-                  src={formik.values.image}
-                  alt="Car"
-                  className="w-32 h-32 object-cover mb-3 rounded-lg"
-                />
-              )}
+            {formik.values.image && typeof formik.values.image === "string" && (
+              <img
+                src={formik.values.image}
+                alt="Car"
+                className="w-32 h-32 object-cover mb-3 rounded-lg"
+              />
+            )}
             {/* Файл изображения */}
             <Input
               name="image"

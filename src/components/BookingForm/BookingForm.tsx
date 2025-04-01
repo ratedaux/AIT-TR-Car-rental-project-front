@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 
 const costPerDay = 50 // Example cost per day
+const carId = 9
 
 const calculateTotalCost = (startDate: Date, endDate: Date): number => {
   // Сбросим время для обеих дат, чтобы учитывать только дни
@@ -70,7 +71,9 @@ function BookingForm() {
       // Очищаем форму после отправки
       resetForm()
       alert("The car is rented")
-      //  navigate("/account")
+      navigate("/account")
+
+
     },
   })
 

@@ -8,7 +8,7 @@ import { createAppSlice } from "store/createAppSlice"
 const bookingInitialState: BookingSliceState = {
   bookingList: [],
   bookingListByUserId: [],
-  bookingData: {
+  bookingData:  {
     rentalStartDate: "",
     rentalEndDate: "",
     carId: "",
@@ -24,7 +24,7 @@ const bookingInitialState: BookingSliceState = {
 }
 
 export const bookingSlice = createAppSlice({
-  name: "BookingSLice",
+  name: "BOOKINGS",
   initialState: bookingInitialState,
   reducers: create => ({
     getBookingByBookingId: create.asyncThunk(
@@ -73,11 +73,11 @@ export const bookingSlice = createAppSlice({
         },
       },
     ),
-    getBookingsByUserId: create.asyncThunk(
+    getBookingsByUser: create.asyncThunk(
       async (userId, thunkApi) => {
         try {
           const result = await axios.get(
-            `/api/customers/all-bookings-id/${userId}`,
+            `/api/customers/all-my-bookings`,
           )
           return result.data
         } catch (error) {
@@ -187,15 +187,43 @@ export const bookingSlice = createAppSlice({
       },
     ),
 
-    restoreBooking: create.asyncThunk(
-      async (
-        { id, updatedData }: { id: string; updatedData: BookingProps },
-        thunkApi,
-      ) => {
+    // restoreBooking: create.asyncThunk(
+    //   async (
+    //     { id, updatedData }: { id: string; updatedData: BookingProps },
+    //     thunkApi,
+    //   ) => {
+    //     try {
+    //       const result = await axios.put(
+    //         `/api/bookings/restore/${id}`,
+    //         updatedData,
+    //       )
+    //       return result.data
+    //     } catch (error) {
+    //       return thunkApi.rejectWithValue(error)
+    //     }
+    //   },
+    //   {
+    //     pending: (state: BookingSliceState) => {
+    //       state.status = "loading"
+    //       state.error = undefined
+    //     },
+    //     fulfilled: (state: BookingSliceState, action: any) => {
+    //       state.bookingData = action.payload.updatedData
+    //       state.status = "success"
+    //     },
+    //     rejected: (state: BookingSliceState, action: any) => {
+    //       state.error = action.payload
+    //       state.status = "error"
+    //     },
+    //   },
+    // ),
+
+    createBooking: create.asyncThunk(
+      async (values, thunkApi) => {
         try {
-          const result = await axios.put(
-            `/api/bookings/restore/${id}`,
-            updatedData,
+          const result = await axios.post(
+            `/api/bookings`,
+            values,
           )
           return result.data
         } catch (error) {
@@ -208,7 +236,7 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingData = action.payload.updatedData
+          state.bookingData = action.payload.values
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
@@ -223,13 +251,12 @@ export const bookingSlice = createAppSlice({
   selectors: {
     selectBookingData: (state: BookingSliceState) => state.bookingData,
     selectBookingList: (state: BookingSliceState) => state.bookingList,
-    selectBookingListByUserId: (state: BookingSliceState) =>
+    selectBookingListByUser: (state: BookingSliceState) =>
       state.bookingListByUserId,
     selectStatus: (state: BookingSliceState) => state.status,
     selectError: (state: BookingSliceState) => state.error,
   },
 })
 
-export default bookingSlice.reducer
 export const bookingActions = bookingSlice.actions
 export const bookingSelectors = bookingSlice.selectors

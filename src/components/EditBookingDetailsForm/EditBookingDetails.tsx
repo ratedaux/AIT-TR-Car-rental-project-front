@@ -53,39 +53,43 @@ const calculateTotalCost = (startDate: Date, endDate: Date): number => {
   return totalRentCost
 }
 
-const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => {
+const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
+  booking,
+}) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const location = useLocation();
-  const { bookingDetails } = location.state || {};
+  const location = useLocation()
+  const { bookingDetails } = location.state || {}
 
   const today = new Date().toLocaleDateString("en-CA")
   const validationSchema = Yup.object({
     rentalStartDate: Yup.date()
       .required("Start date is required")
       .min(today, "Start date cannot be in the past"),
-      rentalEndDate: Yup.date()
+    rentalEndDate: Yup.date()
       .required("End date is required")
-      .min(Yup.ref("rentalStartDate"), "End date must be later than start date"),
-      totalPrice: Yup.number()
+      .min(
+        Yup.ref("rentalStartDate"),
+        "End date must be later than start date",
+      ),
+    totalPrice: Yup.number()
       .required("Rent cost can't be empty")
       .min(0.01, "Rent cost can't be 0"),
-      bookingStatus: Yup.string().required("Status is required"),
+    bookingStatus: Yup.string().required("Status is required"),
   })
 
   // const bookingData = useAppSelector(bookingSelectors.selectBookingData)
 
-  const handleExtendBooking = (
-    id: string,
-    updatedData: BookingProps,
-  ) => {
+  const handleExtendBooking = (id: string, updatedData: BookingProps) => {
     dispatch(bookingActions.extendBooking({ id, updatedData }))
   }
-   const [formData, setFormData] = useState<BookingProps>(bookingDetails);
+  const [formData, setFormData] = useState<BookingProps>(bookingDetails)
 
-  useEffect(() => { if (bookingDetails) {
-    setFormData(bookingDetails); 
-  } }, [booking])
+  useEffect(() => {
+    if (bookingDetails) {
+      setFormData(bookingDetails)
+    }
+  }, [booking])
 
   const formik = useFormik({
     initialValues: formData,
@@ -134,25 +138,21 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
     formik.setFieldValue("totalPrice", totalCost) // Update Formik state
   }
 
- 
-  function handleBookingCancel(
-    id: string,
-    updatedData: BookingProps,
-  ): void {
+  function handleBookingCancel(id: string, updatedData: BookingProps): void {
     dispatch(bookingActions.cancelBooking({ id, updatedData }))
     alert("The booking is cancelled")
     navigate("/account")
   }
 
   //visible only when the boooking is cancelled
-  function handlRestoreBooking(
-    id: string,
-    updatedData: BookingProps,
-  ): void {
-    dispatch(bookingActions.restoreBooking({ id, updatedData }))
-    alert("The cancelled booking is restored")
-    navigate("/account")
-  }
+  // function handlRestoreBooking(
+  //   id: string,
+  //   updatedData: BookingProps,
+  // ): void {
+  //   dispatch(bookingActions.restoreBooking({ id, updatedData }))
+  //   alert("The cancelled booking is restored")
+  //   navigate("/account")
+  // }
 
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
@@ -191,6 +191,8 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
               handleDateChange()
             }}
             onBlur={formik.handleBlur}
+            readOnly={true}
+            disabled={true}
             errorMessage={
               formik.errors.rentalStartDate
                 ? String(formik.errors.rentalStartDate)
@@ -209,7 +211,9 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
             }}
             onBlur={formik.handleBlur}
             errorMessage={
-              formik.errors.rentalEndDate ? String(formik.errors.rentalEndDate) : undefined
+              formik.errors.rentalEndDate
+                ? String(formik.errors.rentalEndDate)
+                : undefined
             }
           />
           <Input
@@ -227,12 +231,20 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
           <Input
             name="bookingStatus"
             type="select"
-            options={["Active", "Completed"]}
+            options={[
+              "PENDING",
+              "ACTIVE",
+              "CANCELLED_BY_ADMIN",
+              "CANCELLED_BY_USER",
+              "CLOSED_BY_ADMIN",
+            ]}
             label="Status"
             placeholder="Select status"
             value={formik.values.bookingStatus}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            readOnly={true}
+            disabled={true}
             errorMessage={formik.errors.bookingStatus}
           />
         </div>
@@ -242,7 +254,9 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
             name="Recalculate Total Cost"
             type="button"
             onClick={handleCalculateTotalCost}
-            disabled={!(formik.values.rentalStartDate && formik.values.rentalEndDate)}
+            disabled={
+              !(formik.values.rentalStartDate && formik.values.rentalEndDate)
+            }
             customClasses="!w-full !rounded-lg  hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
           />
         </div>
@@ -265,7 +279,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
         )}
 
         {/* restore booking button */}
-        {formik.values.bookingStatus === "Completed" && (
+        {/* {formik.values.bookingStatus === "Completed" && (
           <div className="w-auto mt-2.5">
             <Button
               name="Restore Booking"
@@ -275,7 +289,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({ booking }) => 
               }
             />
           </div>
-        )}
+        )} */}
       </form>
 
       {/* close button
