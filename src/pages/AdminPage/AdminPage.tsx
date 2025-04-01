@@ -5,7 +5,7 @@ import Button from "components/Button/Button"
 import { useNavigate } from "react-router-dom"
 import BookingsListComponent from "components/BookingsList/BookingsListComponent/BookingsListComponent"
 import CustomersList from "components/CustomersListComponent/CustomersList"
-import CarFilter from "components/CarFilter/CarFilter"
+// import CarFilter from "components/CarFilter/CarFilter"
 import CarCard from "components/CarCard/CarCard"
 import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
 import { CarCardProps } from "components/CarCard/types"
@@ -154,11 +154,12 @@ useEffect(() => {
     }, []);
     
 
-  const handleEditCar = (carId: number) => {
-    console.log("Edit car with Id:", carId)
-  }
+    const handleEditCar = (carId: string) => {
+      console.log("Edit car with Id:", carId)
+      navigate(`/edit-car/${carId}`);
+    }
 
-  const handleDeleteCar = (carId: number) => {
+  const handleDeleteCar = (carId: string) => {
     console.log("Delete car with Id:", carId)
     setCarArray(prevCarArray => prevCarArray.filter(car => car.id !== carId))
   }
@@ -207,8 +208,8 @@ useEffect(() => {
           </nav>
         </div>
         {/* filter in case of carsList */}
-        <div>{activeComponent === "carsList" && <CarFilter />}</div>
-      </div>
+        {/* <div>{activeComponent === "carsList" && <CarFilter />}</div>
+      </div> */}
 
       {/* right block with container for components */}
       <div className="flex flex-col w-3/4 m-6">
@@ -228,7 +229,7 @@ useEffect(() => {
               carArray.map((car) => (
               <div key={car.id}>
                 <CarCard
-                    carImage={car.carImage}
+                    image={car.image}
                     brand={car.brand}
                     model={car.model}
                     dayRentalPrice={car.dayRentalPrice}
@@ -263,6 +264,7 @@ useEffect(() => {
           </div>
         )}
       </div>
+    </div>
     </div>
   )
 }

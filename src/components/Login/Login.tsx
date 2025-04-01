@@ -22,7 +22,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string()
     .required("Field email is required")
     .email("Field must be a valid email")
-    .max(40, "Max 20 symbols")
+    .max(40, "Max 40 symbols")
     .min(10, "Min 10 symbols")
     .typeError("Email must be string"),
   password: Yup.string()
@@ -61,22 +61,17 @@ function Login({ showHeader = true, img = true }: LoginProps) {
       formik.resetForm()
     },
   })
-  
 
   return (
     <div className="flex justify-center items-center -mt-4 px-4 sm:px-6 lg:px-8">
-      <div className="w-full sm:w-[250px] lg:w-[300px] xl:w-[350px] max-w-full rounded-lg p-4 margin: auto bg-white lg:bg-transparent ">
-        {" "}
-        {/*  bg-white shadow-lg */} {/* border border-gray-300 */}
-        <div className="flex flex-col w-full ">
-          {" "}
-          {/* max-w-sm p-6 */}
+      <div className="w-full sm:w-[250px] lg:w-[300px] xl:w-[350px] max-w-full rounded-lg p-4 bg-white lg:bg-transparent">
+        <div className="flex flex-col w-full">
           {showHeader && (
             <div className="mb-4">
               <h2 className="text-1xl sm:text-1xl lg:text-3xl font-bold mb-2 text-left">
                 Login
               </h2>
-              <p className=" text-1xl text-left text-gray-600">
+              <p className="text-1xl text-left text-gray-600">
                 Login to access your account
               </p>
             </div>
@@ -98,6 +93,7 @@ function Login({ showHeader = true, img = true }: LoginProps) {
                   : ""}
               </div>
             </div>
+
             <div className="relative mb-6 mt-8 pb-4 w-full">
               <Input
                 name="password"
@@ -121,20 +117,16 @@ function Login({ showHeader = true, img = true }: LoginProps) {
               disabled={!formik.values.email || !formik.values.password}
             />
 
-          {status === "loading" && (
+            {status === "loading" && (
               <div className="flex justify-center items-center mt-4">
                 <Loader />
               </div>
             )}
 
-            {/*  ошибка с redux */}
             {loginError && <NotificationMessage type="error" message={loginError} />}
-            {/* уведомление если успешно */}
             {successMessage && (
               <NotificationMessage type="success" message={successMessage} />
             )}
-
-           
           </form>
           <p className="text-center mt-4">
             Don’t have an account?{" "}

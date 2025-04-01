@@ -1,4 +1,6 @@
+
 import axios from "axios"
+
 import { createAppSlice } from "store/createAppSlice"
 
 const initialAuthState: AuthSliceState = {
@@ -20,16 +22,14 @@ export const authSlice = createAppSlice({
   reducers: create => ({
     loginUser: create.asyncThunk(
       async (
-        { email, password }: { email: string; password: string },
-        thunkApi,
+        {email, password} : {email: string, password: string}, 
+        thunkApi
       ) => {
         try {
-          const response = await axios.post(LOGIN_URL, { email, password })
-          return response.data
-        } catch (error: any) {
-          return thunkApi.rejectWithValue(
-            error.response?.data?.message || "Login failed",
-          )
+          const response = await axios.post(LOGIN_URL, {email, password});
+        return response.data;
+        } catch (error: any){
+          return thunkApi.rejectWithValue(error.response?.data?.message || "Login failed");
         }
       },
       {

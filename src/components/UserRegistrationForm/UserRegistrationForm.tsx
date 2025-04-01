@@ -69,9 +69,7 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
 
   return (
     <div className="flex justify-center items-center -mt-4 px-4 sm:px-6 lg:px-8">
-      <div className="w-[300px] sm:w-[300px] lg:w-[3500px] xl:w-[400px] rounded-lg p-2 bg-white lg:bg-transparent">
-        {" "}
-        {/* bg-white max-h-[90vh] */} {/* border border-gray-300 */}
+      <div className="w-[300px] sm:w-[300px] lg:w-[350px] xl:w-[400px] rounded-lg p-2 bg-white lg:bg-transparent">
         <h2 className="mt-6 text-xl sm:text-1xl md:text-2xl lg:text-2xl font-semibold text-gray-900 text-center">
           Create your account
         </h2>
@@ -91,7 +89,7 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
                   : ""}
               </div>
             </div>
-            <div className="relative -mb-2">
+            <div className="relative">
               <Input
                 name="lastName"
                 placeholder="Enter your last name"
@@ -123,7 +121,8 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
                 : ""}
             </div>
           </div>
-          <div>
+
+          <div className="relative mb-8">
             <Input
               name="password"
               type="password"
@@ -190,7 +189,7 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
           <img
             src={imgRegistrationForm}
             alt="auto"
-            className=" rounded-xl shadow-md w-full h-full object-cover" /*  w-1/3 h-126 rounded-lg ml-6 */
+            className="rounded-xl shadow-md w-full h-full object-cover"
           />
         </div>
       )}

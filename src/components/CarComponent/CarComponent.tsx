@@ -7,30 +7,35 @@ import euroIcon from "assets/CarImages/euro-icon.png";
 import carIcon from "assets/CarImages/car-icon.jpg";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { CarCardProps } from "components/CarCard/types";
 
-function CarComponent() {
+interface CarComponentProps {
+  car: CarCardProps;
+}
+
+function CarComponent({ car }: CarComponentProps) {
   // State to manage the visibility of the window
-  const [isVisible, setIsVisible] = useState(true);
+  // const [isVisible, setIsVisible] = useState(true);
 
   // Handle close button click
-  const handleClose = () => {
-    setIsVisible(false); // Set visibility to false, effectively "closing" the window
-  };
+  // const handleClose = () => {
+  //   setIsVisible(false); // Set visibility to false, effectively "closing" the window
+  // };
 
-  if (!isVisible) {
-    return null; // If not visible, return nothing (effectively hiding the component)
-  }
+  // if (!isVisible) {
+  //   return null; // If not visible, return nothing (effectively hiding the component)
+  // }
 
-  const [car, setCar] = useState<CarProps>();
+  // const [car, setCar] = useState<CarProps>();
 
-  async function fetchCar() {
-    const response = await axios.get("/api/cars/id/6");
-    setCar(response.data);
-  }
+  // async function fetchCar() {
+  //   const response = await axios.get("/api/cars/id/6");
+  //   setCar(response.data);
+  // }
 
-  useEffect(() => {
-    fetchCar();
-  }, []);
+  // useEffect(() => {
+  //   fetchCar();
+  // }, []);
 
   return (
     <div className="flex flex-row w-auto justify-center rounded-lg ">
@@ -38,7 +43,7 @@ function CarComponent() {
       <div className="w-2/3 items-center">
         <div className="flex flex-col w-auto m-6 gap-6">
           <img
-            src={car?.carImage}
+            src={car?.image}
             alt={car?.brand}
             className="rounded-lg w-auto object-cover"
           />
@@ -144,13 +149,13 @@ function CarComponent() {
       </div>
 
       {/* close button */}
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <Button
           name="X"
           customClasses=" !px-6 !py-6 !rounded-full font-semibold !bg-gray-400 hover:!bg-red-700 text-white"
           onClick={handleClose}
         />
-      </div>
+      </div> */}
     </div>
   );
 }
