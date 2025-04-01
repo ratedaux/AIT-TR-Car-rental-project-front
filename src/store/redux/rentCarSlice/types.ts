@@ -11,20 +11,9 @@ export interface Car {
   image: string
 }
 
-export interface rentCarSliceState {
+export interface RentCarSliceState {
   cars: Car[]
   status: "loading" | "success" | "default" | "error"
   error: any
-}
-
-export interface brandsSliceState {
-  brands: string[]
-  status: "idle" | "loading" | "success" | "error"
-  error: any
-}
-
-export interface bodyTypesSliceState {
-  bodyTypes: string[]
-  status: "idle" | "loading" | "success" | "error"
-  error: any
+  priceRange: [number, number]
 }
