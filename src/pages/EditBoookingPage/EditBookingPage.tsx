@@ -12,21 +12,21 @@ const EditBookingPage = () => {
 
   
     // Handle close button click
-    const handleClose = () => {
-      navigate("/account")
-    }
+    // const handleClose = () => {
+    //   navigate("/account")
+    // }
   
   return (
     <div className="flex flex-row">
     <EditBookingDetailsForm/>
       {/* close button */}
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <Button
           name="X"
           customClasses="!px-6 !py-6 !rounded-full font-semibold !bg-gray-400 hover:!bg-red-700 text-white"
           onClick={handleClose}
         />
-      </div>
+      </div> */}
      </div>
   )
 }

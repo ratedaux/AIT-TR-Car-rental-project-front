@@ -101,9 +101,26 @@ function AddNewCarForm() {
           />
           <Input
             name="bodyType"
-            type="text"
+            type="select"
+            options={[
+              "SEDAN",
+              "HATCHBACK",
+              "COUPE",
+              "CONVERTIBLE",
+              "SUV",
+              "CROSSOVER",
+              "PICKUP",
+              "MINIVAN",
+              "WAGON",
+              "ROADSTER",
+              "CABRIOLET",
+              "LIMOUSINE",
+              "VAN",
+              "TRUCK",
+              "JEEP",
+            ]}
             label="Body type"
-            placeholder="Enter car body type"
+            placeholder="Select car body type"
             value={formik.values.bodyType}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
