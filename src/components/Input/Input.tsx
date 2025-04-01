@@ -1,4 +1,4 @@
-import { InputProps } from "./type"
+import { InputProps } from "./type";
 
 function Input({
   name,
@@ -10,14 +10,12 @@ function Input({
   onChange,
   errorMessage,
   autoComplete,
-
   options,
   onBlur,
   readOnly,
   disabled
-  }: InputProps) {
+}: InputProps) {
 
-  
   // DropDownList
   if (type === "select") {
     return (
@@ -31,13 +29,12 @@ function Input({
           </label>
           <select
             name={name}
-            className={`bg-white block w-full px-4 pt-5 py-3 border-1 rounded-md focus:outline-none ${
-              errorMessage ? "border-red-500" : "border-gray-400"
-            }`}
+            className={`bg-white block w-full px-4 pt-5 py-3 border-1 rounded-md focus:outline-none ${errorMessage ? "border-red-500" : "border-gray-400"
+              }`}
             value={value}
             onChange={onChange}
             onBlur={onBlur}
-            disabled={disabled}   
+            disabled={disabled}
           >
             {/* Этот option будет вести себя как placeholder */}
             <option value="" disabled className="text-gray-500">
@@ -54,7 +51,7 @@ function Input({
           )}
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -67,9 +64,8 @@ function Input({
           {label}
         </label>
         <input
-          className={`bg-white block w-full px-4 pt-5 py-3 border-1 rounded-md focus:outline-none ${
-            errorMessage ? "border-red-500" : "border-gray-400"
-          }`}
+          className={`bg-white block w-full px-4 pt-5 py-3 border-1 rounded-md focus:outline-none ${errorMessage ? "border-red-500" : "border-gray-400"
+            }`}
           name={name}
           id={input_id}
           type={type}
@@ -86,7 +82,7 @@ function Input({
         <p className="text-red-500 text-sm mt-1">{errorMessage}</p>
       )}
     </div>
-  )
+  );
 }
 
-export default Input
+export default Input;

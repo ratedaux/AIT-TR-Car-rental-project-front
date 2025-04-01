@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react"
+import { ChangeEvent, ChangeEventHandler, FocusEventHandler } from "react"
 
 type AutocompleteTypes =
   | "email"
@@ -28,14 +28,17 @@ export interface InputProps {
   input_id?: string
   value?: string | number
   errorMessage?: string
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+  onChange?: ChangeEventHandler<any>
   autoComplete?: AutocompleteTypes
   min?: string
   step?: string
 
+
   options?: string[] | undefined 
   // For dropdown options
-  onBlur?: (event: ChangeEvent<HTMLInputElement>) => void
+
+  onBlur?: FocusEventHandler<HTMLSelectElement>
+
   accept?: string
   readOnly?: boolean
   disabled?: boolean

@@ -1,4 +1,3 @@
-
 import Button from "components/Button/Button";
 import { CarCardProps } from "./types";
 import { useNavigate } from "react-router-dom";
@@ -73,7 +72,6 @@ function CarCard({
                         <div className="hidden lg:block border-b border-gray-200"></div>
                     </div>
 
-
                     {/* Block with Price and Buttons */}
                     <div className="w-full sm:w-[200px] flex-shrink-0 flex flex-col gap-5 justify-between items-center sm:items-center">
                         <div className="text-2xl font-bold text-red-500 items-center text-center sm:text-right">
@@ -112,7 +110,9 @@ function CarCard({
                 </div>
             </div>
         </div>
-    );
-}
+    
+)}
+  
 
 export default CarCard;
+

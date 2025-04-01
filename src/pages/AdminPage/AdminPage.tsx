@@ -1,19 +1,21 @@
+
 import React, { useEffect, useState } from "react"
 import Button from "components/Button/Button"
 import { useNavigate } from "react-router-dom"
 import BookingsListComponent from "components/BookingsList/BookingsListComponent/BookingsListComponent"
 import CustomersList from "components/CustomersListComponent/CustomersList"
+
 // import CarFilter from "components/CarFilter/CarFilter"
-import CarCard from "components/CarCard/CarCard"
-import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
-import { CarCardProps } from "components/CarCard/types"
+import CarCard from "components/CarCard/CarCard";
+import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm";
+import { CarCardProps } from "components/CarCard/types";
 
 // test image remove later
-import CarImg from "assets/CarImages/corolla-exterieur.jpg"
-import { log } from "console"
-import axios from "axios"
-import { useAppSelector } from "store/hooks"
-import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
+import CarImg from "assets/CarImages/corolla-exterieur.jpg";
+import { log } from "console";
+import axios from "axios";
+import { useAppSelector } from "store/hooks";
+import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice";
 
 // example booking data delete later
 const bookingsList = [
@@ -132,6 +134,7 @@ interface CarListProps {
 }
 
 function AdminPage() {
+
   const navigate = useNavigate()
 
   const [activeComponent, setActiveComponent] = useState("carsList")
@@ -169,6 +172,7 @@ function AdminPage() {
   }
 
   //const bookingList = useAppSelector(bookingSelectors.selectBookingList)
+
 
   //useEffect(() => {}, [bookingList])
 
@@ -212,6 +216,7 @@ function AdminPage() {
         {/* <div>{activeComponent === "carsList" && <CarFilter />}</div> */}
       </div>
 
+
       {/* right block with container for components */}
       <div className="flex flex-col w-3/4 m-6">
         {activeComponent === "customersList" && <CustomersList />}
@@ -221,7 +226,9 @@ function AdminPage() {
           //<BookingsListComponent bookings={bookingsList} />
         )}
 
-        {activeComponent === "AddNewCarForm" && <AddNewCarForm />}
+
+          {activeComponent === "AddNewCarForm" && <AddNewCarForm />}
+
 
         {activeComponent === "carsList" && (
           <div className="w-auto h-screen overflow-y-auto space-y-6 p-4">
@@ -268,5 +275,6 @@ function AdminPage() {
       </div>
     </div>
   )
+
 }
-export default AdminPage
+export default AdminPage;

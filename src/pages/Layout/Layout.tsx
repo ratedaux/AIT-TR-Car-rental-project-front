@@ -50,7 +50,7 @@ function Layout({ children }: LayoutProps) {
             </header>
 
             {/* Main Content */}
-            <main className="flex-grow container mx-auto px-4 py-8">
+            <main className="flex-grow container mx-auto px-4 py-8 flex items-center justify-center">
                 {children}
             </main>
 

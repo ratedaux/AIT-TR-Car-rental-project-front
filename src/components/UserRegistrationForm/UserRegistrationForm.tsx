@@ -5,16 +5,26 @@ import { useEffect } from "react"
 import imgRegistrationForm from "../../assets/imgRegistrationForm.jpg"
 import { useFormik } from "formik"
 import { RegisrtationFormValues } from "./types"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
+import NotificationMessage from "components/Notification/Notification"
+import Loader from "components/Loader/Loader"
 
 type UserRegistrationFormProps = {
   img?: boolean
 }
 
-function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
+function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
   useEffect(() => {
     // Прокрутка страницы вверх
     window.scrollTo(0, 0)
   }, [])
+
+  const dispatch = useAppDispatch()
+
+  const status = useAppSelector(authSelectors.authStatus)
+  const registerError = useAppSelector(authSelectors.registerError)
+  const registerMessage = useAppSelector(authSelectors.registerMessage)
 
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
@@ -49,18 +59,17 @@ function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
     } as RegisrtationFormValues,
     validationSchema,
     validateOnChange: false,
+
     onSubmit: (values: RegisrtationFormValues) => {
       console.table(values) // временно
-      /* dispatch(registerUser(values)); */
+      dispatch(authActions.registerNewCustomer(values))
       formik.resetForm()
     },
   })
 
   return (
     <div className="flex justify-center items-center -mt-4 px-4 sm:px-6 lg:px-8">
-      <div className="w-[300px] sm:w-[300px] lg:w-[3500px] xl:w-[400px] rounded-lg p-2 bg-white lg:bg-transparent"> {/* bg-white max-h-[90vh] */}
-        {" "}
-        {/* border border-gray-300 */}
+      <div className="w-[300px] sm:w-[300px] lg:w-[350px] xl:w-[400px] rounded-lg p-2 bg-white lg:bg-transparent">
         <h2 className="mt-6 text-xl sm:text-1xl md:text-2xl lg:text-2xl font-semibold text-gray-900 text-center">
           Create your account
         </h2>
@@ -73,7 +82,6 @@ function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
                 value={formik.values.firstName}
                 label="First Name"
                 onChange={formik.handleChange}
-              
               />
               <div className="absolute text-red-500 text-sm top-16">
                 {formik.errors.firstName && formik.touched.firstName
@@ -81,7 +89,7 @@ function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
                   : ""}
               </div>
             </div>
-            <div className="relative -mb-2">
+            <div className="relative">
               <Input
                 name="lastName"
                 placeholder="Enter your last name"
@@ -113,7 +121,8 @@ function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
                 : ""}
             </div>
           </div>
-          <div >
+
+          <div className="relative mb-8">
             <Input
               name="password"
               type="password"
@@ -129,7 +138,6 @@ function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
                 : ""}
             </div>
           </div>
-        
 
           <label className="flex items-center mb-4 cursor-pointer mt-[-8px]">
             <input
@@ -165,19 +173,27 @@ function UserRegistrationForm({img= true}: UserRegistrationFormProps) {
           />
         </form>
       </div>
-          {img && (
-            <div className="hidden lg:block w-[350px] h-[450px] relative ml-6">
-              <img
-        src={imgRegistrationForm}
-        alt="auto"
-        className=" rounded-xl shadow-md w-full h-full object-cover"/*  w-1/3 h-126 rounded-lg ml-6 */
-      />
-            </div>
-
-          )}
-
+      {status === "loading" && (
+        <div className="flex justify-center items-center mt-4">
+          <Loader />
+        </div>
+      )}
+      {registerMessage && (
+        <NotificationMessage type="success" message={registerMessage} />
+      )}
+      {registerError && (
+        <NotificationMessage type="error" message={registerError} />
+      )}
+      {img && (
+        <div className="hidden lg:block w-[350px] h-[450px] relative ml-6">
+          <img
+            src={imgRegistrationForm}
+            alt="auto"
+            className="rounded-xl shadow-md w-full h-full object-cover"
+          />
+        </div>
+      )}
     </div>
-    
   )
 }
 
