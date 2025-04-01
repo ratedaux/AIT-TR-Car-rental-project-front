@@ -94,7 +94,7 @@ function CustomerPage() {
 
 
 
-  const bookingListByUserId = useAppSelector(bookingSelectors.selectBookingListByUserId)
+  const bookingListByUserId = useAppSelector(bookingSelectors.selectBookingListByUser)
 
   useEffect(() => {}
   , [bookingListByUserId]);
@@ -155,7 +155,7 @@ function CustomerPage() {
         )}
 
         {activeComponent === "bookingsList" && (
-          <BookingsListComponent bookings={bookingListByUserId} />
+          <BookingsListComponent bookings={bookingListByUser} />
         )}
       </div>
     </div>

@@ -8,5 +8,5 @@ export interface CarProps {
   carStatus: string
   dayRentalPrice: number
   carImage: string
-  id:number
+  id:number | any
 }

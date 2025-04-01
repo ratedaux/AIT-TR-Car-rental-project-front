@@ -168,6 +168,11 @@ import transmissionIcon from "assets/CarImages/transmission-icon.png";
 import yearIcon from "assets/CarImages/year-icon.png";
 import euroIcon from "assets/CarImages/euro-icon.png";
 import carIcon from "assets/CarImages/car-icon.jpg";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { CarCardProps } from "components/CarCard/types";
+import { useNavigate } from "react-router-dom";
+
 
 interface CarComponentProps {
   car: CarCardProps;
@@ -178,7 +183,11 @@ function capitalizeFirstLetter(string: string) {
 }
 
 function CarComponent({ car }: CarComponentProps) {
+
+  const navigate = useNavigate()
+
   return (
+
 
     <div className="relative flex flex-col md:flex-row w-full max-w-4xl justify-center rounded-lg bg-white shadow-lg overflow-hidden">
 
@@ -207,10 +216,37 @@ function CarComponent({ car }: CarComponentProps) {
             <div className="text-sm text-gray-700">{car?.year}</div>
           </div>
 
+   const handleEditCar = (carId: string, carDetails: CarCardProps) => {
+      console.log("Edit car with Id:", carId)
+      navigate(`/edit-car/${carId}`, { state: { carDetails } })
+    }
+
+    const handleRentCar = (carId: string) => {
+      navigate(`/rent-car/${carId}`)
+    }
+
+
+  return (
+    <div className="flex flex-row w-auto justify-center rounded-lg ">
+      {/* right block */}
+      <div className="w-2/3 items-center">
+        <div className="flex flex-col w-auto m-6 gap-6">
+          <img
+            src={car?.image}
+            alt={car?.brand}
+            className="rounded-lg w-auto object-cover"
+          />
+
+          <div className="flex flex-col w-auto ">
+            <div className="bg-black text-white font-bold  rounded-tl-lg rounded-tr-lg p-3 ">
+              Info:
+            </div>
+
           <div className="flex flex-row items-center gap-2">
             <img src={euroIcon} className="w-6 h-6" alt="Price" />
             <div className="text-sm text-gray-700">{car?.dayRentalPrice}</div>
           </div>
+
 
           <div className="flex flex-row items-center gap-2">
             <img src={carIcon} className="w-6 h-6" alt="Status" />
@@ -270,10 +306,15 @@ function CarComponent({ car }: CarComponentProps) {
           </ul>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-4 flex-wrap">
-          <Button name="Rent" type="button" onClick={() => { }} />
-          <Button name="Edit" type="button" onClick={() => { }} />
+
+        <div className="w-auto">
+          <Button name="Rent" type="button" onClick={() => handleRentCar(car.id)} />
+        </div>
+
+        {/* Edit car only for Admin */}
+        <div className="w-auto">
+          <Button name="Edit" type="button" onClick={() => handleEditCar(car.id,car)} />
+
         </div>
       </div>
     </div>

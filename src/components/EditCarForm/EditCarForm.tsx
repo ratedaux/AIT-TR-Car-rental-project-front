@@ -3,33 +3,44 @@ import Button from "components/Button/Button"
 import Input from "components/Input/Input"
 import * as Yup from "yup"
 import { useFormik } from "formik"
-import { useNavigate } from "react-router"
-import { useState } from "react"
+import { useLocation, useNavigate } from "react-router"
+import { useEffect, useState } from "react"
 
 // test image remove later
 import CarImg from "assets/CarImages/corolla-exterieur.jpg"
-
+import { CarCardProps } from "components/CarCard/types"
 
 // Test data for pre-filling
-const testData: EditCarFormProps = {
-  brand: "Toyota",
-  model: "Corolla",
-  status: "Available",
-  year: 2022,
-  bodyType: "Sedan",
-  fuelType: "Gasoline",
-  transmissionType: "Automatic",
-  dayRentalPrice: 45,
-  carImage: CarImg,
-}
+// const testData: CarCardProps = {
+//   brand: "Toyota",
+//   model: "Corolla",
+//   carStatus: "Available",
+//   year: 2022,
+//   type: "Sedan",
+//   fuelType: "Gasoline",
+//   transmissionType: "Automatic",
+//   dayRentalPrice: 45,
+//   image: CarImg,
+//   id: "1"
+// }
 
-function EditCarForm() {
+const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const { carDetails } = location.state || {}
+
+  const [formData, setFormData] = useState<CarCardProps>(carDetails)
+
+  useEffect(() => {
+    if (carDetails) {
+      setFormData(carDetails)
+    }
+  }, [car])
 
   const validationSchema = Yup.object({
     brand: Yup.string().required("Car brand is required"),
     model: Yup.string().required("Car model is required"),
-    status: Yup.string().required("Status is required"),
+    carStatus: Yup.string().required("Status is required"),
     year: Yup.number()
       .min(1900, "Year must be at least 1900 or later")
       .max(
@@ -37,7 +48,7 @@ function EditCarForm() {
         `Year must be at most ${new Date().getFullYear()}`,
       )
       .required("Year when car was produced is required"),
-    bodyType: Yup.string().required("Car body type is required"),
+    type: Yup.string().required("Car body type is required"),
     fuelType: Yup.string().required("Car fuel type is required"),
     transmissionType: Yup.string().required(
       "Car transmission type is required",
@@ -46,20 +57,20 @@ function EditCarForm() {
       .positive("Price must be more than 0")
       .min(0.01, "Price must be more than 0")
       .required("Price per day is required"),
-    carImage: Yup.string().required("Car image is required"),
+    image: Yup.string().required("Car image is required"),
   })
 
   const formik = useFormik({
-    initialValues: testData,
+    initialValues: formData,
     validationSchema: validationSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values: EditCarFormProps) => {
+    onSubmit: (values: CarCardProps) => {
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
 
       alert("The car is edited")
-      //navigate("/admin")
+      navigate("/admin")
     },
   })
 
@@ -67,21 +78,14 @@ function EditCarForm() {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0]
-      formik.setFieldValue("carImage", file)
+      formik.setFieldValue("image", file)
       // Set file value in Formik state
     }
   }
 
-  // State to manage the visibility of the window
-  const [isVisible, setIsVisible] = useState(true)
-
   // Handle close button click
   const handleClose = () => {
-    setIsVisible(false) // Set visibility to false, effectively "closing" the window
-  }
-
-  if (!isVisible) {
-    return null // If not visible, return nothing (effectively hiding the component)
+    navigate("/admin")
   }
 
   return (
@@ -114,15 +118,21 @@ function EditCarForm() {
             readOnly={true}
           />
           <Input
-            name="status"
+            name="carStatus"
             type="select"
-            options={["Available", "Not Available"]}
+            options={[
+              "AVAILABLE",
+              "RENTED",
+              "UNDER_REPAIR",
+              "REMOVER_FROM_RENT",
+              "UNDER_INSPECTION",
+            ]}
             label="Status"
             placeholder="Select car status"
-            value={formik.values.status}
+            value={formik.values.carStatus}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            errorMessage={formik.errors.status}
+            errorMessage={formik.errors.carStatus}
           />
 
           <Input
@@ -137,14 +147,14 @@ function EditCarForm() {
             readOnly={true}
           />
           <Input
-            name="bodyType"
+            name="type"
             type="text"
             label="Body type"
             placeholder="Enter car body type"
-            value={formik.values.bodyType}
+            value={formik.values.type}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            errorMessage={formik.errors.bodyType}
+            errorMessage={formik.errors.type}
             readOnly={true}
           />
           <Input
@@ -182,24 +192,23 @@ function EditCarForm() {
             errorMessage={formik.errors.dayRentalPrice}
           />
           <div>
-            {formik.values.carImage &&
-              typeof formik.values.carImage === "string" && (
-                <img
-                  src={formik.values.carImage}
-                  alt="Car"
-                  className="w-32 h-32 object-cover mb-3 rounded-lg"
-                />
-              )}
+            {formik.values.image && typeof formik.values.image === "string" && (
+              <img
+                src={formik.values.image}
+                alt="Car"
+                className="w-32 h-32 object-cover mb-3 rounded-lg"
+              />
+            )}
             {/* Файл изображения */}
             <Input
-              name="carImage"
+              name="image"
               type="file"
               accept="image/png, image/jpeg"
               label="Car image"
               placeholder="Upload car image"
               onChange={handleFileChange}
               onBlur={formik.handleBlur}
-              errorMessage={formik.errors.carImage}
+              errorMessage={formik.errors.image}
               readOnly={true}
               disabled={true}
             />
