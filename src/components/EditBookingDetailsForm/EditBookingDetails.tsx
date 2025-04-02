@@ -144,15 +144,15 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     navigate("/account")
   }
 
-  //visible only when the boooking is cancelled
-  // function handlRestoreBooking(
-  //   id: string,
-  //   updatedData: BookingProps,
-  // ): void {
-  //   dispatch(bookingActions.restoreBooking({ id, updatedData }))
-  //   alert("The cancelled booking is restored")
-  //   navigate("/account")
-  // }
+  // visible only when the boooking is cancelled
+  function handlRestoreBooking(
+    id: string,
+    updatedData: BookingProps,
+  ): void {
+    dispatch(bookingActions.restoreBooking({ id, updatedData }))
+    alert("The cancelled booking is restored")
+    navigate("/account")
+  }
 
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
@@ -279,7 +279,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
         )}
 
         {/* restore booking button */}
-        {/* {formik.values.bookingStatus === "Completed" && (
+        {formik.values.bookingStatus === "Completed" && (
           <div className="w-auto mt-2.5">
             <Button
               name="Restore Booking"
@@ -289,7 +289,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
               }
             />
           </div>
-        )} */}
+        )}
       </form>
 
       {/* close button

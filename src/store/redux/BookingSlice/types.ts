@@ -11,6 +11,7 @@ export interface BookingData {
   rentalEndDate: string
   carId: string
   customerId: string
+  carStatus: string
   bookingStatus: string
   totalPrice: number
   updateBookingDate: string
