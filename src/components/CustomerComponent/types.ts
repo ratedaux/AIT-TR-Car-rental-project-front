@@ -5,4 +5,5 @@ export interface CustomerProps {
   email?: string
   password?: string
   role?:string
+  isActive: boolean
 }

@@ -73,6 +73,7 @@ const customersList = [
     password: "435rydchgv76",
     role: "Admin",
     id: "1",
+    isActive: true
   },
   {
     firstName: "Lena",
@@ -81,6 +82,7 @@ const customersList = [
     role: "Customer",
     id: "2",
     password: "435rydchgv76",
+    isActive: false
   },
   {
     firstName: "Nastia",
@@ -89,6 +91,7 @@ const customersList = [
     role: "Customer",
     id: "3",
     password: "435rydchgv76",
+    isActive: true
   },
 ]
 

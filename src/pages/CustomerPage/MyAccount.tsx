@@ -65,7 +65,8 @@ const testCustomer = {
   email: "test@email.com",
   password: "1113456781",
   id:"67",
-  role:"Customer"
+  role:"Customer",
+  isActive: true
 }
 
 // const bookingsListComponent = {}

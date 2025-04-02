@@ -38,7 +38,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({customer}) => {
       
       alert("The user is edited")
       // resetForm()
-      navigate("/admin")
+      navigate("/account")
     },
   })
 
@@ -89,13 +89,14 @@ const EditUserForm: React.FC<EditUserFormProps> = ({customer}) => {
 
           <Input
             name="password"
-            type="text"
+            type="password"
             label="Password"
             placeholder="Enter Password"
             value={formik.values.password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.password}
+            readOnly={true}
           />
         </div>
         <div className="w-auto">
