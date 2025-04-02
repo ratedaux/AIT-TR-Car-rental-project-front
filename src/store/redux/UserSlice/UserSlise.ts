@@ -91,13 +91,17 @@ export const userSlice = createAppSlice({
     ),
     updateUser: create.asyncThunk(
       async (
+        //attention password is not updated and excluded from updated data
         { id, updatedData }: { id: string; updatedData: CustomerProps },
-        thunkApi,
+        thunkApi
       ) => {
         try {
+          const { firstName, lastName, email } = updatedData
+          const dataToUpdate = { firstName, lastName, email }
+
           const result = await axios.put(
             `/api/customers/update/${id}`,
-            updatedData,
+            dataToUpdate,
           )
           return result.data
         } catch (error) {
@@ -120,15 +124,9 @@ export const userSlice = createAppSlice({
       },
     ),
     deleteUser: create.asyncThunk(
-      async (
-        { id, updatedData }: { id: string; updatedData: CustomerProps },
-        thunkApi,
-      ) => {
+      async (id, thunkApi) => {
         try {
-          const result = await axios.put(
-            `/api/customers/delete/${id}`,
-            updatedData,
-          )
+          const result = await axios.delete(`/api/customers/delete/${id}`)
           return result.data
         } catch (error) {
           return thunkApi.rejectWithValue(error)
@@ -140,7 +138,10 @@ export const userSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: UserSliceState, action: any) => {
-          state.userData = action.payload.updatedData
+          state.userData = {
+            ...state.userData, // Оставляем старые данные
+            isActive: false, // Обновляем только статус isActive
+          }
           state.status = "success"
         },
         rejected: (state: UserSliceState, action: any) => {
@@ -150,15 +151,9 @@ export const userSlice = createAppSlice({
       },
     ),
     restoreUser: create.asyncThunk(
-      async (
-        { id, updatedData }: { id: string; updatedData: CustomerProps },
-        thunkApi,
-      ) => {
+      async (id, thunkApi) => {
         try {
-          const result = await axios.put(
-            `/api/customers/restore/${id}`,
-            updatedData,
-          )
+          const result = await axios.put(`/api/customers/restore/${id}`)
           return result.data
         } catch (error) {
           return thunkApi.rejectWithValue(error)
@@ -170,7 +165,10 @@ export const userSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: UserSliceState, action: any) => {
-          state.userData = action.payload.updatedData
+          state.userData = {
+            ...state.userData, // Оставляем старые данные
+            isActive: true, // Обновляем только статус isActive
+          }
           state.status = "success"
         },
         rejected: (state: UserSliceState, action: any) => {

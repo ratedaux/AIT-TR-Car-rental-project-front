@@ -6,12 +6,15 @@ import { useEffect, useState } from "react"
 import { EditUserFormProps } from "./types"
 import { useLocation, useNavigate } from "react-router-dom"
 import { CustomerProps } from "components/CustomerComponent/types"
+import { useAppDispatch } from "store/hooks"
+import { userActions } from "store/redux/UserSlice/UserSlise"
 
-const EditUserForm: React.FC<EditUserFormProps> = ({customer}) => {
+const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const { customerData } = location.state || {}
-  
+  const dispatch = useAppDispatch()
+
   const validationSchema = Yup.object({
     firstName: Yup.string().required("First name"),
     lastName: Yup.string().required("Last name is required"),
@@ -35,10 +38,14 @@ const EditUserForm: React.FC<EditUserFormProps> = ({customer}) => {
     onSubmit: (values: CustomerProps) => {
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
-      
       alert("The user is edited")
-      // resetForm()
       navigate("/account")
+      dispatch(
+        userActions.updateUser({
+          id: customer.id,
+          updatedData: values,
+        }),
+      )
     },
   })
 
@@ -63,7 +70,6 @@ const EditUserForm: React.FC<EditUserFormProps> = ({customer}) => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.firstName}
-            
           />
           <Input
             name="lastName"
@@ -74,7 +80,6 @@ const EditUserForm: React.FC<EditUserFormProps> = ({customer}) => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.lastName}
-            
           />
           <Input
             name="email"

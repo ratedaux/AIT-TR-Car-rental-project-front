@@ -6,6 +6,7 @@ import { authSlice } from "./redux/AuthSlice/authSlice"
 import { bookingSlice } from "./redux/BookingSlice/BookingSlice"
 import { bodyTypesSlice } from "./redux/BodyTypeSlice/bodyTypeSlice"
 import { brandsSlice } from "./redux/BrandsSlice/brandsSlice"
+import { userSlice } from "./redux/UserSlice/UserSlise"
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
@@ -14,7 +15,8 @@ const rootReducer = combineSlices(
   bodyTypesSlice,
   authSlice,
   carsSlice,
-  brandsSlice
+  brandsSlice,
+  userSlice
 )
 
 // Infer the `RootState` type from the root reducer

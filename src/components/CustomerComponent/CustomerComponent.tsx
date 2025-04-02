@@ -1,28 +1,16 @@
 import Button from "components/Button/Button"
 import { CustomerProps } from "./types"
 import { useNavigate } from "react-router-dom"
-
-// const customerId = 1 and user{}
-//get by slice data to my account
+import { useAppDispatch } from "store/hooks"
+import { userActions } from "store/redux/UserSlice/UserSlise"
 
 export interface CustomerDataProps {
   customer?: CustomerProps
 }
 
-// function CustomerComponent({firstName, lastName, email, role, id, password }:CustomerProps) {
 function CustomerComponent({ customer }: CustomerDataProps) {
-  // function CustomerComponent({ customerData }: { customerData: CustomerProps }) {
-  // const { firstName, lastName, email, role, id, password } = customerData;
   const navigate = useNavigate()
-
-  // const {
-  //   firstName = '',
-  //   lastName = '',
-  //   email = '',
-  //   role = '',
-  //   id = '',
-  //   password = ''
-  // } = customerData || {};
+  const dispatch = useAppDispatch()
 
   const handleEditCustomer = (
     customerId: string,
@@ -34,21 +22,14 @@ function CustomerComponent({ customer }: CustomerDataProps) {
 
   const handleDeleteCustomer = (customerId: string) => {
     console.log("Deleting customer with ID:", customerId)
-alert("The user is deleted")
-//set status not active by use state
-    // setCustomers(prevCustomers =>
-    //   prevCustomers.filter(customer => customer.id !== customerId),
-    // )
-    //dispatch api slice
+    alert("The user is deactivated")
+    dispatch(userActions.deleteUser(customerId))
   }
 
   const handleRestoreCustomer = (customerId: string) => {
     console.log("Deleting customer with ID:", customerId)
-alert("The user is restored")
-    // setCustomers(prevCustomers =>
-    //   prevCustomers.filter(customer => customer.id !== customerId),
-    // )
-    //dispatch api slice
+    alert("The user is restored")
+    dispatch(userActions.restoreUser(customerId))
   }
 
   return (
@@ -68,35 +49,37 @@ alert("The user is restored")
             <div className="w-1/4 font-bold">Email:</div>
             <div className="w-3/4">{customer?.email} </div>
           </div>
-          
+
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Status:</div>
-            <div className="w-3/4"> {customer?.isActive ? 'Active' : 'Not Active'} </div>
+            <div className="w-3/4">
+              {" "}
+              {customer?.isActive ? "Active" : "Not Active"}{" "}
+            </div>
           </div>
         </div>
       </div>
 
       <div className="mt-4 gap-3 flex flex-row  justify-end">
         <div>
-          {/* this button must be available only for user */}
           <Button
             type="button"
-            // onClick={() => handleEditCustomer(testCustomer.id, testCustomer)}
             onClick={() => handleEditCustomer(customer?.id, customer)}
             name="Edit"
           />
+          {/* this button must be available only for admin */}
         </div>
         {customer.isActive && (
-        <div>
-          <Button
-            type="button"
-            customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
-            onClick={() => handleDeleteCustomer(customer.id)}
-            name="Delete"
-          />
-        </div> )}
-
-              {!customer.isActive && (
+          <div>
+            <Button
+              type="button"
+              customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
+              onClick={() => handleDeleteCustomer(customer.id)}
+              name="Deactivate"
+            />
+          </div>
+        )}
+        {!customer.isActive && (
           <div>
             <Button
               type="button"

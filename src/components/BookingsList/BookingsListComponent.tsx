@@ -8,10 +8,6 @@ import { useNavigate } from "react-router"
 const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
   const navigate = useNavigate()
 
-  const [bookingList, setBookingList] = useState<BookingProps[]>(bookings)
-  //const [bookingList, setBookingList] = useState<BookingProps[]>([])
-  //for testing
-
   const handleEditBooking = (
     bookingId: string,
     bookingDetails: BookingProps,
@@ -22,17 +18,15 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
 
   // const handleDeleteBooking = (bookingId: number) => {
   //   console.log("Deleting booking with ID:", bookingId)
-
   //   setBookingList(prevBookingList =>
   //     prevBookingList.filter(booking => booking.id !== bookingId),
   //   )
-
   //   alert("The car booking is deleted")
   // }
 
   return (
     <div>
-      {bookingList.map((booking, index) => (
+      {bookings.map((booking, index) => (
         <div key={booking.id || index}>
           <BookingComponent
             rentalStartDate={booking.rentalStartDate}
@@ -40,12 +34,12 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
             carId={booking.carId}
             carStatus={booking.carStatus}
             customerId={booking.customerId}
-            // carBrand={booking.carBrand}
-            // carModel={booking.carModel}
+            brand={booking.brand}
+            model={booking.model}
             bookingStatus={booking.bookingStatus}
             totalPrice={booking.totalPrice}
-            // renterFirstName={booking.renterFirstName}
-            // renterLastName={booking.renterLastName}
+            firstName={booking.firstName}
+            lastName={booking.lastName}
             updateBookingDate={booking.updateBookingDate}
             createBookingDate={booking.createBookingDate}
             id={booking.id}

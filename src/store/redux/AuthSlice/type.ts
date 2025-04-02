@@ -1,11 +1,12 @@
 import { boolean } from "yup"
 
 export interface User {
-  id: number
+  id: string
   firstName: string
   lastName: string
   email: string
   role: string
+  isActive: boolean
 }
 
 export interface AuthSliceState {
