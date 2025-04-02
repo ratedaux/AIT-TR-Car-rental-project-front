@@ -8,6 +8,7 @@ import axios from "axios"
 import { BookingsListProps } from "components/BookingsList/BookingsListComponent/types"
 import { bookingActions, bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
+import { authSelectors } from "store/redux/AuthSlice/authSlice"
 
 
 // example booking data delete later
@@ -81,18 +82,7 @@ function CustomerPage() {
   const [customer, setCustomer] = useState<CustomerProps>()
   const [bookings, setBookings] = useState<BookingsListProps>()
 
- 
-
-  async function fetchCustomer() {
-    const response = await axios.get("/api/customers/6")
-    setCustomer(response.data)
-  }
-
-  useEffect(() => {
-    fetchCustomer()
-  }, [])
-
-
+  const user = useAppSelector(authSelectors.userData)
 
   const bookingListByUserId = useAppSelector(bookingSelectors.selectBookingListByUser)
 
@@ -106,7 +96,7 @@ function CustomerPage() {
       <div className="w-1/3 items-center m-4">
         <div className="flex flex-col w-auto p-3 rounded-lg rounded-br-lg m-4">
           <div className="bg-black text-white font-bold rounded-tl-lg rounded-tr-lg p-3 ">
-            Hi, {customer?.firstName}!
+            Hi, {user?.firstName}!
           </div>
           <div className="flex flex-col gap-2 w-auto p-3 bg-white ">
             <p className="text-lg"> What's up? </p>
@@ -153,10 +143,10 @@ function CustomerPage() {
             password={customer?.password}
           />
         )}
-
+{/* 
         {activeComponent === "bookingsList" && (
           <BookingsListComponent bookings={bookingListByUser} />
-        )}
+        )} */}
       </div>
     </div>
   )

@@ -10,6 +10,26 @@ import { useAppDispatch, useAppSelector } from "store/hooks"
 import Loader from "components/Loader/Loader"
 import NotificationMessage from "components/Notification/Notification"
 
+
+/* 
+1
+customer_1@car-rent.de
+Qwertzu12345!$
+
+2
+customer_2@cr.de
+Qqqqqq1234!
+
+
+3
+customer_3@cr.de
+Aaaaaaa1234!$
+
+4-admin
+admin_1@car-rent.de
+Admin12345!
+ */
+
 type LoginProps = {
   showHeader?: boolean
   img?: boolean
@@ -49,8 +69,8 @@ function Login({ showHeader = true, img = true }: LoginProps) {
     validationSchema,
     validateOnChange: false,
     onSubmit: values => {
-      // временно для проверки
-      console.table(values)
+      /* временно для проверки
+      console.table(values) */
       dispatch(
         authActions.loginUser({
           email: values.email,
@@ -76,7 +96,16 @@ function Login({ showHeader = true, img = true }: LoginProps) {
               </p>
             </div>
           )}
-          <form onSubmit={formik.handleSubmit} className="mb-4">
+          <form onSubmit={formik.handleSubmit} className="mb-4 relative">
+
+         {/*  Notifications */}
+      {(loginError || successMessage) && (
+        <div className="absolute top-46 left-0 w-full flex justify-center z-50">
+          {loginError && <NotificationMessage type="error" message={loginError} />}
+          {successMessage && <NotificationMessage type="success" message={successMessage} />}
+        </div>
+      )}
+
             <div className="mb-6 mt-8 w-full">
               <Input
                 name="email"
@@ -123,10 +152,10 @@ function Login({ showHeader = true, img = true }: LoginProps) {
               </div>
             )}
 
-            {loginError && <NotificationMessage type="error" message={loginError} />}
+           {/*  {loginError && <NotificationMessage type="error" message={loginError} />}
             {successMessage && (
               <NotificationMessage type="success" message={successMessage} />
-            )}
+            )} */}
           </form>
           <p className="text-center mt-4">
             Don’t have an account?{" "}
