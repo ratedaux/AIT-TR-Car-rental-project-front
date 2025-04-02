@@ -3,14 +3,14 @@ import { BookingProps } from "./types"
 function BookingComponent({
   rentalStartDate,
   rentalEndDate,
-  // carBrand,
-  // carModel,
+  brand,
+  model,
   carId,
   customerId,
   totalPrice,
   bookingStatus,
-  // renterFirstName,
-  // renterLastName,
+  firstName,
+  lastName,
   updateBookingDate,
   createBookingDate,
   id,
@@ -25,13 +25,13 @@ function BookingComponent({
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Car:</div>
             <div className="w-3/4">
-              {carId}
+              {brand} {model}
             </div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Renter:</div>
             <div className="w-3/4">
-              {customerId}
+              {firstName} {lastName}
             </div>
           </div>
           <div className="flex gap-4">

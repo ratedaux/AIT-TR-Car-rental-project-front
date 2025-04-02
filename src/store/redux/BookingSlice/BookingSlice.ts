@@ -2,7 +2,6 @@ import { BookingSliceState } from "./types"
 import axios from "axios"
 import { BookingProps } from "components/BookingComponent/types"
 import { RentFormValues } from "components/BookingForm/types"
-import { EditBookingFormProps } from "components/EditBookingDetailsForm/types"
 import { createAppSlice } from "store/createAppSlice"
 
 const bookingInitialState: BookingSliceState = {
@@ -128,13 +127,16 @@ export const bookingSlice = createAppSlice({
     ),
     extendBooking: create.asyncThunk(
       async (
-        { id, bookingDataToDispatch }: { id: string; bookingDataToDispatch: BookingProps },
+        {
+          id,
+          bookingDataToDispatch,
+        }: { id: string; bookingDataToDispatch: BookingProps },
         thunkApi,
       ) => {
         try {
           const result = await axios.put(
             `/api/bookings/extend/${id}`,
-            bookingDataToDispatch
+            bookingDataToDispatch,
           )
           return result.data
         } catch (error) {
@@ -240,7 +242,10 @@ export const bookingSlice = createAppSlice({
     createBooking: create.asyncThunk(
       async (bookingDataForDispatch: RentFormValues, thunkApi) => {
         try {
-          const result = await axios.post(`/api/bookings`, bookingDataForDispatch)
+          const result = await axios.post(
+            `/api/bookings`,
+            bookingDataForDispatch,
+          )
           return result.data
         } catch (error) {
           return thunkApi.rejectWithValue(error)

@@ -121,11 +121,11 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
           <div className="flex flex-col gap-4 w-full mb-7 ">
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Car:</div>
-              <div className="w-2/3">{bookingDetails.carId}</div>
+              <div className="w-2/3">{bookingDetails.brand} {bookingDetails.model}</div>
             </div>
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Renter:</div>
-              <div className="w-2/3">{bookingDetails.customerId}</div>
+              <div className="w-2/3">{bookingDetails.firstName} {bookingDetails.lastName}</div>
             </div>
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Rent details updated on:</div>

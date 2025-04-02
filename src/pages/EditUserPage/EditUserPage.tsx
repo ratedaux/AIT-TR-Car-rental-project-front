@@ -11,7 +11,7 @@ const EditCarPage = () => {
 
   return (
     <div className="flex flex-row">
-      <EditUserForm />
+      <EditUserForm customer={userData}/>
     </div>
   )
 }
