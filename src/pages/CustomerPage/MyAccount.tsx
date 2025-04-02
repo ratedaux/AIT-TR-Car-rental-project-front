@@ -6,6 +6,7 @@ import BookingsListComponent from "components/BookingsList/BookingsListComponent
 import { BookingsListProps } from "components/BookingsList/types"
 import { bookingActions, bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
+import { authSelectors } from "store/redux/AuthSlice/authSlice"
 
 
 // example booking data delete later
@@ -89,7 +90,10 @@ function CustomerPage() {
   //const [customer, setCustomer] = useState<CustomerProps>()
   const [bookings, setBookings] = useState<BookingsListProps>()
 
-  const [customer, setCustomer] = useState(testCustomer)
+
+  const user = useAppSelector(authSelectors.userData)
+
+  //const [customer, setCustomer] = useState(testCustomer)
   //this is for test delete later
  
 
@@ -101,7 +105,6 @@ function CustomerPage() {
   // useEffect(() => {
   //   fetchCustomer()
   // }, [])
-
 
 
   const bookingListByUserId = useAppSelector(bookingSelectors.selectBookingListByUser)
@@ -116,7 +119,7 @@ function CustomerPage() {
       <div className="w-1/3 items-center m-4">
         <div className="flex flex-col w-auto p-3 rounded-lg rounded-br-lg m-4">
           <div className="bg-black text-white font-bold rounded-tl-lg rounded-tr-lg p-3 ">
-            Hi, {customer?.firstName}!
+            Hi, {user?.firstName}!
           </div>
           <div className="flex flex-col gap-2 w-auto p-3 bg-white ">
             <p className="text-lg"> What's up? </p>
@@ -156,7 +159,7 @@ function CustomerPage() {
       <div className="flex flex-col w-2/3 m-6 gap-6">
         {activeComponent === "customerData" && (
           <CustomerComponent 
-          customer={customer}
+          /* customer={customer} */
             // firstName={customer?.firstName}
             // lastName={customer?.lastName}
             // email={customer?.email}
@@ -164,10 +167,11 @@ function CustomerPage() {
             // password={customer?.password}
           />
         )}
-
+{/* 
         {activeComponent === "bookingsList" && (
-          <BookingsListComponent bookings={bookingListByUserId} />
-        )}
+          <BookingsListComponent bookings={bookingListByUser} />
+        )} */}
+
       </div>
     </div>
   )
