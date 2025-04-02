@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Button from "components/Button/Button"
 import { useNavigate } from "react-router-dom"
-import BookingsListComponent from "components/BookingsList/BookingsListComponent/BookingsListComponent"
+import BookingsListComponent from "components/BookingsList/BookingsListComponent"
 import CustomersList from "components/CustomersListComponent/CustomersList"
 
 // import CarFilter from "components/CarFilter/CarFilter"
