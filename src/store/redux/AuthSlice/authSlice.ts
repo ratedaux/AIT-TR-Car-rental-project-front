@@ -146,7 +146,7 @@ export const authSlice = createAppSlice({
           state.status = "success"
           state.user = action.payload.user
           state.registerError = undefined
-          state.registerMessage = "Registration successful!"
+          state.registerMessage = "Registration and login successful"
         },
         rejected: (state, action) => {
           state.status = "error"
