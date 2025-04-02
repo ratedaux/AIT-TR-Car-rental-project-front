@@ -1,7 +1,6 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit"
 import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
-
 import { carsSlice } from "./redux/rentCarSlice/rentCarSlice"
 import { authSlice } from "./redux/AuthSlice/authSlice"
 import { bookingSlice } from "./redux/BookingSlice/BookingSlice"

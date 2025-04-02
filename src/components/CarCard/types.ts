@@ -6,9 +6,8 @@ export interface CarCardProps {
   type: string
   fuelType: string
   transmissionType: string
-  carStatus?: string
+  carStatus: string
   dayRentalPrice: number
   image: string
-  // onMoreDetails?: () => void
-  // onRent?: () => void
+  onRent?: () => void
 }

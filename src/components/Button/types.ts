@@ -1,9 +1,7 @@
 export interface ButtonProps {
-    name?: string;
-    type?: "submit" | "button" | "reset";
-    onClick?: () => void; 
-    disabled?: boolean;
-
-    customClasses?: string
+  name?: string
+  type?: "submit" | "button" | "reset"
+  onClick?: () => void
+  disabled?: boolean
+  customClasses?: string
 }
-
