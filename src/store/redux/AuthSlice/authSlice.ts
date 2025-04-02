@@ -12,6 +12,7 @@ const initialAuthState: AuthSliceState = {
   registerMessage: undefined,
   accessToken: localStorage.getItem("accessToken"),
   refreshToken: undefined,
+  isLoggedIn: false,
 }
 
 const LOGIN_URL = "/api/auth/login"
@@ -54,6 +55,7 @@ export const authSlice = createAppSlice({
           state.user = action.payload.user
           state.loginError = undefined
           state.successMessage = "Login successful!"
+          state.isLoggedIn = true
         },
         rejected: (state: AuthSliceState, action: any) => {
           state.status = "error"
@@ -87,6 +89,7 @@ export const authSlice = createAppSlice({
           state.status = "success"
           state.user = action.payload
           state.loginError = undefined
+          state.isLoggedIn = true  
         },
         rejected: (state: AuthSliceState, action: any) => {
           state.status = "error"
@@ -105,6 +108,7 @@ export const authSlice = createAppSlice({
       state.status = "default"
       state.successMessage = undefined
       state.registerMessage = undefined
+      state.isLoggedIn = false 
 
       localStorage.removeItem("accessToken")
       localStorage.removeItem("refreshToken")
@@ -171,6 +175,7 @@ export const authSlice = createAppSlice({
     registerMessage: (state: AuthSliceState) => state.registerMessage,
     accessToken: (state: AuthSliceState) => state.accessToken,
     refreshToken: (state: AuthSliceState) => state.refreshToken,
+    isLoggedIn: (state: AuthSliceState) => state.isLoggedIn,
   },
 })
 
