@@ -8,6 +8,8 @@ const initialCarState: RentCarSliceState = {
   status: "default",
   error: undefined,
   priceRange: [20, 100],
+  selectedStartDate: "",
+  selectedEndDate: "",
 }
 
 const CARS_URL = "/api/cars/filter"
@@ -71,11 +73,24 @@ export const carsSlice = createAppSlice({
         state.priceRange = action.payload
       },
     ),
+    setSelectedDates: create.reducer(
+      (
+        state: RentCarSliceState,
+        action: { payload: { startDate: string; endDate: string } },
+      ) => {
+        state.selectedStartDate = action.payload.startDate
+        state.selectedEndDate = action.payload.endDate
+      },
+    ),
   }),
 
   selectors: {
     carsData: (state: RentCarSliceState) => state,
     selectPriceRange: (state: RentCarSliceState) => state.priceRange,
+    selectDates: (state: RentCarSliceState) => ({
+      startDate: state.selectedStartDate,
+      endDate: state.selectedEndDate,
+    }),
   },
 })
 

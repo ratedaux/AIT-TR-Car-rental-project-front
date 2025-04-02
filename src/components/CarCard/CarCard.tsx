@@ -2,6 +2,7 @@ import { useState } from "react";
 import ReactDOM from "react-dom";
 import Button from "components/Button/Button"; import { CarCardProps } from "./types";
 import CarComponent from "components/CarComponent/CarComponent";
+import { useNavigate } from "react-router-dom";
 
 function CarCard({
     id,
@@ -17,9 +18,11 @@ function CarCard({
 }: CarCardProps) {
     const [showCarComponent, setShowCarComponent] = useState(false);
 
+    const navigate = useNavigate();
+
     const handleRentCar = (carId: string) => {
         navigate(`/rent-car/${carId}`);
-      }
+    };
 
     const handleMoreDetailsClick = () => {
         setShowCarComponent(true);
