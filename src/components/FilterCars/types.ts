@@ -5,4 +5,6 @@ export interface FilterCarsValues {
   maxPrice: number
   brands: string[]
   bodyTypes: string[]
+  fuelTypes: string[]
+  transmissionTypes: string[]
 }

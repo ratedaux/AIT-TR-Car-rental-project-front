@@ -214,7 +214,7 @@ function CarComponent({ car }: CarComponentProps) {
 
           <div className="flex flex-row items-center gap-2">
             <img src={carIcon} className="w-6 h-6" alt="Status" />
-            <div className="text-sm text-gray-700">{car?.carStatus}</div>
+            <div className="text-sm text-gray-700">{capitalizeFirstLetter(car.carStatus)}</div>
           </div>
         </div>
       </div>
