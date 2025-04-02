@@ -5,45 +5,45 @@ import { useFormik } from "formik"
 import { RentFormValues } from "../BookingForm/types"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
+import {
+  bookingActions,
+  bookingSelectors,
+} from "store/redux/BookingSlice/BookingSlice"
+import { useAppDispatch, useAppSelector } from "store/hooks"
 
 const costPerDay = 50 // Example cost per day
-const carId = 9
+const carId = "9"
+// TODO add dispatch
 
 const calculateTotalCost = (startDate: Date, endDate: Date): number => {
-  // Сбросим время для обеих дат, чтобы учитывать только дни
   const start = new Date(startDate.setHours(0, 0, 0, 0))
   const end = new Date(endDate.setHours(0, 0, 0, 0))
-
-  // Проверка, что дата конца не раньше даты начала
   if (end < start) {
     console.error("End date cannot be earlier than start date.")
     return 0
   }
-  // Вычисляем разницу во времени
   const timeDifference = end.getTime() - start.getTime()
-
-  // Количество дней
   const days = timeDifference / (1000 * 3600 * 24)
-
-  // Если разница в днях меньше 1, считаем хотя бы 1 день аренды
   const totalRentCost = days >= 1 ? days * costPerDay : costPerDay
-  // Пример: даже если 1 день, все равно начисляем стоимость аренды
-
   return totalRentCost
 }
 
 function BookingForm() {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   const today = new Date().toLocaleDateString("en-CA")
   const validationSchema = Yup.object({
     rentalStartDate: Yup.date()
       .required("Start date is required")
       .min(today, "Start date cannot be in the past"),
-      rentalEndDate: Yup.date()
+    rentalEndDate: Yup.date()
       .required("End date is required")
-      .min(Yup.ref("rentalStartDate"), "End date must be later than start date"),
-      totalPrice: Yup.number()
+      .min(
+        Yup.ref("rentalStartDate"),
+        "End date must be later than start date",
+      ),
+    totalPrice: Yup.number()
       .required("Rent cost can't be empty")
       .min(0.01, "Rent cost can't be 0"),
     is18: Yup.boolean()
@@ -56,7 +56,7 @@ function BookingForm() {
       rentalStartDate: new Date().toLocaleDateString("en-CA"),
       rentalEndDate: (() => {
         const tomorrow = new Date()
-        tomorrow.setDate(tomorrow.getDate() + 1) // Добавляем 1 день
+        tomorrow.setDate(tomorrow.getDate() + 1)
         return tomorrow.toLocaleDateString("en-CA") // Преобразуем в формат 'yyyy-MM-dd'
       })(),
       totalPrice: "",
@@ -65,37 +65,34 @@ function BookingForm() {
     validationSchema: validationSchema,
     validateOnChange: true,
     validateOnBlur: true,
-    onSubmit: (values: RentFormValues, { resetForm }) => {
+    onSubmit: (values: RentFormValues) => {
       console.log("Submitted values:", values)
 
-      // Очищаем форму после отправки
-      resetForm()
+      const bookingDataForDispatch = {
+        rentalStartDate: values.rentalStartDate,
+        rentalEndDate: values.rentalEndDate,
+        carId: carId,
+      }
       alert("The car is rented")
       navigate("/account")
-
-
+      dispatch(bookingActions.createBooking(bookingDataForDispatch))
     },
   })
 
-  // Сбрасываем стоимость аренды, если изменяется дата начала или конца
   const handleDateChange = () => {
     formik.setFieldValue("totalPrice", 0)
   }
 
   const handleCalculateTotalCost = () => {
     const { rentalStartDate, rentalEndDate } = formik.values
-
-    // Ensure the dates are valid strings (startDate and endDate should be valid date strings)
     if (!rentalStartDate || !rentalEndDate) {
       console.error("Both startDate and endDate are required.")
-      return // Exit if startDate or endDate is missing
+      return
     }
-    // Преобразуем строки в объекты Date
     const start = new Date(rentalStartDate)
     const end = new Date(rentalEndDate)
-
-    const totalCost = calculateTotalCost(start, end) // Pass as strings
-    formik.setFieldValue("totalPrice", totalCost) // Update Formik state
+    const totalCost = calculateTotalCost(start, end)
+    formik.setFieldValue("totalPrice", totalCost)
   }
 
   const handleClose = () => {
@@ -118,7 +115,7 @@ function BookingForm() {
             value={formik.values.rentalStartDate}
             onChange={e => {
               formik.handleChange(e)
-              handleDateChange() // Сбрасываем стоимость при изменении даты
+              handleDateChange()
             }}
             onBlur={formik.handleBlur}
             errorMessage={
@@ -135,11 +132,13 @@ function BookingForm() {
             value={formik.values.rentalEndDate}
             onChange={e => {
               formik.handleChange(e)
-              handleDateChange() // Сбрасываем стоимость при изменении даты
+              handleDateChange()
             }}
             onBlur={formik.handleBlur}
             errorMessage={
-              formik.errors.rentalEndDate ? String(formik.errors.rentalEndDate) : undefined
+              formik.errors.rentalEndDate
+                ? String(formik.errors.rentalEndDate)
+                : undefined
             }
           />
 
@@ -186,24 +185,22 @@ function BookingForm() {
               name="Calculate Total Cost"
               type="button"
               onClick={handleCalculateTotalCost}
-              disabled={!(formik.values.rentalStartDate && formik.values.rentalEndDate)}
+              disabled={
+                !(formik.values.rentalStartDate && formik.values.rentalEndDate)
+              }
               customClasses="!w-full !rounded-lg  hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
             />
           </div>
         </div>
         <div className="mt-2.5 w-100%">
-          <Button
-            name="Confirm"
-            type="submit"
-            //disabled={!formik.isValid || !formik.values.totalRentCost || formik.isSubmitting}
-          />
+          <Button name="Confirm" type="submit" />
         </div>
 
         {/* close button */}
         <div className="w-auto mt-2.5">
           <Button
             name="Cancel"
-            customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
+            customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"
             onClick={handleClose}
           />
         </div>

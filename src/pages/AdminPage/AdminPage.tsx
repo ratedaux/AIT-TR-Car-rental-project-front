@@ -10,6 +10,7 @@ import axios from "axios"
 import { useAppSelector } from "store/hooks"
 import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
 import { userSelectors } from "store/redux/UserSlice/UserSlise"
+import { rentCarActions, rentCarSelectors } from "store/redux/rentCarSlice/rentCarSlice";
 
 interface CarListProps {
   cars: CarCardProps[]
@@ -32,12 +33,11 @@ function AdminPage() {
 
   const handleDeleteCar = (carId: string) => {
     console.log("Delete car with Id:", carId)
-    
-    //TODO add dispatch
+        //TODO add dispatch
   }
   
-//TODO create car slice to get all cars
-  const carArray = useAppSelector()
+//TODO create car slice to get all cars for admin
+  const {cars} = useAppSelector(rentCarSelectors.carsData)
   const customerList = useAppSelector(userSelectors.selectAllUsers)
   const bookingList = useAppSelector(bookingSelectors.selectBookingList)
 
@@ -90,8 +90,8 @@ function AdminPage() {
         {activeComponent === "AddNewCarForm" && <AddNewCarForm />}
         {activeComponent === "carsList" && (
           <div className="w-auto h-screen overflow-y-auto space-y-6 p-4">
-            {carArray && carArray.length > 0 ? (
-              carArray.map(car => (
+            {cars && cars.length > 0 ? (
+              cars.map(car => (
                 <div key={car.id}>
                   <CarCard
                     image={car.image}

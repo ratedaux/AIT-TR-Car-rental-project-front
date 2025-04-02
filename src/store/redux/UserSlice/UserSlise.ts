@@ -91,13 +91,17 @@ export const userSlice = createAppSlice({
     ),
     updateUser: create.asyncThunk(
       async (
+        //attention password is not updated and excluded from updated data
         { id, updatedData }: { id: string; updatedData: CustomerProps },
-        thunkApi,
+        thunkApi
       ) => {
         try {
+          const { firstName, lastName, email } = updatedData
+          const dataToUpdate = { firstName, lastName, email }
+
           const result = await axios.put(
             `/api/customers/update/${id}`,
-            updatedData,
+            dataToUpdate,
           )
           return result.data
         } catch (error) {
