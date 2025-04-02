@@ -1,3 +1,4 @@
+
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./src/styles/globalStyle.css"
@@ -17,6 +18,7 @@ import EditBookingPage from "pages/EditBoookingPage/EditBookingPage"
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
+
 
 const App = () => {
   const dispatch = useAppDispatch()
@@ -42,8 +44,10 @@ const App = () => {
           <Route path="*" element={<NotFoundPage />} />
 
           <Route path="/edit-booking/:id" element={<EditBookingPage />} />
-          <Route path="/edit-car/:id" element={<EditCarPage />} />
-          <Route path="/rent-car/:id" element={<RentCarPage />} />
+
+          <Route path="/edit-car/:id" element={<EditCarPage/>}/>
+          <Route path="/rent-car/:id" element={<RentCarPage/>}/>
+          <Route path="/edit-user/:id" element={<EditUserPage/>}/>
         </Routes>
       </Layout>
     </BrowserRouter>

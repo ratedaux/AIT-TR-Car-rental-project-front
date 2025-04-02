@@ -266,7 +266,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
         </div>
 
         {/* cancel booking button */}
-        {formik.values.bookingStatus === "Active" && (
+        {(formik.values.bookingStatus === "ACTIVE" || formik.values.bookingStatus === "PENDING") && (
           <div className="w-auto mt-2.5">
             <Button
               name="Cancel Booking"

@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react"
 import CustomerComponent from "components/CustomerComponent/CustomerComponent"
 import Button from "components/Button/Button"
 import { useNavigate } from "react-router-dom"
-import BookingsListComponent from "components/BookingsList/BookingsListComponent/BookingsListComponent"
-import { CustomerProps } from "components/CustomerComponent/types"
-import axios from "axios"
-import { BookingsListProps } from "components/BookingsList/BookingsListComponent/types"
+import BookingsListComponent from "components/BookingsList/BookingsListComponent"
+import { BookingsListProps } from "components/BookingsList/types"
 import { bookingActions, bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import { authSelectors } from "store/redux/AuthSlice/authSlice"
@@ -62,6 +60,16 @@ import { authSelectors } from "store/redux/AuthSlice/authSlice"
 //   bornDate: "11.11.1111",
 // }
 
+const testCustomer = {
+  firstName: "Masha",
+  lastName: "Masha",
+  email: "test@email.com",
+  password: "1113456781",
+  id:"67",
+  role:"Customer",
+  isActive: true
+}
+
 // const bookingsListComponent = {}
 
  const userId = ()=>{}
@@ -79,10 +87,25 @@ function CustomerPage() {
   const showCustomerData = () => setActiveComponent("customerData")
   const showBookingsList = () => setActiveComponent("bookingsList")
 
-  const [customer, setCustomer] = useState<CustomerProps>()
+  //const [customer, setCustomer] = useState<CustomerProps>()
   const [bookings, setBookings] = useState<BookingsListProps>()
 
+
   const user = useAppSelector(authSelectors.userData)
+
+  //const [customer, setCustomer] = useState(testCustomer)
+  //this is for test delete later
+ 
+
+  // async function fetchCustomer() {
+  //   const response = await axios.get("/api/customers/6")
+  //   setCustomer(response.data)
+  // }
+
+  // useEffect(() => {
+  //   fetchCustomer()
+  // }, [])
+
 
   const bookingListByUserId = useAppSelector(bookingSelectors.selectBookingListByUser)
 
@@ -135,18 +158,20 @@ function CustomerPage() {
       {/* правая часть с компонентами */}
       <div className="flex flex-col w-2/3 m-6 gap-6">
         {activeComponent === "customerData" && (
-          <CustomerComponent
-            firstName={customer?.firstName}
-            lastName={customer?.lastName}
-            email={customer?.email}
-            id={customer?.id}
-            password={customer?.password}
+          <CustomerComponent 
+          customer={customer}
+            // firstName={customer?.firstName}
+            // lastName={customer?.lastName}
+            // email={customer?.email}
+            // id={customer?.id}
+            // password={customer?.password}
           />
         )}
 {/* 
         {activeComponent === "bookingsList" && (
           <BookingsListComponent bookings={bookingListByUser} />
         )} */}
+
       </div>
     </div>
   )
