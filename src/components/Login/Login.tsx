@@ -49,12 +49,12 @@ const validationSchema = Yup.object().shape({
     .required("Password is required")
     .matches(
       passwordRegex,
-      "Password must include at least one uppercase letter, one number, and one special character",
+      "Password must include an uppercase letter, a number, and a special character (@ $ ! % * ? &)",
     ),
 })
 
 function Login({ showHeader = true, img = true }: LoginProps) {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const user = useAppSelector(authSelectors.userData)
   const status = useAppSelector(authSelectors.authStatus)
@@ -151,12 +151,8 @@ function Login({ showHeader = true, img = true }: LoginProps) {
                 <Loader />
               </div>
             )}
-
-           {/*  {loginError && <NotificationMessage type="error" message={loginError} />}
-            {successMessage && (
-              <NotificationMessage type="success" message={successMessage} />
-            )} */}
           </form>
+
           <p className="text-center mt-4">
             Don’t have an account?{" "}
             <Link to="/login/registration" className="text-red-500">

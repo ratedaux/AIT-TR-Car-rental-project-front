@@ -35,7 +35,6 @@ export const authSlice = createAppSlice({
           localStorage.setItem("accessToken", accessToken)
           return { accessToken, refreshToken, user: response.data.user }
 
-          /*  return response.data;  */
         } catch (error: any) {
           return thunkApi.rejectWithValue(
             error.response?.data?.message || "Login failed",
@@ -116,27 +115,22 @@ export const authSlice = createAppSlice({
     //  registerNewCustomer
     registerNewCustomer: create.asyncThunk(
       async (
-        {
-          firstName,
-          lastName,
-          email,
-          password,
-        }: {
-          firstName: string
-          lastName: string
-          email: string
-          password: string
+        { firstName, lastName, email, password,
+        }: { firstName: string, lastName: string,  email: string,  password: string
         },
         thunkApi,
       ) => {
         try {
-          const response = await axios.post(REGISTER_URL, {
-            firstName,
-            lastName,
-            email,
-            password,
-          })
-          return response.data
+         /*  const response = */
+           await axios.post(REGISTER_URL, {firstName, lastName, email, password,
+          });
+          const loginResponse = await thunkApi.dispatch(
+            authActions.loginUser({ email, password })
+          ) as { payload: { accessToken: string; refreshToken: string; user: any } };
+
+          /* return response.data */
+          return loginResponse.payload;
+
         } catch (error: any) {
           return thunkApi.rejectWithValue(
             error.response?.data?.message || "Registration failed",
@@ -150,7 +144,7 @@ export const authSlice = createAppSlice({
         },
         fulfilled: (state, action) => {
           state.status = "success"
-          state.user = action.payload
+          state.user = action.payload.user
           state.registerError = undefined
           state.registerMessage = "Registration successful!"
         },
