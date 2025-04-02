@@ -20,22 +20,31 @@ const CustomerListComponent: React.FC<CustomersListProps> = ({ users }) => {
   //   fetchCustomers();
   // }, []);
 
-  const handleEditCustomer = (
-    customerId: string,
-    customerData: CustomerProps,
-  ) => {
-    console.log("Editing customer with ID:", customerId)
-    navigate(`/edit-user/${customerId}`, { state: { customerData } })
-  }
+  // const handleEditCustomer = (
+  //   customerId: string,
+  //   customerData: CustomerProps,
+  // ) => {
+  //   console.log("Editing customer with ID:", customerId)
+  //   navigate(`/edit-user/${customerId}`, { state: { customerData } })
+  // }
 
-  const handleDeleteCustomer = (customerId: string) => {
-    console.log("Deleting customer with ID:", customerId)
+  // const handleDeleteCustomer = (customerId: string) => {
+  //   console.log("Deleting customer with ID:", customerId)
 
-    setCustomers(prevCustomers =>
-      prevCustomers.filter(customer => customer.id !== customerId),
-    )
-    //dispatch api slice
-  }
+  //   // setCustomers(prevCustomers =>
+  //   //   prevCustomers.filter(customer => customer.id !== customerId),
+  //   // )
+  //   //dispatch api slice
+  // }
+
+  // const handleRestoreCustomer = (customerId: string) => {
+  //   console.log("Deleting customer with ID:", customerId)
+
+  //   // setCustomers(prevCustomers =>
+  //   //   prevCustomers.filter(customer => customer.id !== customerId),
+  //   // )
+  //   //dispatch api slice
+  // }
 
   return (
     <div>
@@ -50,7 +59,7 @@ const CustomerListComponent: React.FC<CustomersListProps> = ({ users }) => {
             // password={customer.password}
             // role={customer.role}
           />
-          <div className="m-4 flex flex-row gap-4 justify-end">
+          {/* <div className="m-4 flex flex-row gap-4 justify-end">
             <div>
               <Button
                 type="button"
@@ -66,7 +75,17 @@ const CustomerListComponent: React.FC<CustomersListProps> = ({ users }) => {
                 name="Delete"
               />
             </div>
-          </div>
+
+            <div>
+              <Button
+                type="button"
+                customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
+                onClick={() => handleRestoreCustomer(customer.id)}
+                name="Restore"
+              />
+            </div>
+
+          </div> */}
         </div>
       ))}
     </div>
