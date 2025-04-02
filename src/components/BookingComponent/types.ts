@@ -1,8 +1,8 @@
 export interface BookingProps {
   rentalStartDate: string
   rentalEndDate: string
-  carId: number
-  customerId: number
+  carId: string
+  customerId: string
   carStatus: string
   // carBrand: string
   // carModel: string

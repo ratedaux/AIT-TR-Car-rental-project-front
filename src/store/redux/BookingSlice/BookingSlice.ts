@@ -76,7 +76,7 @@ export const bookingSlice = createAppSlice({
       },
     ),
     getBookingsByUser: create.asyncThunk(
-      async (userId, thunkApi) => {
+      async (_, thunkApi) => {
         try {
           const result = await axios.get(
             `/api/customers/all-my-bookings`,
