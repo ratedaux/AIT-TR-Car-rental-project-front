@@ -1,10 +1,7 @@
-import Button from "components/Button/Button";
-import { CarCardProps } from "./types";
-import { useNavigate } from "react-router-dom";
-
-function capitalizeFirstLetter(string: string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-}
+import { useState } from "react";
+import ReactDOM from "react-dom";
+import Button from "components/Button/Button"; import { CarCardProps } from "./types";
+import CarComponent from "components/CarComponent/CarComponent";
 
 function CarCard({
     id,
@@ -18,16 +15,23 @@ function CarCard({
     dayRentalPrice,
     image,
 }: CarCardProps) {
-
-    const navigate = useNavigate();
+    const [showCarComponent, setShowCarComponent] = useState(false);
 
     const handleMoreDetailsClick = () => {
-        navigate(`/cars/${id}`, { state: { id, brand, model, year, type, fuelType, transmissionType, carStatus, dayRentalPrice, image } });
+        setShowCarComponent(true);
     };
+
+    const handleCloseCarComponent = () => {
+        setShowCarComponent(false);
+    };
+
+    function capitalizeFirstLetter(string: string) {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    }
+
     return (
         <div className="bg-white rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:-translate-y-1 w-full p-6">
             <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
-
                 {/* Image Block */}
                 <div className="w-full sm:w-1/3">
                     <div className="w-full h-full min-h-[200px] overflow-hidden rounded-lg">
@@ -40,15 +44,12 @@ function CarCard({
                 </div>
 
                 <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:flex-wrap sm:justify-between sm:items-start gap-4">
-
                     {/* Info Block */}
                     <div className="flex-1 min-w-0">
-                        <h3 className="text-xl 
-                        font-semibold text-gray-800 
-                        truncate" style={{
-                                whiteSpace:
-                                    'normal', wordWrap: 'break-word'
-                            }}>
+                        <h3 className="text-xl font-semibold text-gray-800 truncate" style={{
+                            whiteSpace:
+                                'normal', wordWrap: 'break-word'
+                        }}>
                             {brand} {capitalizeFirstLetter(model)}
                         </h3>
                         <div className="flex flex-wrap gap-3 text-gray-600 my-4" style={{ fontSize: "0.875rem" }}>
@@ -87,28 +88,26 @@ function CarCard({
                             />
                         </div>
                     </div>
-                    {/* Modal Overlay */}
-                    {/* {showCarComponent && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
-                    <div className="relative bg-white rounded-lg p-6 shadow-lg max-w-2xl w-full">
+                </div>
+            </div>
+
+            {/* Modal for CarComponent */}
+            {showCarComponent && ReactDOM.createPortal(
+                <div className="fixed inset-0 flex items-center justify-center bg-gray bg-opacity-50 backdrop-blur-sm z-50">
+                    <div className="relative bg-white rounded-lg p-6 shadow-lg max-w-3xl mx-4 my-8">
                         <button
                             className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-                            onClick={handleCloseMoreDetails}
+                            onClick={handleCloseCarComponent}
                         >
                             ✖
                         </button>
-                        <CarComponent car={{ id, brand, model, year, fuelType, transmissionType, dayRentalPrice, image, type, carStatus }} />
+                        <CarComponent car={{ id, brand, model, year, fuelType, transmissionType, dayRentalPrice, image, type, carStatus }} onClose={handleCloseCarComponent} />
                     </div>
-                </div>
-            )} */}
-                    {/* {showCarComponent && <CarComponent />}
-            {showBookingForm && <BookingForm />} */}
-                </div>
-            </div>
+                </div>,
+                document.body
+            )}
         </div>
-    
-)}
-  
+    );
+}
 
 export default CarCard;
-
