@@ -33,8 +33,12 @@ export interface InputProps {
   min?: string
   step?: string
 
-  options?: string[] | undefined // For dropdown options
+
+  options?: string[] | undefined 
+  // For dropdown options
+
   onBlur?: FocusEventHandler<HTMLSelectElement>
+
   accept?: string
   readOnly?: boolean
   disabled?: boolean

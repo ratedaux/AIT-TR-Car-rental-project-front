@@ -17,6 +17,10 @@ function CarCard({
 }: CarCardProps) {
     const [showCarComponent, setShowCarComponent] = useState(false);
 
+    const handleRentCar = (carId: string) => {
+        navigate(`/rent-car/${carId}`);
+      }
+
     const handleMoreDetailsClick = () => {
         setShowCarComponent(true);
     };
@@ -84,7 +88,7 @@ function CarCard({
                             <Button
                                 name="RENT"
                                 customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
-                                onClick={() => { }}
+                                onClick={() => handleRentCar(id)}
                             />
                         </div>
                     </div>

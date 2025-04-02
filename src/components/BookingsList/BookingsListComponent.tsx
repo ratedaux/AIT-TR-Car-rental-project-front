@@ -3,18 +3,21 @@ import BookingComponent from "components/BookingComponent/BookingComponent"
 import { BookingsListProps } from "./types"
 import Button from "components/Button/Button"
 import { BookingProps } from "components/BookingComponent/types"
-import axios from "axios"
 import { useNavigate } from "react-router"
 
 const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
   const navigate = useNavigate()
 
-  const [bookingList, setBookingList] = useState<BookingProps[]>([])
+  const [bookingList, setBookingList] = useState<BookingProps[]>(bookings)
+  //const [bookingList, setBookingList] = useState<BookingProps[]>([])
+  //for testing
 
-  const handleEditBooking = (bookingId: number) => {
+  const handleEditBooking = (
+    bookingId: string,
+    bookingDetails: BookingProps,
+  ) => {
     console.log("Editing booking with ID:", bookingId)
-    //edit page opens
-    navigate("/edit-booking")
+    navigate(`/edit-booking/${bookingId}`, { state: { bookingDetails } })
   }
 
   // const handleDeleteBooking = (bookingId: number) => {
@@ -27,8 +30,6 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
   //   alert("The car booking is deleted")
   // }
 
-  
-
   return (
     <div>
       {bookingList.map((booking, index) => (
@@ -37,6 +38,7 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
             rentalStartDate={booking.rentalStartDate}
             rentalEndDate={booking.rentalEndDate}
             carId={booking.carId}
+            carStatus={booking.carStatus}
             customerId={booking.customerId}
             // carBrand={booking.carBrand}
             // carModel={booking.carModel}
@@ -53,8 +55,8 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
             <div>
               <Button
                 type="button"
-                onClick={() => handleEditBooking(booking.id)}
-                name="Edit"              
+                onClick={() => handleEditBooking(booking.id, booking)}
+                name="Edit"
               />
             </div>
             {/* <div>

@@ -45,7 +45,7 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
       .min(8, "Password must be at least 8 characters")
       .matches(
         passwordRegex,
-        "Password must include at least one uppercase letter, one number, and one special character",
+        "Password must include an uppercase letter, a number, and a special character (@ $ ! % * ? &)",
       ),
   })
 
@@ -73,7 +73,13 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
         <h2 className="mt-6 text-xl sm:text-1xl md:text-2xl lg:text-2xl font-semibold text-gray-900 text-center">
           Create your account
         </h2>
-        <form onSubmit={formik.handleSubmit} className="mt-12">
+        <form onSubmit={formik.handleSubmit} className="mt-12 relative">
+        {(registerError || registerMessage) && (
+        <div className="absolute top-64 left-0 w-full flex justify-center z-50">
+          {registerError && <NotificationMessage type="error" message={registerError} />}
+          {registerMessage && <NotificationMessage type="success" message={registerMessage} />}
+        </div>
+      )}
           <div className="grid gap-3 mb-6 md:grid-cols-2">
             <div className="relative">
               <Input
@@ -177,12 +183,6 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
         <div className="flex justify-center items-center mt-4">
           <Loader />
         </div>
-      )}
-      {registerMessage && (
-        <NotificationMessage type="success" message={registerMessage} />
-      )}
-      {registerError && (
-        <NotificationMessage type="error" message={registerError} />
       )}
       {img && (
         <div className="hidden lg:block w-[350px] h-[450px] relative ml-6">

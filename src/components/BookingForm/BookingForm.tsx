@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 
 const costPerDay = 50 // Example cost per day
+const carId = 9
 
 const calculateTotalCost = (startDate: Date, endDate: Date): number => {
   // Сбросим время для обеих дат, чтобы учитывать только дни
@@ -36,13 +37,13 @@ function BookingForm() {
 
   const today = new Date().toLocaleDateString("en-CA")
   const validationSchema = Yup.object({
-    startDate: Yup.date()
+    rentalStartDate: Yup.date()
       .required("Start date is required")
       .min(today, "Start date cannot be in the past"),
-    endDate: Yup.date()
+      rentalEndDate: Yup.date()
       .required("End date is required")
-      .min(Yup.ref("startDate"), "End date must be later than start date"),
-    totalRentCost: Yup.number()
+      .min(Yup.ref("rentalStartDate"), "End date must be later than start date"),
+      totalPrice: Yup.number()
       .required("Rent cost can't be empty")
       .min(0.01, "Rent cost can't be 0"),
     is18: Yup.boolean()
@@ -52,13 +53,13 @@ function BookingForm() {
 
   const formik = useFormik({
     initialValues: {
-      startDate: new Date().toLocaleDateString("en-CA"),
-      endDate: (() => {
+      rentalStartDate: new Date().toLocaleDateString("en-CA"),
+      rentalEndDate: (() => {
         const tomorrow = new Date()
         tomorrow.setDate(tomorrow.getDate() + 1) // Добавляем 1 день
         return tomorrow.toLocaleDateString("en-CA") // Преобразуем в формат 'yyyy-MM-dd'
       })(),
-      totalRentCost: "",
+      totalPrice: "",
       is18: false,
     } as unknown as RentFormValues,
     validationSchema: validationSchema,
@@ -70,41 +71,35 @@ function BookingForm() {
       // Очищаем форму после отправки
       resetForm()
       alert("The car is rented")
-      //  navigate("/account")
+      navigate("/account")
+
+
     },
   })
 
   // Сбрасываем стоимость аренды, если изменяется дата начала или конца
   const handleDateChange = () => {
-    formik.setFieldValue("totalRentCost", 0)
+    formik.setFieldValue("totalPrice", 0)
   }
 
   const handleCalculateTotalCost = () => {
-    const { startDate, endDate } = formik.values
+    const { rentalStartDate, rentalEndDate } = formik.values
 
     // Ensure the dates are valid strings (startDate and endDate should be valid date strings)
-    if (!startDate || !endDate) {
+    if (!rentalStartDate || !rentalEndDate) {
       console.error("Both startDate and endDate are required.")
       return // Exit if startDate or endDate is missing
     }
     // Преобразуем строки в объекты Date
-    const start = new Date(startDate)
-    const end = new Date(endDate)
+    const start = new Date(rentalStartDate)
+    const end = new Date(rentalEndDate)
 
     const totalCost = calculateTotalCost(start, end) // Pass as strings
-    formik.setFieldValue("totalRentCost", totalCost) // Update Formik state
+    formik.setFieldValue("totalPrice", totalCost) // Update Formik state
   }
 
-  // State to manage the visibility of the window
-  const [isVisible, setIsVisible] = useState(true)
-
-  // Handle close button click
   const handleClose = () => {
-    setIsVisible(false) // Set visibility to false, effectively "closing" the window
-  }
-
-  if (!isVisible) {
-    return null // If not visible, return nothing (effectively hiding the component)
+    navigate("/")
   }
 
   return (
@@ -116,65 +111,49 @@ function BookingForm() {
       <form onSubmit={formik.handleSubmit}>
         <div className="flex flex-col gap-1 w-full ">
           <Input
-            name="startDate"
+            name="rentalStartDate"
             type="date"
             label="Start date"
             placeholder="Select start date"
-            value={formik.values.startDate}
+            value={formik.values.rentalStartDate}
             onChange={e => {
               formik.handleChange(e)
               handleDateChange() // Сбрасываем стоимость при изменении даты
             }}
             onBlur={formik.handleBlur}
             errorMessage={
-              formik.errors.startDate
-                ? String(formik.errors.startDate)
+              formik.errors.rentalStartDate
+                ? String(formik.errors.rentalStartDate)
                 : undefined
             }
           />
           <Input
-            name="endDate"
+            name="rentalEndDate"
             type="date"
             label="End date"
             placeholder="Select end date"
-            value={formik.values.endDate}
+            value={formik.values.rentalEndDate}
             onChange={e => {
               formik.handleChange(e)
               handleDateChange() // Сбрасываем стоимость при изменении даты
             }}
             onBlur={formik.handleBlur}
             errorMessage={
-              formik.errors.endDate ? String(formik.errors.endDate) : undefined
+              formik.errors.rentalEndDate ? String(formik.errors.rentalEndDate) : undefined
             }
           />
 
           <Input
-            name="totalRentCost"
+            name="totalPrice"
             type="number"
             label="Total Rent Cost"
             placeholder="Click button to display total cost"
-            value={formik.values.totalRentCost}
+            value={formik.values.totalPrice}
             onChange={() => {}}
             onBlur={formik.handleBlur}
-            errorMessage={formik.errors.totalRentCost}
+            errorMessage={formik.errors.totalPrice}
             readOnly={true}
           />
-
-          {/* <div className="flex flex-row gap-6 ">
-            <div className="mt-1">
-              <Input
-                name="is18"
-                type="checkbox"
-                checked={formik.values.is18}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                errorMessage={formik.errors.is18}
-              />
-            </div>
-            <label htmlFor="is18" className="font-semibold m-0 p-0 ">
-              Are you already 18 ?
-            </label>
-          </div> */}
 
           <label className="flex items-center cursor-pointer gap-3">
             <input
@@ -187,29 +166,27 @@ function BookingForm() {
               onBlur={formik.handleBlur}
             />
             <span className="ml-2 text-gray-700 font-semibold">
-            Are you already 18 ?
+              Are you already 18 ?
             </span>
-
           </label>
           {formik.errors.is18 && formik.touched.is18 && (
-  <p className="text-red-500 text-sm ">{formik.errors.is18}</p>
-)}
-          
+            <p className="text-red-500 text-sm ">{formik.errors.is18}</p>
+          )}
 
-<div className="mt-4">
-          <p className="text-sm text-gray-500 mb-4">
-            Payment is available only at pick up station.
-          </p>
-          <p className="text-sm text-gray-500 mb-4">
-            You can pick up a car only at the pick up station.
-          </p>
-</div>
+          <div className="mt-4">
+            <p className="text-sm text-gray-500 mb-4">
+              Payment is available only at pick up station.
+            </p>
+            <p className="text-sm text-gray-500 mb-4">
+              You can pick up a car only at the pick up station.
+            </p>
+          </div>
           <div className="mt-2.5 w-100%">
             <Button
               name="Calculate Total Cost"
               type="button"
               onClick={handleCalculateTotalCost}
-              disabled={!(formik.values.startDate && formik.values.endDate)}
+              disabled={!(formik.values.rentalStartDate && formik.values.rentalEndDate)}
               customClasses="!w-full !rounded-lg  hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
             />
           </div>
@@ -221,7 +198,7 @@ function BookingForm() {
             //disabled={!formik.isValid || !formik.values.totalRentCost || formik.isSubmitting}
           />
         </div>
-       
+
         {/* close button */}
         <div className="w-auto mt-2.5">
           <Button

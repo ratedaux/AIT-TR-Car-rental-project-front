@@ -27,8 +27,7 @@ function AddNewCarForm() {
       .positive("Price must be more than 0")
       .min(0.01, "Price must be more than 0")
       .required("Price per day is required"),
-    carImage: Yup.string()
-    .required("Car image is required"),
+    carImage: Yup.string().required("Car image is required"),
   })
 
   const formik = useFormik({
@@ -36,11 +35,11 @@ function AddNewCarForm() {
       brand: "",
       model: "",
       year: "",
-      bodyType: "",
+      type: "",
       fuelType: "",
       transmissionType: "",
       dayRentalPrice: "",
-      carImage: "",
+      image: "",
     } as unknown as AddNewCarFormProps,
     validationSchema: validationSchema,
     validateOnChange: false,
@@ -102,9 +101,26 @@ function AddNewCarForm() {
           />
           <Input
             name="bodyType"
-            type="text"
+            type="select"
+            options={[
+              "SEDAN",
+              "HATCHBACK",
+              "COUPE",
+              "CONVERTIBLE",
+              "SUV",
+              "CROSSOVER",
+              "PICKUP",
+              "MINIVAN",
+              "WAGON",
+              "ROADSTER",
+              "CABRIOLET",
+              "LIMOUSINE",
+              "VAN",
+              "TRUCK",
+              "JEEP",
+            ]}
             label="Body type"
-            placeholder="Enter car body type"
+            placeholder="Select car body type"
             value={formik.values.bodyType}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -113,7 +129,19 @@ function AddNewCarForm() {
           <Input
             name="fuelType"
             type="select"
-            options={["Gasoline", "Diesel", "Electric", "Hybrid"]}
+            options={[
+              "PETROL",
+              "DIESEL",
+              "ELECTRIC",
+              "HYBRID",
+              //(LIQUEFIED PETROLEUM GAS)
+              "LPG",
+              //(COMPRESSED NATURAL GAS)
+              "CNG",
+              "BIOFUEL",
+              "HYDROGEN",
+              "ETHANOL",
+            ]}
             label="Fuel type"
             placeholder="Select fuel type"
             value={formik.values.fuelType}
@@ -124,7 +152,17 @@ function AddNewCarForm() {
           <Input
             name="transmissionType"
             type="select"
-            options={["Automatic", "Manual"]}
+            options={[
+              "MANUAL",
+              "AUTOMATIC",
+              "SEMI_AUTOMATIC",
+              "DUAL_CLUTCH",
+              "TIPTRONIC",
+              "DIRECT_SHIFT_GEARBOX",
+              "TORQUE_CONVERTER",
+              "AUTOMATED_MANUAL_TRANSMISSION",
+              "CONTINUOUSLY_VARIABLE_TRANSMISSION",
+            ]}
             label="Transmission type"
             placeholder="Select transmission type"
             value={formik.values.transmissionType}

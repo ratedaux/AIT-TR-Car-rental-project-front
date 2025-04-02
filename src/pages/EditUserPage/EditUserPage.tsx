@@ -1,17 +1,17 @@
-import { CarCardProps } from "components/CarCard/types"
-import EditCarForm from "components/EditCarForm/EditCarForm"
+import { CustomerProps } from "components/CustomerComponent/types"
+import EditUserForm from "components/EditUserForm/EditUserForm"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 
 const EditCarPage = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const carDetails = location.state as CarCardProps
+  const userData = location.state as CustomerProps
   const { id } = useParams()
 
   return (
     <div className="flex flex-row">
-      <EditCarForm car={carDetails} />
+      <EditUserForm />
     </div>
   )
 }

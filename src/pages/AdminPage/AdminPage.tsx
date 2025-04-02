@@ -1,175 +1,188 @@
-import React, { useEffect, useState } from "react";
-import BookingComponent from "components/BookingComponent/BookingComponent";
-import CustomerComponent from "components/CustomerComponent/CustomerComponent";
-import Button from "components/Button/Button";
-import { useNavigate } from "react-router-dom";
-import BookingsListComponent from "components/BookingsList/BookingsListComponent/BookingsListComponent";
-import CustomersList from "components/CustomersListComponent/CustomersList";
+import React, { useEffect, useState } from "react"
+import Button from "components/Button/Button"
+import { useNavigate } from "react-router-dom"
+import BookingsListComponent from "components/BookingsList/BookingsListComponent"
+import CustomersList from "components/CustomersListComponent/CustomersList"
+
 // import CarFilter from "components/CarFilter/CarFilter"
-import CarCard from "components/CarCard/CarCard";
-import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm";
-import { CarCardProps } from "components/CarCard/types";
+import CarCard from "components/CarCard/CarCard"
+import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
+import { CarCardProps } from "components/CarCard/types"
 
 // test image remove later
-import CarImg from "assets/CarImages/corolla-exterieur.jpg";
-import { log } from "console";
-import axios from "axios";
-import { useAppSelector } from "store/hooks";
-import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice";
-
+import CarImg from "assets/CarImages/corolla-exterieur.jpg"
+import { log } from "console"
+import axios from "axios"
+import { useAppSelector } from "store/hooks"
+import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
 
 // example booking data delete later
-// const bookingsList = [
-//   {
-//     startDate: "20.03.2025",
-//     endDate: "21.03.2025",
-//     carBrand: "Toyota",
-//     carModel: "Corolla",
-//     status: false,
-//     totalRentCost: 50,
-//     renterFirstName: "Masha",
-//     renterLastName: "Neshyna",
-//     updateBookingDate: "19.03.2025",
-//     createBookingDate: "18.03.2025",
-//     id: 1,
-//   },
-//   {
-//     startDate: "24.03.2025",
-//     endDate: "25.03.2025",
-//     carBrand: "Ford",
-//     carModel: "Focus",
-//     status: true,
-//     totalRentCost: 55,
-//     renterFirstName: "Anna",
-//     renterLastName: "Smith",
-//     updateBookingDate: "23.03.2025",
-//     createBookingDate: "22.03.2025",
-//     id: 2,
-//   },
-//   {
-//     startDate: "22.03.2025",
-//     endDate: "23.03.2025",
-//     carBrand: "Honda",
-//     carModel: "Civic",
-//     status: true,
-//     totalRentCost: 60,
-//     renterFirstName: "John",
-//     renterLastName: "Doe",
-//     updateBookingDate: "21.03.2025",
-//     createBookingDate: "20.03.2025",
-//     id: 3,
-//   },
-// ]
+const bookingsList = [
+  {
+    rentalStartDate: "2025-04-02",
+    rentalEndDate: "2025-04-04",
+    // carBrand: "Toyota",
+    // carModel: "Corolla",
+    bookingStatus: "ACTIVE",
+    totalPrice: 50,
+    // renterFirstName: "Masha",
+    // renterLastName: "Neshyna",
+    updateBookingDate: "19.03.2025",
+    createBookingDate: "18.03.2025",
+    id: "1",
+    carId: 1,
+    customerId: 1,
+  },
+  {
+    rentalStartDate: " 2025-04-04",
+    rentalEndDate: "2025-04-04",
+    // carBrand: "Ford",
+    // carModel: "Focus",
+    bookingStatus: "PENDING",
+    totalPrice: 55,
+    // renterFirstName: "Anna",
+    // renterLastName: "Smith",
+    updateBookingDate: "23.03.2025",
+    createBookingDate: "22.03.2025",
+    id: "2",
+    carId: 2,
+    customerId: 2,
+  },
+  {
+    rentalStartDate: "2025-04-04",
+    rentalEndDate: "2025-04-04",
+    // carBrand: "Honda",
+    // carModel: "Civic",
+    bookingStatus: "CANCELLED_BY_USER",
+    totalPrice: 60,
+    // renterFirstName: "John",
+    // renterLastName: "Doe",
+    updateBookingDate: "21.03.2025",
+    createBookingDate: "20.03.2025",
+    id: "3",
+    carId: 3,
+    customerId: 3,
+  },
+]
 
-// const customersList = [
-//   {
-//     firstName: "Masha",
-//     lastName: "Neshyna",
-//     email: "test@email.com",
-//     drivingLicense: "12345QWERTY",
-//     bornDate: "11.11.1111",
-//   },
-//   {
-//     firstName: "Lena",
-//     lastName: "Lena",
-//     email: "test@email.com",
-//     drivingLicense: "12345QWERTY",
-//     bornDate: "22.33.4444",
-//   },
-//   {
-//     firstName: "Nastia",
-//     lastName: "Nastia",
-//     email: "test@email.com",
-//     drivingLicense: "12345QWERTY",
-//     bornDate: "55.66.7777",
-//   },
-// ]
+const customersList = [
+  {
+    firstName: "Masha",
+    lastName: "Neshyna",
+    email: "test@email.com",
+    password: "435rydchgv76",
+    role: "Admin",
+    id: "1",
+    isActive: true
+  },
+  {
+    firstName: "Lena",
+    lastName: "Lena",
+    email: "test@email.com",
+    role: "Customer",
+    id: "2",
+    password: "435rydchgv76",
+    isActive: false
+  },
+  {
+    firstName: "Nastia",
+    lastName: "Nastia",
+    email: "test@email.com",
+    role: "Customer",
+    id: "3",
+    password: "435rydchgv76",
+    isActive: true
+  },
+]
 
-// const carsList = [
-//   {
-//     brand: "Toyota",
-//     model: "Corolla",
-//     year: 2022,
-//     type: "Sedan",
-//     fuelType: "Gasoline",
-//     transmissionType: "Automatic",
-//     dayRentalPrice: 60,
-//     carImage: CarImg,
-//     onMoreDetails: () => {},
-//     onRent: () => {},
-//     id: 1,
-//   },
-//   {
-//     brand: "BMW",
-//     model: "BMW",
-//     year: 2021,
-//     type: "Sedan",
-//     fuelType: "Gasoline",
-//     transmissionType: "Automatic",
-//     dayRentalPrice: 30,
-//     carImage: CarImg,
-//     onMoreDetails: () => {},
-//     onRent: () => {},
-//     id: 2,
-//   },
-//   {
-//     brand: "Honda",
-//     model: "Honda",
-//     year: 2020,
-//     type: "Sedan",
-//     fuelType: "Gasoline",
-//     transmissionType: "Automatic",
-//     dayRentalPrice: 40,
-//     carImage: CarImg,
-//     onMoreDetails: () => {},
-//     onRent: () => {},
-//     id: 3,
-//   },
-// ]
+const carsList = [
+  {
+    brand: "Toyota",
+    model: "Corolla",
+    year: 2022,
+    type: "Sedan",
+    fuelType: "Gasoline",
+    transmissionType: "Automatic",
+    dayRentalPrice: 60,
+    image: CarImg,
+    id: "1",
+    carStatus: "Available",
+  },
+  {
+    brand: "BMW",
+    model: "BMW",
+    year: 2021,
+    type: "Sedan",
+    fuelType: "Gasoline",
+    transmissionType: "Automatic",
+    dayRentalPrice: 30,
+    image: CarImg,
+    id: "2",
+    carStatus: "",
+  },
+  {
+    brand: "Honda",
+    model: "Honda",
+    year: 2020,
+    type: "Sedan",
+    fuelType: "Gasoline",
+    transmissionType: "Automatic",
+    dayRentalPrice: 40,
+    image: CarImg,
+    id: "3",
+    carStatus: "Not Available",
+  },
+]
 
 interface CarListProps {
-  cars: CarCardProps[];
+  cars: CarCardProps[]
 }
 
 function AdminPage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const [activeComponent, setActiveComponent] = useState("carsList"); // Состояние для выбора компонента
+  const [activeComponent, setActiveComponent] = useState("carsList")
 
-  const showCustomersList = () => setActiveComponent("customersList");
-  const showBookingsList = () => setActiveComponent("bookingsList");
-  const showCarsList = () => setActiveComponent("carsList");
-  const showAddNewCarForm = () => setActiveComponent("AddNewCarForm");
+  const showCustomersList = () => setActiveComponent("customersList")
+  const showBookingsList = () => setActiveComponent("bookingsList")
+  const showCarsList = () => setActiveComponent("carsList")
+  const showAddNewCarForm = () => setActiveComponent("AddNewCarForm")
 
-  //const [carArray, setCarArray] = useState(carsList)
-  const [carArray, setCarArray] = useState<CarCardProps[]>([]);
+  const [carArray, setCarArray] = useState(carsList)
+  // const [carArray, setCarArray] = useState<CarCardProps[]>([])
+  //now tested with test data car list
+  const [bookings, setBookings] = useState(bookingsList)
+  useEffect(() => {
+    setBookings
+  })
+  //delete later
+  const [users, setUsers] = useState(customersList)
+  useEffect(()=>{setUsers})
 
+  // delete fetch later and replace to slice dispatch or sloce selector
   async function fetchCars() {
-    const response = await axios.get("/api/cars");
-    setCarArray(response.data);
+    const response = await axios.get("/api/cars")
+    setCarArray(response.data)
   }
   //add try catch
   useEffect(() => {
-    fetchCars();
-  }, []);
+    fetchCars()
+  }, [])
 
-
-  const handleEditCar = (carId: string) => {
-    console.log("Edit car with Id:", carId);
-    navigate(`/edit-car/${carId}`);
-  };
+  const handleEditCar = (carId: string, carDetails: CarCardProps) => {
+    console.log("Edit car with Id:", carId)
+    navigate(`/edit-car/${carId}`, { state: { carDetails } })
+  }
 
   const handleDeleteCar = (carId: string) => {
-    console.log("Delete car with Id:", carId);
-    setCarArray(prevCarArray => prevCarArray.filter(car => car.id !== carId));
-  };
+    console.log("Delete car with Id:", carId)
+    setCarArray(prevCarArray => prevCarArray.filter(car => car.id !== carId))
+    //TODO add dispatch
+  }
 
-  const bookingList = useAppSelector(bookingSelectors.selectBookingList);
+  //const bookingList = useAppSelector(bookingSelectors.selectBookingList)
 
-  useEffect(() => { }
-    , [bookingList]);
-
-
+  //useEffect(() => {}, [bookingList])
 
   return (
     <div className="flex flex-row w-auto bg-gray-100 justify-center rounded-lg">
@@ -208,64 +221,66 @@ function AdminPage() {
           </nav>
         </div>
         {/* filter in case of carsList */}
-        {/* <div>{activeComponent === "carsList" && <CarFilter />}</div>
-      </div> */}
+        {/* <div>{activeComponent === "carsList" && <CarFilter />}</div> */}
+      </div>
 
-        {/* right block with container for components */}
-        <div className="flex flex-col w-3/4 m-6">
-          {activeComponent === "customersList" && (
-            <CustomersList />
-          )}
+      {/* right block with container for components */}
+      <div className="flex flex-col w-3/4 m-6">
+        {activeComponent === "customersList" && (
+          <CustomersList users={users} />
+        )}
 
-          {activeComponent === "bookingsList" && (
-            <BookingsListComponent bookings={bookingList} />
-          )}
+        {activeComponent === "bookingsList" && (
+          <BookingsListComponent bookings={bookings} />
+          //<BookingsListComponent bookings={bookingsList} />
+        )}
 
-          {activeComponent === "AddNewCarForm" && <AddNewCarForm />}
+        {activeComponent === "AddNewCarForm" && <AddNewCarForm />}
 
-          {activeComponent === "carsList" && (
-            <div className="w-auto h-screen overflow-y-auto space-y-6 p-4">
-              {carArray && carArray.length > 0 ? (
-                carArray.map((car) => (
-                  <div key={car.id}>
-                    <CarCard
-                      image={car.image}
-                      brand={car.brand}
-                      model={car.model}
-                      dayRentalPrice={car.dayRentalPrice}
-                      transmissionType={car.transmissionType}
-                      year={car.year}
-                      fuelType={car.fuelType}
-                      onMoreDetails={() => { }}
-                      onRent={() => { }}
-                      id={car.id} type={""} />
+        {activeComponent === "carsList" && (
+          <div className="w-auto h-screen overflow-y-auto space-y-6 p-4">
+            {carArray && carArray.length > 0 ? (
+              carArray.map(car => (
+                <div key={car.id}>
+                  <CarCard
+                    image={car.image}
+                    brand={car.brand}
+                    model={car.model}
+                    dayRentalPrice={car.dayRentalPrice}
+                    transmissionType={car.transmissionType}
+                    year={car.year}
+                    fuelType={car.fuelType}
+                    // onMoreDetails={() => {}}
+                    // onRent={() => {}}
+                    id={car.id}
+                    type={""}
+                  />
 
-                    <div className="m-4 flex flex-row gap-4 justify-end">
-                      <div className="">
-                        <Button
-                          type="button"
-                          onClick={() => handleEditCar(car.id)}
-                          name="Edit"
-                        />
-                      </div>
-                      <div>
-                        <Button
-                          type="button"
-                          onClick={() => handleDeleteCar(car.id)}
-                          name="Delete"
-                        />
-                      </div>
+                  <div className="m-4 flex flex-row gap-4 justify-end">
+                    <div className="">
+                      <Button
+                        type="button"
+                        onClick={() => handleEditCar(car.id, car)}
+                        name="Edit"
+                      />
+                    </div>
+                    <div>
+                      <Button
+                        type="button"
+                        onClick={() => handleDeleteCar(car.id)}
+                        name="Delete"
+                      />
                     </div>
                   </div>
-                ))
-              ) : (
-                <p>No cars available</p>
-              )}
-            </div>
-          )}
-        </div>
+                </div>
+              ))
+            ) : (
+              <p>No cars available</p>
+            )}
+          </div>
+        )}
       </div>
     </div>
-  );
+  )
 }
-export default AdminPage;
+export default AdminPage

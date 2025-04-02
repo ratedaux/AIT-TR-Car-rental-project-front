@@ -72,9 +72,7 @@ function Input({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-
           autoComplete={autoComplete}
-
           readOnly={readOnly}
           disabled={disabled}
 
