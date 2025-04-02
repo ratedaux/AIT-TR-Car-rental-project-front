@@ -89,6 +89,96 @@ export const userSlice = createAppSlice({
         },
       },
     ),
+    updateUser: create.asyncThunk(
+      async (
+        { id, updatedData }: { id: string; updatedData: CustomerProps },
+        thunkApi,
+      ) => {
+        try {
+          const result = await axios.put(
+            `/api/customers/update/${id}`,
+            updatedData,
+          )
+          return result.data
+        } catch (error) {
+          return thunkApi.rejectWithValue(error)
+        }
+      },
+      {
+        pending: (state: UserSliceState) => {
+          state.status = "loading"
+          state.error = undefined
+        },
+        fulfilled: (state: UserSliceState, action: any) => {
+          state.userData = action.payload.updatedData
+          state.status = "success"
+        },
+        rejected: (state: UserSliceState, action: any) => {
+          state.error = action.payload
+          state.status = "error"
+        },
+      },
+    ),
+    deleteUser: create.asyncThunk(
+      async (
+        { id, updatedData }: { id: string; updatedData: CustomerProps },
+        thunkApi,
+      ) => {
+        try {
+          const result = await axios.put(
+            `/api/customers/delete/${id}`,
+            updatedData,
+          )
+          return result.data
+        } catch (error) {
+          return thunkApi.rejectWithValue(error)
+        }
+      },
+      {
+        pending: (state: UserSliceState) => {
+          state.status = "loading"
+          state.error = undefined
+        },
+        fulfilled: (state: UserSliceState, action: any) => {
+          state.userData = action.payload.updatedData
+          state.status = "success"
+        },
+        rejected: (state: UserSliceState, action: any) => {
+          state.error = action.payload
+          state.status = "error"
+        },
+      },
+    ),
+    restoreUser: create.asyncThunk(
+      async (
+        { id, updatedData }: { id: string; updatedData: CustomerProps },
+        thunkApi,
+      ) => {
+        try {
+          const result = await axios.put(
+            `/api/customers/restore/${id}`,
+            updatedData,
+          )
+          return result.data
+        } catch (error) {
+          return thunkApi.rejectWithValue(error)
+        }
+      },
+      {
+        pending: (state: UserSliceState) => {
+          state.status = "loading"
+          state.error = undefined
+        },
+        fulfilled: (state: UserSliceState, action: any) => {
+          state.userData = action.payload.updatedData
+          state.status = "success"
+        },
+        rejected: (state: UserSliceState, action: any) => {
+          state.error = action.payload
+          state.status = "error"
+        },
+      },
+    ),
   }),
 
   selectors: {
