@@ -2,17 +2,16 @@ import Button from "components/Button/Button"
 import Input from "components/Input/Input"
 import * as Yup from "yup"
 import { useFormik } from "formik"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { EditUserFormProps } from "./types"
+import { useLocation, useNavigate } from "react-router-dom"
+import { CustomerProps } from "components/CustomerComponent/types"
 
-const testCustomer = {
-  firstName: "Masha",
-  lastName: "Neshyna",
-  email: "test@email.com",
-  password: "1111",
-}
-
-function EditUserForm() {
+const EditUserForm: React.FC<EditUserFormProps> = ({customer}) => {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { customerData } = location.state || {}
+  
   const validationSchema = Yup.object({
     firstName: Yup.string().required("First name"),
     lastName: Yup.string().required("Last name is required"),
@@ -20,29 +19,32 @@ function EditUserForm() {
     password: Yup.string().required("Password is required"),
   })
 
+  const [formData, setFormData] = useState<CustomerProps>(customerData)
+
+  useEffect(() => {
+    if (customerData) {
+      setFormData(customerData)
+    }
+  }, [customer])
+
   const formik = useFormik({
-    initialValues: testCustomer,
+    initialValues: formData,
     validationSchema: validationSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values: EditUserFormProps) => {
+    onSubmit: (values: CustomerProps) => {
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
-
+      
       alert("The user is edited")
-      //navigate("/admin")
+      // resetForm()
+      navigate("/account")
     },
   })
 
-  const [isVisible, setIsVisible] = useState(true)
-
   // Handle close button click
   const handleClose = () => {
-    setIsVisible(false)
-  }
-
-  if (!isVisible) {
-    return null
+    navigate("/admin")
   }
 
   return (
@@ -94,7 +96,7 @@ function EditUserForm() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.password}
-            
+            readOnly={true}
           />
         </div>
         <div className="w-auto">

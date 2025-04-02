@@ -168,6 +168,7 @@ import transmissionIcon from "assets/CarImages/transmission-icon.png";
 import yearIcon from "assets/CarImages/year-icon.png";
 import euroIcon from "assets/CarImages/euro-icon.png";
 import carIcon from "assets/CarImages/car-icon.jpg";
+import { useNavigate } from "react-router-dom";
 
 interface CarComponentProps {
   car: CarCardProps;
@@ -178,6 +179,17 @@ function capitalizeFirstLetter(string: string) {
 }
 
 function CarComponent({ car }: CarComponentProps) {
+  const navigate = useNavigate()
+
+  const handleEditCar = (carId: string, carDetails: CarCardProps) => {
+    console.log("Edit car with Id:", carId)
+    navigate(`/edit-car/${carId}`, { state: { carDetails } })
+  }
+
+  const handleRentCar = (carId: string) => {
+    navigate(`/rent-car/${carId}`)
+  }
+  
   return (
 
     <div className="relative flex flex-col md:flex-row w-full max-w-4xl justify-center rounded-lg bg-white shadow-lg overflow-hidden">
@@ -272,8 +284,12 @@ function CarComponent({ car }: CarComponentProps) {
 
         {/* Action Buttons */}
         <div className="flex gap-4 flex-wrap">
-          <Button name="Rent" type="button" onClick={() => { }} />
-          <Button name="Edit" type="button" onClick={() => { }} />
+        <Button name="Rent" type="button" onClick={() => handleRentCar(car.id)} />
+        </div>
+
+        {/* Edit car only for Admin */}
+        <div className="w-auto">
+          <Button name="Edit" type="button" onClick={() => handleEditCar(car.id,car)} />
         </div>
       </div>
     </div>
