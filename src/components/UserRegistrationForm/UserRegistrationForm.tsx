@@ -1,7 +1,7 @@
 import Button from "components/Button/Button"
 import Input from "components/Input/Input"
 import * as Yup from "yup"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import imgRegistrationForm from "../../assets/imgRegistrationForm.jpg"
 import { useFormik } from "formik"
 import { RegisrtationFormValues } from "./types"
@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "store/hooks"
 import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 import NotificationMessage from "components/Notification/Notification"
 import Loader from "components/Loader/Loader"
+import { FaEye, FaEyeSlash } from "react-icons/fa"
 
 type UserRegistrationFormProps = {
   img?: boolean
@@ -67,6 +68,8 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
     },
   })
 
+  const [showPassword, setShowPassword] = useState(false)
+
   return (
     <div className="flex justify-center items-center -mt-4 px-4 sm:px-6 lg:px-8">
       <div className="w-[300px] sm:w-[300px] lg:w-[350px] xl:w-[400px] rounded-lg p-2 bg-white lg:bg-transparent">
@@ -74,12 +77,16 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
           Create your account
         </h2>
         <form onSubmit={formik.handleSubmit} className="mt-12 relative">
-        {(registerError || registerMessage) && (
-        <div className="absolute top-64 left-0 w-full flex justify-center z-50">
-          {registerError && <NotificationMessage type="error" message={registerError} />}
-          {registerMessage && <NotificationMessage type="success" message={registerMessage} />}
-        </div>
-      )}
+          {(registerError || registerMessage) && (
+            <div className="absolute top-64 left-0 w-full flex justify-center z-50">
+              {registerError && (
+                <NotificationMessage type="error" message={registerError} />
+              )}
+              {registerMessage && (
+                <NotificationMessage type="success" message={registerMessage} />
+              )}
+            </div>
+          )}
           <div className="grid gap-3 mb-6 md:grid-cols-2">
             <div className="relative">
               <Input
@@ -131,13 +138,25 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
           <div className="relative mb-8">
             <Input
               name="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
               value={formik.values.password}
               label="Password"
               onChange={formik.handleChange}
               autoComplete="current-password"
             />
+
+            <div
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 translate-y-[-32px] cursor-pointer"
+            >
+              {showPassword ? (
+                <FaEyeSlash className="h-5 w-5 text-gray-500" />
+              ) : (
+                <FaEye className="h-5 w-5 text-gray-500" />
+              )}
+            </div>
+
             <div className="text-red-500 text-sm mb-4 h-6">
               {formik.errors.password && formik.touched.password
                 ? formik.errors.password
