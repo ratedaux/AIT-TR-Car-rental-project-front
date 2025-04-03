@@ -59,7 +59,7 @@ export const userSlice = createAppSlice({
       },
       {
         pending: (state: UserSliceState) => {
-          ;(state.userData = {
+          (state.userData = {
             id: "",
             firstName: "",
             lastName: "",
@@ -114,7 +114,7 @@ export const userSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: UserSliceState, action: any) => {
-          state.userData = action.payload.updatedData
+          state.userData = action.payload.dataToUpdate
           state.status = "success"
         },
         rejected: (state: UserSliceState, action: any) => {
