@@ -4,7 +4,7 @@ export interface RentFormValues {
   rentalStartDate: string
   rentalEndDate: string
   totalPrice: number
-  is18: boolean
+  is18?: boolean
 }
 
 export interface BookingFormProps {
