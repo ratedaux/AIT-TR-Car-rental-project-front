@@ -39,7 +39,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
       alert("The user is edited")
-      navigate("/account")
+      navigate("/")
       dispatch(
         userActions.updateUser({
           id: customer.id,
@@ -51,7 +51,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
 
   // Handle close button click
   const handleClose = () => {
-    navigate("/admin")
+    navigate("/")
   }
 
   return (

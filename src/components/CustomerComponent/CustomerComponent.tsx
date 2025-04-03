@@ -3,6 +3,8 @@ import { CustomerProps } from "./types"
 import { useNavigate } from "react-router-dom"
 import { useAppDispatch } from "store/hooks"
 import { userActions } from "store/redux/UserSlice/UserSlise"
+import { authSelectors } from "store/redux/AuthSlice/authSlice"
+import { useSelector } from "react-redux"
 
 export interface CustomerDataProps {
   customer?: CustomerProps
@@ -11,6 +13,7 @@ export interface CustomerDataProps {
 function CustomerComponent({ customer }: CustomerDataProps) {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const user = useSelector(authSelectors.userData)
 
   const handleEditCustomer = (
     customerId: string,
@@ -69,26 +72,21 @@ function CustomerComponent({ customer }: CustomerDataProps) {
           />
           {/* this button must be available only for admin */}
         </div>
-        {customer.isActive && (
-          <div>
+
+        <div>
+          {user?.role === "ROLE_ADMIN" && (
             <Button
               type="button"
-              customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
-              onClick={() => handleDeleteCustomer(customer.id)}
-              name="Deactivate"
+              customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"
+              onClick={() =>
+                customer.isActive
+                  ? handleDeleteCustomer(customer.id)
+                  : handleRestoreCustomer(customer.id)
+              }
+              name={customer.isActive ? "Deactivate" : "Restore"}
             />
-          </div>
-        )}
-        {!customer.isActive && (
-          <div>
-            <Button
-              type="button"
-              customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
-              onClick={() => handleRestoreCustomer(customer.id)}
-              name="Restore"
-            />
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   )
