@@ -12,6 +12,7 @@ import 'rc-slider/assets/index.css';
 import { bodyTypesSelectors, bodyTypesActions } from "store/redux/BodyTypeSlice/bodyTypeSlice";
 import { brandsSelectors, brandsActions } from "store/redux/BrandsSlice/brandsSlice";
 import Notification1 from "components/Notification/Notification1";
+import Loader from "components/Loader/Loader";
 
 export default function FilterCars() {
     const dispatch = useAppDispatch();
@@ -22,6 +23,7 @@ export default function FilterCars() {
 
     const [showFilters, setShowFilters] = useState(false);
     const [showNotification, setShowNotification] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     //const [priceRange, setPriceRange] = useState<[number, number]>([20, 100]);
     const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
     const [selectedBodyTypes, setSelectedBodyTypes] = useState<string[]>([]);
@@ -112,14 +114,16 @@ export default function FilterCars() {
             }));
             dispatch(rentCarActions.setSelectedDates({
                 startDate: values.startDateTime,
-                endDate: values.endDateTime
+                endDate: values.endDateTime,
             }));
             setShowFilters(true);
         }
     });
 
+
     useEffect(() => {
         if (formik.values.startDateTime && formik.values.endDateTime) {
+            // setIsLoading(true);
             dispatch(rentCarActions.fetchCars({
                 startDateTime: formik.values.startDateTime,
                 endDateTime: formik.values.endDateTime,
@@ -130,6 +134,7 @@ export default function FilterCars() {
                 fuelTypes: selectedFuelTypes,
                 transmissionTypes: selectedTransmissionTypes
             })).then((action) => {
+                setIsLoading(false);
                 if (Array.isArray(action.payload) && action.payload.length === 0) {
                     setShowNotification(true);
                 }
@@ -152,7 +157,6 @@ export default function FilterCars() {
         setSelectedFuelTypes([]);
         setSelectedTransmissionTypes([]),
             dispatch(rentCarActions.setPriceRange([20, 100]));
-        //setPriceRange([20, 100]);
     }, [formik.values.startDateTime, formik.values.endDateTime]);
 
     const today = new Date().toISOString().split("T")[0];
@@ -314,6 +318,7 @@ export default function FilterCars() {
                     onClose={handleNotificationClose}
                 />
             )}
+            {isLoading && <Loader />}
         </div>
     );
 }

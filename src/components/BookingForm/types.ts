@@ -1,4 +1,4 @@
-import { CarCardProps } from "components/CarCard/types";
+import { CarCardProps } from "components/CarCard/types"
 
 export interface RentFormValues {
   rentalStartDate: string
@@ -7,6 +7,6 @@ export interface RentFormValues {
   is18: boolean
 }
 
-export interface BookingFormProps{
-  car: CarCardProps;
+export interface BookingFormProps {
+  car: CarCardProps
 }

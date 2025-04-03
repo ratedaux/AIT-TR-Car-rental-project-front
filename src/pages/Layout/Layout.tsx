@@ -9,14 +9,14 @@ function Layout({ children }: LayoutProps) {
     const isHomePage = location.pathname === '/';
 
     return (
-        <div className="flex flex-col min-h-screen w-full bg-gray-100 overflow-x-hidden">
+        <div className="flex flex-col min-h-screen w-full bg-gray-100 ">
             {/* Header */}
             <header className="relative bg-cover bg-center h-64 shadow-md border-b-[7px] border-red-600"
                 style={{
                     backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(${mainImg})`,
                     backgroundPosition: 'center 75%'
                 }}>
-                <div className="container mx-auto px-4 py-3relative z-10">
+                <div className="container mx-auto px-4 py-3 relative z-10">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
                             <Link to="/" className="flex items-center">
@@ -50,13 +50,13 @@ function Layout({ children }: LayoutProps) {
             </header>
 
             {/* Main Content */}
-            <main className="flex-grow container mx-auto px-4 py-8">
+            <main className="flex-1 container mx-auto px-4 py-8">
                 {children}
             </main>
 
             {/* Footer */}
-            <footer className="bg-gray-800 text-white">
-                <div className="container mx-auto px-4 py-6">
+            <footer className="bg-gray-800 text-white mt-auto">
+                <div className="container mx-auto px-4 py-4">
                     <div className="flex justify-between items-center">
                         <div className="space-x-6">
                             <Link to="/about" className=" text-white hover:text-gray-300 hover:underline transition-colors">

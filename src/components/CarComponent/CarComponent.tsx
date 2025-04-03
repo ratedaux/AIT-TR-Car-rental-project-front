@@ -21,12 +21,12 @@ function CarComponent({ car }: CarComponentProps) {
     navigate(`/edit-car/${carId}`, { state: { carDetails } });
   };
 
-  const handleRentCar = (carId: string) => {
-    navigate(`/rent-car/${carId}`);
+  const handleRentCar = () => {
+    navigate(`/rent-car/${car.id}`, { state: { car } });
   };
 
   return (
-    <div className="relative flex flex-col md:flex-row w-full max-w-4xl justify-center rounded-lg bg-white shadow-lg overflow-hidden">
+    <div className="relative flex flex-col md:flex-row w-full max-w-7xl justify-center rounded-lg bg-white shadow-lg overflow-hidden">
       {/* Image Block */}
       <div className="md:w-2/3 flex flex-col justify-between p-4">
         <img
@@ -67,16 +67,16 @@ function CarComponent({ car }: CarComponentProps) {
       {/* Info Block */}
       <div className="flex flex-col md:w-1/3 p-4 gap-4">
         {/* Description Block */}
-        <div className="bg-gray-100 p-2 rounded-lg shadow-md">
-          <h2 className="text-lg font-bold text-gray-800 mb-2 border-b border-red-600">Description</h2>
-          <div className="space-y-1">
-            <div className="flex justify-between text-sm">
-              <span className="font-semibold">Brand:</span>
-              <span>{car?.brand}</span>
+        <div className="bg-gray-100 p-3 rounded-lg shadow-md">
+          <h2 className="text-lg font-bold text-gray-800 mb-3 border-b border-red-600">Description</h2>
+          <div className="space-y-2">
+            <div className="flex flex-col sm:flex-row sm:justify-between text-sm">
+              <span className="font-semibold mb-1 sm:mb-0">Brand:</span>
+              <span className="break-words">{car?.brand}</span>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="font-semibold">Model:</span>
-              <span>{car?.model}</span>
+            <div className="flex flex-col sm:flex-row sm:justify-between text-sm">
+              <span className="font-semibold mb-1 sm:mb-0">Model:</span>
+              <span className="break-words">{car?.model}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="font-semibold">Year:</span>
@@ -90,9 +90,9 @@ function CarComponent({ car }: CarComponentProps) {
               <span className="font-semibold">Fuel:</span>
               <span>{capitalizeFirstLetter(car?.fuelType)}</span>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="font-semibold">Transmission:</span>
-              <span>{capitalizeFirstLetter(car?.transmissionType)}</span>
+            <div className="flex flex-col sm:flex-row sm:justify-between text-sm">
+              <span className="font-semibold mb-1 sm:mb-0">Transmission:</span>
+              <span className="break-words">{capitalizeFirstLetter(car?.transmissionType)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="font-semibold">Daily price:</span>
@@ -113,7 +113,7 @@ function CarComponent({ car }: CarComponentProps) {
 
         {/* Action Buttons */}
         <div className="flex gap-2 flex-wrap">
-          <Button name="Rent" type="button" onClick={() => handleRentCar(car.id)} />
+          <Button name="Rent" type="button" onClick={() => handleRentCar()} />
         </div>
 
         {/* Edit car only for Admin */}
