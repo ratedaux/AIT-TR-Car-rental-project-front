@@ -20,8 +20,8 @@ function CarCard({
 
     const navigate = useNavigate();
 
-    const handleRentCar = (carId: string) => {
-        navigate(`/rent-car/${carId}`);
+    const handleRentCar = () => {
+        navigate(`/rent-car/${id}`, { state: { car: { id, brand, model, dayRentalPrice, fuelType, transmissionType, image, type, carStatus, year } } });
     };
 
     const handleMoreDetailsClick = () => {
@@ -91,7 +91,7 @@ function CarCard({
                             <Button
                                 name="RENT"
                                 customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
-                                onClick={() => handleRentCar(id)}
+                                onClick={() => handleRentCar()}
                             />
                         </div>
                     </div>

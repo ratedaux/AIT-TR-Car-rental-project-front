@@ -16,4 +16,6 @@ export interface RentCarSliceState {
   status: "loading" | "success" | "default" | "error"
   error: any
   priceRange: [number, number]
+  selectedStartDate: string
+  selectedEndDate: string
 }
