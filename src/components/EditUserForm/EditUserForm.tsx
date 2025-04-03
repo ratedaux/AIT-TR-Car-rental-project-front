@@ -19,7 +19,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
     firstName: Yup.string().required("First name"),
     lastName: Yup.string().required("Last name is required"),
     email: Yup.string().required("Email is required"),
-    password: Yup.string().required("Password is required"),
+   // password: Yup.string().required("Password is required"),
   })
 
   const [formData, setFormData] = useState<CustomerProps>(customerData)
@@ -92,7 +92,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
             errorMessage={formik.errors.email}
           />
 
-          <Input
+          {/* <Input
             name="password"
             type="password"
             label="Password"
@@ -102,7 +102,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.password}
             readOnly={true}
-          />
+          /> */}
         </div>
         <div className="w-auto">
           <Button name="Apply" type="submit" />
