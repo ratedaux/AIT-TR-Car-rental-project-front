@@ -9,7 +9,8 @@ import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import Loader from "components/Loader/Loader"
 import NotificationMessage from "components/Notification/Notification"
-
+import { useState } from "react"
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 /* 
 1
@@ -82,6 +83,8 @@ function Login({ showHeader = true, img = true }: LoginProps) {
     },
   })
 
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <div className="flex justify-center items-center -mt-4 px-4 sm:px-6 lg:px-8">
       <div className="w-full sm:w-[250px] lg:w-[300px] xl:w-[350px] max-w-full rounded-lg p-4 bg-white lg:bg-transparent">
@@ -126,13 +129,26 @@ function Login({ showHeader = true, img = true }: LoginProps) {
             <div className="relative mb-6 mt-8 pb-4 w-full">
               <Input
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
                 value={formik.values.password}
                 label="Password"
                 onChange={formik.handleChange}
                 autoComplete="current-password"
               />
+
+                <div
+                onClick={() => setShowPassword(!showPassword)} 
+                className="absolute right-3 top-1/2 translate-y-[-26px] cursor-pointer"
+              >
+                {showPassword ? (
+                  /* EyeOffIcon */
+                  <FaEyeSlash className="h-5 w-5 text-gray-500" />
+                ) : (
+                  <FaEye className="h-5 w-5 text-gray-500" />
+                )}
+              </div>
+
               <div className="absolute text-red-500 text-xs sm:text-sm mt-1 left-0 bottom-[-20px]">
                 {formik.errors.password && formik.touched.password
                   ? formik.errors.password
