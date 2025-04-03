@@ -1,17 +1,17 @@
-
 import { BookingSliceState } from "./types"
 import axios from "axios"
 import { BookingProps } from "components/BookingComponent/types"
+import { RentFormValues } from "components/BookingForm/types"
 import { createAppSlice } from "store/createAppSlice"
 
 const bookingInitialState: BookingSliceState = {
   bookingList: [],
   bookingListByUserId: [],
-  bookingData:  {
+  bookingData: {
     rentalStartDate: "",
     rentalEndDate: "",
     carId: "",
-    carStatus:"",
+    carStatus: "",
     customerId: "",
     bookingStatus: "",
     totalPrice: 0,
@@ -76,11 +76,9 @@ export const bookingSlice = createAppSlice({
       },
     ),
     getBookingsByUser: create.asyncThunk(
-      async (userId, thunkApi) => {
+      async (_, thunkApi) => {
         try {
-          const result = await axios.get(
-            `/api/customers/all-my-bookings`,
-          )
+          const result = await axios.get(`/api/customers/all-my-bookings`)
           return result.data
         } catch (error) {
           return thunkApi.rejectWithValue(error)
@@ -129,13 +127,16 @@ export const bookingSlice = createAppSlice({
     ),
     extendBooking: create.asyncThunk(
       async (
-        { id, updatedData }: { id: string; updatedData: BookingProps },
+        {
+          id,
+          bookingDataToDispatch,
+        }: { id: string; bookingDataToDispatch: BookingProps },
         thunkApi,
       ) => {
         try {
           const result = await axios.put(
             `/api/bookings/extend/${id}`,
-            updatedData
+            bookingDataToDispatch,
           )
           return result.data
         } catch (error) {
@@ -148,7 +149,7 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingData = action.payload.updatedData
+          state.bookingData = action.payload.bookingDataToDispatch
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
@@ -157,17 +158,10 @@ export const bookingSlice = createAppSlice({
         },
       },
     ),
-
     cancelBooking: create.asyncThunk(
-      async (
-        { id, updatedData }: { id: string; updatedData: BookingProps },
-        thunkApi,
-      ) => {
+      async (id, thunkApi) => {
         try {
-          const result = await axios.put(
-            `/api/bookings/cancel/${id}`,
-            updatedData,
-          )
+          const result = await axios.put(`/api/bookings/cancel/${id}`)
           return result.data
         } catch (error) {
           return thunkApi.rejectWithValue(error)
@@ -179,7 +173,10 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingData = action.payload.updatedData
+          state.bookingData = {
+            ...state.bookingData,
+            bookingStatus: "CANCELLED_BY_USER",
+          }
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
@@ -188,17 +185,10 @@ export const bookingSlice = createAppSlice({
         },
       },
     ),
-
-    restoreBooking: create.asyncThunk(
-      async (
-        { id, updatedData }: { id: string; updatedData: BookingProps },
-        thunkApi,
-      ) => {
+    activateBooking: create.asyncThunk(
+      async (id, thunkApi) => {
         try {
-          const result = await axios.put(
-            `/api/bookings/restore/${id}`,
-            updatedData,
-          )
+          const result = await axios.put(`/api/bookings/activate/${id}`)
           return result.data
         } catch (error) {
           return thunkApi.rejectWithValue(error)
@@ -210,7 +200,10 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingData = action.payload.updatedData
+          state.bookingData = {
+            ...state.bookingData,
+            bookingStatus: "RENTED",
+          }
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
@@ -219,13 +212,39 @@ export const bookingSlice = createAppSlice({
         },
       },
     ),
-
+    closeBooking: create.asyncThunk(
+      async (id, thunkApi) => {
+        try {
+          const result = await axios.put(`/api/close/cancel/${id}`)
+          return result.data
+        } catch (error) {
+          return thunkApi.rejectWithValue(error)
+        }
+      },
+      {
+        pending: (state: BookingSliceState) => {
+          state.status = "loading"
+          state.error = undefined
+        },
+        fulfilled: (state: BookingSliceState, action: any) => {
+          state.bookingData = {
+            ...state.bookingData,
+            bookingStatus: "CLOSED_BY_ADMIN",
+          }
+          state.status = "success"
+        },
+        rejected: (state: BookingSliceState, action: any) => {
+          state.error = action.payload
+          state.status = "error"
+        },
+      },
+    ),
     createBooking: create.asyncThunk(
-      async (values, thunkApi) => {
+      async (bookingDataForDispatch: RentFormValues, thunkApi) => {
         try {
           const result = await axios.post(
             `/api/bookings`,
-            values,
+            bookingDataForDispatch,
           )
           return result.data
         } catch (error) {
@@ -238,7 +257,7 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingData = action.payload.values
+          state.bookingData = action.payload.bookingDataForDispatch
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
@@ -247,7 +266,6 @@ export const bookingSlice = createAppSlice({
         },
       },
     ),
-
   }),
 
   selectors: {

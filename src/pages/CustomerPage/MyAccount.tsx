@@ -3,116 +3,35 @@ import CustomerComponent from "components/CustomerComponent/CustomerComponent"
 import Button from "components/Button/Button"
 import { useNavigate } from "react-router-dom"
 import BookingsListComponent from "components/BookingsList/BookingsListComponent"
-import { BookingsListProps } from "components/BookingsList/types"
-import { bookingActions, bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
+import {
+  bookingActions,
+  bookingSelectors,
+} from "store/redux/BookingSlice/BookingSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import { authSelectors } from "store/redux/AuthSlice/authSlice"
-
-
-// example booking data delete later
-// const bookingData = [
-//   {
-//     startDate: "20.03.2025",
-//     endDate: "21.03.2025",
-//     carBrand: "Toyota",
-//     carModel: "Corolla",
-//     status: false,
-//     totalRentCost: 50,
-//     renterFirstName: "Masha",
-//     renterLastName: "Neshyna",
-//     updateBookingDate: "19.03.2025",
-//     createBookingDate: "18.03.2025",
-//     id: 1,
-//   },
-//   {
-//     startDate: "24.03.2025",
-//     endDate: "25.03.2025",
-//     carBrand: "Ford",
-//     carModel: "Focus",
-//     status: true,
-//     totalRentCost: 55,
-//     renterFirstName: "Anna",
-//     renterLastName: "Smith",
-//     updateBookingDate: "23.03.2025",
-//     createBookingDate: "22.03.2025",
-//     id: 2,
-//   },
-//   {
-//     startDate: "22.03.2025",
-//     endDate: "23.03.2025",
-//     carBrand: "Honda",
-//     carModel: "Civic",
-//     status: true,
-//     totalRentCost: 60,
-//     renterFirstName: "John",
-//     renterLastName: "Doe",
-//     updateBookingDate: "21.03.2025",
-//     createBookingDate: "20.03.2025",
-//     id: 3,
-//   },
-// ]
-
-// const customerData = {
-//   firstName: "Masha",
-//   lastName: "Neshyna",
-//   email: "test@email.com",
-//   drivingLicense: "12345QWERTY",
-//   bornDate: "11.11.1111",
-// }
-
-const testCustomer = {
-  firstName: "Masha",
-  lastName: "Masha",
-  email: "test@email.com",
-  password: "1113456781",
-  id:"67",
-  role:"Customer",
-  isActive: true
-}
-
-// const bookingsListComponent = {}
-
- const userId = ()=>{}
+import { userSelectors } from "store/redux/UserSlice/UserSlise"
 
 function CustomerPage() {
-  const navigate = useNavigate() 
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
-   
+
   const handleRentButtonClick = () => {
-    navigate("/") 
+    navigate("/")
   }
 
   const [activeComponent, setActiveComponent] = useState("customerData")
-
   const showCustomerData = () => setActiveComponent("customerData")
   const showBookingsList = () => setActiveComponent("bookingsList")
 
-  //const [customer, setCustomer] = useState<CustomerProps>()
-  const [bookings, setBookings] = useState<BookingsListProps>()
-
-
   const user = useAppSelector(authSelectors.userData)
+  const bookingListByUserId = useAppSelector(
+    bookingSelectors.selectBookingListByUser
+  )
 
-  //const [customer, setCustomer] = useState(testCustomer)
-  //this is for test delete later
- 
+  if (!user || !bookingListByUserId) {
+    return <div>Loading...</div>
+  }
 
-  // async function fetchCustomer() {
-  //   const response = await axios.get("/api/customers/6")
-  //   setCustomer(response.data)
-  // }
-
-  // useEffect(() => {
-  //   fetchCustomer()
-  // }, [])
-
-
-  const bookingListByUserId = useAppSelector(bookingSelectors.selectBookingListByUser)
-
-  useEffect(() => {}
-  , [bookingListByUserId]);
-
- 
   return (
     <div className="flex flex-row w-auto bg-gray-100 justify-center rounded-lg">
       {/* левая часть с навигацией */}
@@ -158,20 +77,12 @@ function CustomerPage() {
       {/* правая часть с компонентами */}
       <div className="flex flex-col w-2/3 m-6 gap-6">
         {activeComponent === "customerData" && (
-          <CustomerComponent 
-          /* customer={customer} */
-            // firstName={customer?.firstName}
-            // lastName={customer?.lastName}
-            // email={customer?.email}
-            // id={customer?.id}
-            // password={customer?.password}
-          />
+          <CustomerComponent customer={user} />
         )}
-{/* 
-        {activeComponent === "bookingsList" && (
-          <BookingsListComponent bookings={bookingListByUser} />
-        )} */}
 
+        {activeComponent === "bookingsList" && (
+          <BookingsListComponent bookings={bookingListByUserId} />
+        )}
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { HashRouter, Routes, Route } from "react-router-dom"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./src/styles/globalStyle.css"
 import Layout from "pages/Layout/Layout"
@@ -25,7 +25,7 @@ const App = () => {
       dispatch(authActions.getCurrentUser())
   }, [accessToken])
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -40,7 +40,7 @@ const App = () => {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Layout>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 

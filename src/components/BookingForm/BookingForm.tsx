@@ -5,15 +5,20 @@ import { useFormik } from "formik";
 import { BookingFormProps, RentFormValues } from "../BookingForm/types";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useAppSelector } from "store/hooks";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 import { rentCarSelectors } from "store/redux/rentCarSlice/rentCarSlice";
 import Notification1 from "components/Notification/Notification1";
-
+import {
+  bookingActions,
+  bookingSelectors,
+} from "store/redux/BookingSlice/BookingSlice"
 
 
 function BookingForm() {
 
+
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
   const location = useLocation();
   const car = location.state?.car;
 
@@ -68,8 +73,15 @@ function BookingForm() {
     validateOnBlur: true,
     onSubmit: (values: RentFormValues, { resetForm }) => {
       console.log("Submitted values:", values);
+        const bookingDataForDispatch = {
+        rentalStartDate: values.rentalStartDate,
+        rentalEndDate: values.rentalEndDate,
+        carId: carId,
+      }
       resetForm();
       setShowNotification(true);
+      navigate("/account")
+      dispatch(bookingActions.createBooking(bookingDataForDispatch))
     },
   });
 
@@ -124,7 +136,9 @@ function BookingForm() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             errorMessage={
-              formik.errors.rentalEndDate ? String(formik.errors.rentalEndDate) : undefined
+              formik.errors.rentalEndDate
+                ? String(formik.errors.rentalEndDate)
+                : undefined
             }
           />
 
