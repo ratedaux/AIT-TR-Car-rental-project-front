@@ -15,8 +15,6 @@ import {
 
 
 function BookingForm() {
-
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const location = useLocation();

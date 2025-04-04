@@ -23,7 +23,7 @@ import CarList from "components/CarList/CarList"
 import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
 import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
 import { userSelectors } from "store/redux/UserSlice/UserSlise"
-import { rentCarSelectors } from "store/redux/rentCarSlice/rentCarSlice"
+import { rentCarSelectors , rentCarActions} from "store/redux/rentCarSlice/rentCarSlice"
 
 
 const App = () => {
@@ -41,6 +41,7 @@ const App = () => {
   )
   //for admin page
   const { cars } = useAppSelector(rentCarSelectors.carsData)
+  //const cars = useAppDispatch(rentCarActions.getAllCars)
   const customerList = useAppSelector(userSelectors.selectAllUsers)
   const bookingList = useAppSelector(bookingSelectors.selectBookingList)
 

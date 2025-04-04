@@ -4,9 +4,12 @@ import Input from "components/Input/Input"
 import * as Yup from "yup"
 import { useFormik } from "formik"
 import { useNavigate } from "react-router"
+import { rentCarActions } from "store/redux/rentCarSlice/rentCarSlice"
+import { useAppDispatch } from "store/hooks"
 
 function AddNewCarForm() {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   const validationSchema = Yup.object({
     brand: Yup.string().required("Car brand is required"),
@@ -47,6 +50,8 @@ function AddNewCarForm() {
     onSubmit: (values: AddNewCarFormProps, { resetForm }) => {
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
+
+      dispatch(rentCarActions.addCar(values))
 
       resetForm()
       alert("The car is saved")
