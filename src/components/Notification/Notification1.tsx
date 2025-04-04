@@ -7,7 +7,7 @@ interface NotificationProps {
     onClose: () => void;
 }
 
-function Notification({ topic, message, onClose }: NotificationProps) {
+function Notification1({ topic, message, onClose }: NotificationProps) {
     return ReactDOM.createPortal(
         <div className="fixed inset-0 flex items-center justify-center bg-gray bg-opacity-50 backdrop-blur-sm z-50">
             <div className="bg-white rounded-lg p-6 shadow-lg max-w-md w-full mx-4">
@@ -27,4 +27,4 @@ function Notification({ topic, message, onClose }: NotificationProps) {
     );
 }
 
-export default Notification;
+export default Notification1;

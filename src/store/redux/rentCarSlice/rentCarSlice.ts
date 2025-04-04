@@ -216,6 +216,48 @@ export const carsSlice = createAppSlice({
         },
       },
     ),
+    uploadCarImage: create.asyncThunk(
+      async ({ carId, file }: { carId: string; file: File }, thunkApi) => {
+        try {
+          const formData = new FormData()
+          formData.append("id", carId)
+          formData.append("file", file)
+
+          const response = await axios.post<string>(
+            `${CARS_URL}/upload-image`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            },
+          )
+          return response.data
+        } catch (error: any) {
+          return thunkApi.rejectWithValue(error.response?.data || error.message)
+        }
+      },
+      {
+        pending: (state: RentCarSliceState) => {
+          state.error = undefined
+          state.status = "loading"
+        },
+        fulfilled: (state: RentCarSliceState, action: any) => {
+          state.status = "success"
+          // update URL of image in state
+          const imageUrl = action.payload.split("URL: ")[1]
+          state.cars = state.cars.map(car =>
+            car.id === action.meta.arg.carId
+              ? { ...car, carImage: imageUrl }
+              : car,
+          )
+        },
+        rejected: (state: RentCarSliceState, action: any) => {
+          state.error = action.payload || "Error uploading image"
+          state.status = "error"
+        },
+      },
+    ),
     setPriceRange: create.reducer(
       (state: RentCarSliceState, action: { payload: [number, number] }) => {
         state.priceRange = action.payload

@@ -7,6 +7,8 @@ import carIcon from "assets/CarImages/car-icon.jpg";
 import { CarComponentProps } from "./types";
 import { useNavigate } from "react-router-dom";
 import { CarCardProps } from "components/CarCard/types";
+import { useSelector } from "react-redux";
+import { authSelectors } from "store/redux/AuthSlice/authSlice";
 
 
 function capitalizeFirstLetter(string: string) {
@@ -15,6 +17,7 @@ function capitalizeFirstLetter(string: string) {
 
 function CarComponent({ car }: CarComponentProps) {
   const navigate = useNavigate();
+  const user = useSelector(authSelectors.userData);
 
   const handleEditCar = (carId: string, carDetails: CarCardProps) => {
     console.log("Edit car with Id:", carId);
