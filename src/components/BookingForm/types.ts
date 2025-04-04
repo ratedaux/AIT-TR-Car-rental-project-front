@@ -1,8 +1,12 @@
-export interface RentFormValues{
+import { CarCardProps } from "components/CarCard/types"
 
-    startDate: Date,
-    endDate: Date,
-    pickUpLocation: string,
-    totalRentCost: number,
+export interface RentFormValues {
+  rentalStartDate: string
+  rentalEndDate: string
+  totalPrice: number
+  is18: boolean
+}
 
+export interface BookingFormProps {
+  car: CarCardProps
 }
