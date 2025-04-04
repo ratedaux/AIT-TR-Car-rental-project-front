@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react"
-import Button from "components/Button/Button"
-import BookingsListComponent from "components/BookingsList/BookingsListComponent"
-import CustomersList from "components/CustomersListComponent/CustomersList"
-import CarCard from "components/CarCard/CarCard"
-import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
-import { CarCardProps } from "components/CarCard/types"
-import axios from "axios"
+// import React, { useEffect, useState } from "react"
+// import Button from "components/Button/Button"
+// import BookingsListComponent from "components/BookingsList/BookingsListComponent"
+// import CustomersList from "components/CustomersListComponent/CustomersList"
+// import CarCard from "components/CarCard/CarCard"
+// import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
+// import { CarCardProps } from "components/CarCard/types"
+// import axios from "axios"
 import { Outlet, useNavigate } from "react-router-dom"
-import { useAppSelector } from "store/hooks"
-import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
-import { userSelectors } from "store/redux/UserSlice/UserSlise"
-import { rentCarActions, rentCarSelectors } from "store/redux/rentCarSlice/rentCarSlice";
-import CarList from "components/CarList/CarList"
+// import { useAppSelector } from "store/hooks"
+// import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
+// import { userSelectors } from "store/redux/UserSlice/UserSlise"
+// import { rentCarActions, rentCarSelectors } from "store/redux/rentCarSlice/rentCarSlice";
+// import CarList from "components/CarList/CarList"
 // import {CarListProps} from "components/CarList/CarList"
 
 // interface CarListProps {
@@ -21,12 +21,17 @@ import CarList from "components/CarList/CarList"
 function AdminPage() {
   const navigate = useNavigate()
 
-  const [activeComponent, setActiveComponent] = useState("carsList")
+  // const [activeComponent, setActiveComponent] = useState("carsList")
+  // const showCustomersList = () => setActiveComponent("customersList")
+  // const showBookingsList = () => setActiveComponent("bookingsList")
+  // const showCarsList = () => setActiveComponent("carsList")
+  // const showAddNewCarForm = () => setActiveComponent("AddNewCarForm")
 
-  const showCustomersList = () => setActiveComponent("customersList")
-  const showBookingsList = () => setActiveComponent("bookingsList")
-  const showCarsList = () => setActiveComponent("carsList")
-  const showAddNewCarForm = () => setActiveComponent("AddNewCarForm")
+  const showCustomersList = () => navigate("/admin/allUsers")
+  const showBookingsList = () => navigate("/admin/allBookings")
+  const showCarsList = () => navigate("/admin/allCars")
+  const showAddNewCarForm = () => navigate("/admin/newCar")
+
 
   // const handleEditCar = (carId: string, carDetails: CarCardProps) => {
   //   console.log("Edit car with Id:", carId)
@@ -39,9 +44,9 @@ function AdminPage() {
   // }
   
 //TODO create car slice to get all cars for admin
-  const {cars} = useAppSelector(rentCarSelectors.carsData)
-  const customerList = useAppSelector(userSelectors.selectAllUsers)
-  const bookingList = useAppSelector(bookingSelectors.selectBookingList)
+  // const {cars} = useAppSelector(rentCarSelectors.carsData)
+  // const customerList = useAppSelector(userSelectors.selectAllUsers)
+  // const bookingList = useAppSelector(bookingSelectors.selectBookingList)
 
   return (
     <div className="flex flex-row w-auto bg-gray-100 justify-center rounded-lg">

@@ -23,14 +23,14 @@ function CustomerPage() {
   const showCustomerData = () => navigate("/account/myData")
   const showBookingsList = () => navigate("/account/myBookings")
 
-  const user = useAppSelector(authSelectors.userData)
-  const bookingListByUserId = useAppSelector(
-    bookingSelectors.selectBookingListByUser,
-  )
+  // const user = useAppSelector(authSelectors.userData)
+  // const bookingListByUserId = useAppSelector(
+  //   bookingSelectors.selectBookingListByUser,
+  // )
 
-  if (!user || !bookingListByUserId) {
-    return <div>Loading...</div>
-  }
+  // if (!user || !bookingListByUserId) {
+  //   return <div>Loading...</div>
+  // }
 
   return (
     <div className="flex flex-row w-auto bg-gray-100 justify-center rounded-lg">
