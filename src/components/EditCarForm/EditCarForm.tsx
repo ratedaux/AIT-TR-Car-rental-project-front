@@ -43,7 +43,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
       .positive("Price must be more than 0")
       .min(0.01, "Price must be more than 0")
       .required("Price per day is required"),
-   // image: Yup.string().required("Car image is required"),
+    // image: Yup.string().required("Car image is required"),
   })
 
   const formik = useFormik({
@@ -55,20 +55,20 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
 
-       const carData = {
-        id: values.id, 
+      const carData = {
+        id: values.id,
         brand: values.brand,
         model: values.model,
-        year: values.year, 
+        year: values.year,
         carStatus: values.carStatus,
         type: values.type,
         fuelType: values.fuelType,
         transmissionType: values.transmissionType,
         dayRentalPrice: values.dayRentalPrice,
-        isActive: true, 
-        carImage: values.image, 
-      };
-dispatch(rentCarActions.editCar(carData))
+        isActive: true,
+        carImage: values.image,
+      }
+      dispatch(rentCarActions.editCar(carData))
 
       alert("The car is edited")
       navigate("/admin")

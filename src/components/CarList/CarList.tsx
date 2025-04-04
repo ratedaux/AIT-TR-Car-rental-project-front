@@ -58,10 +58,10 @@ function CarList({ cars }: CarListProps) {
                 <Button
                   type="button"
                   customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"
-                  onClick={() => 
+                  onClick={() =>
                     car.isActive
-                    ? handleDeleteCar(car.id)
-                  : handleRestoreCar(car.id)
+                      ? handleDeleteCar(car.id)
+                      : handleRestoreCar(car.id)
                   }
                   name={car.isActive ? "Delete" : "Restore"}
                 />

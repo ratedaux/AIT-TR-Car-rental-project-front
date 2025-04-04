@@ -61,9 +61,9 @@ function AddNewCarForm() {
         transmissionType: values.transmissionType,
         dayRentalPrice: values.dayRentalPrice,
         image: values.image,
-      };
+      }
       dispatch(rentCarActions.addCar(carData))
-
+      //dispatch(rentCarActions.uploadCarImage())
       resetForm()
       alert("The car is saved")
       navigate("/admin")
@@ -202,7 +202,6 @@ function AddNewCarForm() {
             accept="image/png, image/jpeg"
             label="Car image"
             placeholder="Upload car image"
-            //value={formik.values.carImage}
             onChange={handleFileChange}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.image}
