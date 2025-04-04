@@ -12,7 +12,7 @@ const initialCarState: RentCarSliceState = {
 }
 
 const CARS_FILTER_URL = "/api/cars/filter"
-const CARS_URL = "/api/cars"
+const CARS_URL = "/api/cars/all"
 
 export const carsSlice = createAppSlice({
   name: "cars",
@@ -276,6 +276,7 @@ export const carsSlice = createAppSlice({
 
   selectors: {
     carsData: (state: RentCarSliceState) => state,
+    selectAllCars:(state:RentCarSliceState) => state.cars,
     selectPriceRange: (state: RentCarSliceState) => state.priceRange,
     selectDates: (state: RentCarSliceState) => ({
       startDate: state.selectedStartDate,

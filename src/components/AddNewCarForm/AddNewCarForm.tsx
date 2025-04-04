@@ -51,8 +51,19 @@ function AddNewCarForm() {
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
 
-      dispatch(rentCarActions.addCar(values))
-
+      const carData = {
+        brand: values.brand,
+        model: values.model,
+        year: values.year,
+        carStatus: "",
+        type: values.type,
+        fuelType: values.fuelType,
+        transmissionType: values.transmissionType,
+        dayRentalPrice: values.dayRentalPrice,
+        image: values.image,
+      }
+      dispatch(rentCarActions.addCar(carData))
+      //dispatch(rentCarActions.uploadCarImage())
       resetForm()
       alert("The car is saved")
       navigate("/admin")
@@ -126,10 +137,10 @@ function AddNewCarForm() {
             ]}
             label="Body type"
             placeholder="Select car body type"
-            value={formik.values.bodyType}
+            value={formik.values.type}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            errorMessage={formik.errors.bodyType}
+            errorMessage={formik.errors.type}
           />
           <Input
             name="fuelType"
@@ -191,10 +202,9 @@ function AddNewCarForm() {
             accept="image/png, image/jpeg"
             label="Car image"
             placeholder="Upload car image"
-            //value={formik.values.carImage}
             onChange={handleFileChange}
             onBlur={formik.handleBlur}
-            errorMessage={formik.errors.carImage}
+            errorMessage={formik.errors.image}
           />
         </div>
         <div className="mt-1 w-100%">

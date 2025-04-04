@@ -2,9 +2,10 @@ export interface AddNewCarFormProps{
     brand: string
     model: string
     year: number
-    bodyType: string
+    type: string
     fuelType: string
     transmissionType: string
     dayRentalPrice: number
-    carImage?: string
+    image: string 
+    carStatus: string 
 }

@@ -2,11 +2,12 @@ export interface CarCardProps {
   id: string
   brand: string
   model: string
-  year?: number
+  year: number
   type: string
   fuelType: string
   transmissionType: string
   carStatus: string
+  isActive?: boolean
   dayRentalPrice: number
   image: string
   onRent?: () => void

@@ -27,6 +27,7 @@ function CarCard({
   const navigate = useNavigate()
 
   const isLoggedIn = useSelector(authSelectors.isLoggedIn)
+  const user = useSelector(authSelectors.userData)
 
   const handleRentCar = () => {
     navigate(`/rent-car/${id}`, {
@@ -145,12 +146,14 @@ function CarCard({
                 customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold !bg-gray-100 !text-gray-700 hover:!bg-gray-200 transition-colors duration-300"
                 onClick={handleMoreDetailsClick}
               />
+              {user?.role === "ROLE_ADMIN" && (
               <Button
                 name="RENT"
                 customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
                 onClick={handleRentClick}
                 /* onClick={() => handleRentCar()} */
               />
+            )}
             </div>
           </div>
         </div>
