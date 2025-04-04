@@ -40,8 +40,9 @@ const App = () => {
     bookingSelectors.selectBookingListByUser,
   )
   //for admin page
-  const { cars } = useAppSelector(rentCarSelectors.carsData)
-  //const cars = useAppDispatch(rentCarActions.getAllCars)
+  //const { cars } = useAppSelector(rentCarSelectors.carsData)
+  //const {cars} = useAppDispatch(rentCarActions.getAllCars)
+  const cars = useAppSelector(rentCarSelectors.selectAllCars)
   const customerList = useAppSelector(userSelectors.selectAllUsers)
   const bookingList = useAppSelector(bookingSelectors.selectBookingList)
 

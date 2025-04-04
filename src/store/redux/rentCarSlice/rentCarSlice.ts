@@ -276,6 +276,7 @@ export const carsSlice = createAppSlice({
 
   selectors: {
     carsData: (state: RentCarSliceState) => state,
+    selectAllCars:(state:RentCarSliceState) => state.cars,
     selectPriceRange: (state: RentCarSliceState) => state.priceRange,
     selectDates: (state: RentCarSliceState) => ({
       startDate: state.selectedStartDate,
