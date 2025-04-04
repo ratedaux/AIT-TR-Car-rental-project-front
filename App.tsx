@@ -29,7 +29,9 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login onLoginSuccess={function (): void {
+            throw new Error("Function not implemented.")
+          } } />} />
           <Route path="/login/registration" element={<UserRegistrationForm />} />
           <Route path="/account" element={<MyAccount />} />
           <Route path="/admin" element={<AdminPage />} />
