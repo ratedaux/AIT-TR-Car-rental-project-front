@@ -4,12 +4,12 @@ export interface BookingProps {
   carId?: string
   customerId?: string
   carStatus?: string
-  brand: string
-  model: string
+  brand?: string
+  model?: string
   bookingStatus?: string
   totalPrice?: number
-  firstName: string
-  lastName: string
+  firstName?: string
+  lastName?: string
   updateBookingDate?: string
   createBookingDate?: string
   id: string
