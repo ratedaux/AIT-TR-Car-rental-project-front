@@ -10,11 +10,16 @@ const CustomerListComponent: React.FC<CustomersListProps> = ({ users }) => {
 
   return (
     <div>
-      {users.map((customer, index) => (
+       {users && users.length > 0 ? (
+      users.map((customer, index) => (
         <div key={customer.id || index}>
           <CustomerComponent customer={customer} />
         </div>
-      ))}
+      ))
+    ) : (
+      <p>No customers available</p>
+    )
+    }
     </div>
   )
 }

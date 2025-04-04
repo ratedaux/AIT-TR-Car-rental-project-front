@@ -1,45 +1,66 @@
-// import CarFilter from "components/CarFilter/CarFilter";
-// import CarCard from "../CarCard/CarCard";
-// import { CarCardProps } from "../CarCard/types";
-// import { useEffect, useState } from "react";
-// import axios from "axios";
-// import { useAppDispatch, useAppSelector } from "store/hooks";
-// import { rentCarSelectors, rentCarActions } from "store/redux/rentCarSlice/rentCarSlice";
-// import { StringParam, useQueryParam } from "use-query-params";
+import CarCard from "../CarCard/CarCard"
+import { CarCardProps } from "../CarCard/types"
+import Button from "components/Button/Button"
+import { useNavigate } from "react-router-dom"
 
-// interface Car {
-//     id: number;
-//     brand: string;
-//     model: string;
-//     year: number;
-//     type: string;
-//     fuelType: string;
-//     transmissionType: string;
-//     carStatus: string;
-//     dayRentalPrice: number;
-//     carImage: string;
-// }
+interface CarListProps {
+  cars: CarCardProps[]
+}
 
-// function CarList() {
-//     const { cars, status, error } = useAppSelector(rentCarSelectors.carsData);
+function CarList({ cars }: CarListProps) {
+  const navigate = useNavigate()
 
+  const handleEditCar = (carId: string, carDetails: CarCardProps) => {
+    console.log("Edit car with Id:", carId)
+    navigate(`/edit-car/${carId}`, { state: { carDetails } })
+  }
 
+  const handleDeleteCar = (carId: string) => {
+    console.log("Delete car with Id:", carId)
+    //TODO add dispatch
+  }
 
-//     return (
-//         <div className="max-w-5xl mx-auto h-screen flex">
-//             {/* Filter sidebar */}
-//             <div className="w-1/4 h-screen sticky top-0">
-//                 <CarFilter />
-//             </div>
+  return (
+    <div className="w-auto h-screen overflow-y-auto space-y-6 p-4">
+      {cars && cars.length > 0 ? (
+        cars.map(car => (
+          <div key={car.id}>
+            <CarCard
+              image={car.image}
+              brand={car.brand}
+              model={car.model}
+              carStatus={car.carStatus}
+              dayRentalPrice={car.dayRentalPrice}
+              transmissionType={car.transmissionType}
+              year={car.year}
+              fuelType={car.fuelType}
+              id={car.id}
+              type={""}
+            />
 
-//             {/* Cars list */}
-//             <div className="w-3/4 h-screen overflow-y-auto space-y-6 p-4">
-//                 {cars.map(car => (
-//                     <CarCard key={car.model + car.year} {...car} />
-//                 ))}
-//             </div>
-//         </div>
-//     );
-// }
+            <div className="m-4 flex flex-row gap-4 justify-end">
+              <div className="">
+                <Button
+                  type="button"
+                  onClick={() => handleEditCar(car.id, car)}
+                  name="Edit"
+                />
+              </div>
+              <div>
+                <Button
+                  type="button"
+                  onClick={() => handleDeleteCar(car.id)}
+                  name="Delete"
+                />
+              </div>
+            </div>
+          </div>
+        ))
+      ) : (
+        <p>No cars available</p>
+      )}
+    </div>
+  )
+}
 
-// export default CarList;
+export default CarList

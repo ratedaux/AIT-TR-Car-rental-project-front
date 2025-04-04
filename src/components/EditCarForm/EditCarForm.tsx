@@ -6,23 +6,7 @@ import { useFormik } from "formik"
 import { useLocation, useNavigate } from "react-router"
 import { useEffect, useState } from "react"
 
-// test image remove later
-import CarImg from "assets/CarImages/corolla-exterieur.jpg"
 import { CarCardProps } from "components/CarCard/types"
-
-// Test data for pre-filling
-// const testData: CarCardProps = {
-//   brand: "Toyota",
-//   model: "Corolla",
-//   carStatus: "Available",
-//   year: 2022,
-//   type: "Sedan",
-//   fuelType: "Gasoline",
-//   transmissionType: "Automatic",
-//   dayRentalPrice: 45,
-//   image: CarImg,
-//   id: "1"
-// }
 
 const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
   const navigate = useNavigate()
@@ -57,7 +41,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
       .positive("Price must be more than 0")
       .min(0.01, "Price must be more than 0")
       .required("Price per day is required"),
-    image: Yup.string().required("Car image is required"),
+   // image: Yup.string().required("Car image is required"),
   })
 
   const formik = useFormik({
