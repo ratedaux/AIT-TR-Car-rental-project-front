@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react"
-import CustomerComponent from "components/CustomerComponent/CustomerComponent"
 import Button from "components/Button/Button"
-import { useNavigate } from "react-router-dom"
-import BookingsListComponent from "components/BookingsList/BookingsListComponent"
+import { Outlet, useNavigate } from "react-router-dom"
 import {
   bookingActions,
   bookingSelectors,
@@ -13,19 +11,21 @@ import { userSelectors } from "store/redux/UserSlice/UserSlise"
 
 function CustomerPage() {
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
 
   const handleRentButtonClick = () => {
     navigate("/")
   }
 
-  const [activeComponent, setActiveComponent] = useState("customerData")
-  const showCustomerData = () => setActiveComponent("customerData")
-  const showBookingsList = () => setActiveComponent("bookingsList")
+  // const [activeComponent, setActiveComponent] = useState("customerData")
+  // const showCustomerData = () => setActiveComponent("customerData")
+  // const showBookingsList = () => setActiveComponent("bookingsList")
+
+  const showCustomerData = () => navigate("/account/myData")
+  const showBookingsList = () => navigate("/account/myBookings")
 
   const user = useAppSelector(authSelectors.userData)
   const bookingListByUserId = useAppSelector(
-    bookingSelectors.selectBookingListByUser
+    bookingSelectors.selectBookingListByUser,
   )
 
   if (!user || !bookingListByUserId) {
@@ -76,13 +76,14 @@ function CustomerPage() {
 
       {/* правая часть с компонентами */}
       <div className="flex flex-col w-2/3 m-6 gap-6">
-        {activeComponent === "customerData" && (
+        <Outlet />
+        {/* {activeComponent === "customerData" && (
           <CustomerComponent customer={user} />
         )}
 
         {activeComponent === "bookingsList" && (
           <BookingsListComponent bookings={bookingListByUserId} />
-        )}
+        )} */}
       </div>
     </div>
   )

@@ -26,7 +26,8 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
 
   return (
     <div>
-      {bookings.map((booking, index) => (
+       {bookings && bookings.length > 0 ? (
+      bookings.map((booking, index) => (
         <div key={booking.id || index}>
           <BookingComponent
             rentalStartDate={booking.rentalStartDate}
@@ -62,9 +63,12 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
             </div> */}
           </div>
         </div>
-      ))}
+      ))
+    ): (
+        <p>No bookings available</p>
+      )}
     </div>
-  )
+  ) 
 }
 
 export default BookingsListComponent

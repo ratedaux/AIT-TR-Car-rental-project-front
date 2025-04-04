@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react"
 import Button from "components/Button/Button"
-import { useNavigate } from "react-router-dom"
 import BookingsListComponent from "components/BookingsList/BookingsListComponent"
 import CustomersList from "components/CustomersListComponent/CustomersList"
 import CarCard from "components/CarCard/CarCard"
 import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
 import { CarCardProps } from "components/CarCard/types"
 import axios from "axios"
+import { Outlet, useNavigate } from "react-router-dom"
 import { useAppSelector } from "store/hooks"
 import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
 import { userSelectors } from "store/redux/UserSlice/UserSlise"
 import { rentCarActions, rentCarSelectors } from "store/redux/rentCarSlice/rentCarSlice";
+import CarList from "components/CarList/CarList"
+// import {CarListProps} from "components/CarList/CarList"
 
-interface CarListProps {
-  cars: CarCardProps[]
-}
+// interface CarListProps {
+//   cars: CarCardProps[]
+// }
 
 function AdminPage() {
   const navigate = useNavigate()
@@ -26,15 +28,15 @@ function AdminPage() {
   const showCarsList = () => setActiveComponent("carsList")
   const showAddNewCarForm = () => setActiveComponent("AddNewCarForm")
 
-  const handleEditCar = (carId: string, carDetails: CarCardProps) => {
-    console.log("Edit car with Id:", carId)
-    navigate(`/edit-car/${carId}`, { state: { carDetails } })
-  }
+  // const handleEditCar = (carId: string, carDetails: CarCardProps) => {
+  //   console.log("Edit car with Id:", carId)
+  //   navigate(`/edit-car/${carId}`, { state: { carDetails } })
+  // }
 
-  const handleDeleteCar = (carId: string) => {
-    console.log("Delete car with Id:", carId)
-        //TODO add dispatch
-  }
+  // const handleDeleteCar = (carId: string) => {
+  //   console.log("Delete car with Id:", carId)
+  //       //TODO add dispatch
+  // }
   
 //TODO create car slice to get all cars for admin
   const {cars} = useAppSelector(rentCarSelectors.carsData)
@@ -81,15 +83,18 @@ function AdminPage() {
 
       {/* right block with container for components */}
       <div className="flex flex-col w-3/4 m-6">
-        {activeComponent === "customersList" && (
+
+      <Outlet />
+        {/* {activeComponent === "customersList" && (
           <CustomersList users={customerList} />
         )}
         {activeComponent === "bookingsList" && (
           <BookingsListComponent bookings={bookingList} />
         )}
         {activeComponent === "AddNewCarForm" && <AddNewCarForm />}
-        {activeComponent === "carsList" && (
-          <div className="w-auto h-screen overflow-y-auto space-y-6 p-4">
+        {activeComponent === "carsList" && <CarList cars={cars}/>
+        
+        (          <div className="w-auto h-screen overflow-y-auto space-y-6 p-4">
             {cars && cars.length > 0 ? (
               cars.map(car => (
                 <div key={car.id}>
@@ -128,7 +133,8 @@ function AdminPage() {
               <p>No cars available</p>
             )}
           </div>
-        )}
+        )
+        } */}
       </div>
     </div>
   )

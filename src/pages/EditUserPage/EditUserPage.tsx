@@ -2,7 +2,7 @@ import { CustomerProps } from "components/CustomerComponent/types"
 import EditUserForm from "components/EditUserForm/EditUserForm"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 
-const EditCarPage = () => {
+const EditUserPage = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -16,4 +16,4 @@ const EditCarPage = () => {
   )
 }
 
-export default EditCarPage
+export default EditUserPage

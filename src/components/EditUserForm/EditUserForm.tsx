@@ -8,18 +8,21 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { CustomerProps } from "components/CustomerComponent/types"
 import { useAppDispatch } from "store/hooks"
 import { userActions } from "store/redux/UserSlice/UserSlise"
+import { authSelectors } from "store/redux/AuthSlice/authSlice"
+import { useSelector } from "react-redux"
 
 const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const { customerData } = location.state || {}
   const dispatch = useAppDispatch()
+  const user = useSelector(authSelectors.userData)
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("First name"),
     lastName: Yup.string().required("Last name is required"),
     email: Yup.string().required("Email is required"),
-    password: Yup.string().required("Password is required"),
+    // password: Yup.string().required("Password is required"),
   })
 
   const [formData, setFormData] = useState<CustomerProps>(customerData)
@@ -39,19 +42,31 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
       alert("The user is edited")
-      navigate("/account")
       dispatch(
         userActions.updateUser({
           id: customer.id,
           updatedData: values,
         }),
       )
+      if (user?.role === "ROLE_ADMIN") {
+        navigate("/admin/allUsers")
+      } else if (user?.role === "ROLE_CUSTOMER") {
+        navigate("/account/myData")
+      } else {
+        console.error("Unknown role")
+      }
     },
   })
 
-  // Handle close button click
+  //Handle close button click
   const handleClose = () => {
-    navigate("/admin")
+    if (user?.role === "ROLE_ADMIN") {
+      navigate("/admin/allUsers")
+    } else if (user?.role === "ROLE_CUSTOMER") {
+      navigate("/account/myData")
+    } else {
+      console.error("Unknown role")
+    }
   }
 
   return (
@@ -92,7 +107,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
             errorMessage={formik.errors.email}
           />
 
-          <Input
+          {/* <Input
             name="password"
             type="password"
             label="Password"
@@ -102,7 +117,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.password}
             readOnly={true}
-          />
+          /> */}
         </div>
         <div className="w-auto">
           <Button name="Apply" type="submit" />
