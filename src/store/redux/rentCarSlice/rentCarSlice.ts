@@ -12,7 +12,7 @@ const initialCarState: RentCarSliceState = {
 }
 
 const CARS_FILTER_URL = "/api/cars/filter"
-const CARS_URL = "/api/cars"
+const CARS_URL = "/api/cars/all"
 
 export const carsSlice = createAppSlice({
   name: "cars",
