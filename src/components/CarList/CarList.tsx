@@ -2,6 +2,8 @@ import CarCard from "../CarCard/CarCard"
 import { CarCardProps } from "../CarCard/types"
 import Button from "components/Button/Button"
 import { useNavigate } from "react-router-dom"
+import { rentCarActions } from "store/redux/rentCarSlice/rentCarSlice"
+import { useAppDispatch } from "store/hooks"
 
 interface CarListProps {
   cars: CarCardProps[]
@@ -9,6 +11,7 @@ interface CarListProps {
 
 function CarList({ cars }: CarListProps) {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   const handleEditCar = (carId: string, carDetails: CarCardProps) => {
     console.log("Edit car with Id:", carId)
@@ -17,7 +20,12 @@ function CarList({ cars }: CarListProps) {
 
   const handleDeleteCar = (carId: string) => {
     console.log("Delete car with Id:", carId)
-    //TODO add dispatch
+    dispatch(rentCarActions.deleteCar(carId))
+  }
+
+  const handleRestoreCar = (carId: string) => {
+    console.log("Restore car with Id:", carId)
+    dispatch(rentCarActions.restoreCar(carId))
   }
 
   return (
@@ -49,8 +57,13 @@ function CarList({ cars }: CarListProps) {
               <div>
                 <Button
                   type="button"
-                  onClick={() => handleDeleteCar(car.id)}
-                  name="Delete"
+                  customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"
+                  onClick={() => 
+                    car.isActive
+                    ? handleDeleteCar(car.id)
+                  : handleRestoreCar(car.id)
+                  }
+                  name={car.isActive ? "Delete" : "Restore"}
                 />
               </div>
             </div>
