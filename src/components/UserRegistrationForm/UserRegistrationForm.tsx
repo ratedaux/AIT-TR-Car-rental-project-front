@@ -7,9 +7,11 @@ import { useFormik } from "formik"
 import { RegisrtationFormValues } from "./types"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
-import NotificationMessage from "components/Notification/Notification"
+//import NotificationMessage from "components/Notification/Notification"
+import Notification from "components/Notification/Notification1"
 import Loader from "components/Loader/Loader"
 import { FaEye, FaEyeSlash } from "react-icons/fa"
+import { useNavigate } from "react-router-dom";
 
 type UserRegistrationFormProps = {
   img?: boolean
@@ -22,13 +24,16 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
   }, [])
 
   const dispatch = useAppDispatch()
-
+  const navigate = useNavigate();
   const status = useAppSelector(authSelectors.authStatus)
   const registerError = useAppSelector(authSelectors.registerError)
   const registerMessage = useAppSelector(authSelectors.registerMessage)
 
+  const [showPassword, setShowPassword] = useState(false)
+  const [isNotificationVisible, setIsNotificationVisible] = useState(false)
+
   const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
 
   const validationSchema = Yup.object({
     firstName: Yup.string()
@@ -46,7 +51,7 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
       .min(8, "Password must be at least 8 characters")
       .matches(
         passwordRegex,
-        "Password must include an uppercase letter, a number, and a special character (@ $ ! % * ? &)",
+        "Password must include an uppercase letter, a number, and a special character (# ? ! @ $ % ^ & * -)",
       ),
   })
 
@@ -65,10 +70,22 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
       console.table(values) // временно
       dispatch(authActions.registerNewCustomer(values))
       formik.resetForm()
+      setIsNotificationVisible(true)
     },
   })
 
-  const [showPassword, setShowPassword] = useState(false)
+  const onHandleCloseNotification = () => {
+    setIsNotificationVisible(false) 
+    if (registerMessage) {
+      navigate("/login"); // на страницу логина
+    }
+  }
+
+  useEffect(() => {
+    if (registerError || registerMessage) {
+      setIsNotificationVisible(true)
+    }
+  }, [registerError, registerMessage])
 
   return (
     <div className="flex justify-center items-center -mt-4 px-4 sm:px-6 lg:px-8">
@@ -77,13 +94,28 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
           Create your account
         </h2>
         <form onSubmit={formik.handleSubmit} className="mt-12 relative">
-          {(registerError || registerMessage) && (
+          {isNotificationVisible && (registerError || registerMessage) && (
             <div className="absolute top-64 left-0 w-full flex justify-center z-50">
               {registerError && (
-                <NotificationMessage type="error" message={registerError} />
+                <Notification
+                  topic="Error"
+                  message={registerError}
+                  onClose={onHandleCloseNotification}
+                />
               )}
               {registerMessage && (
-                <NotificationMessage type="success" message={registerMessage} />
+                <Notification
+                  topic="Success"
+                  message={registerMessage}
+                  onClose={onHandleCloseNotification}
+                />
+              )}
+              {registerMessage && (
+                <Notification
+                  topic="Success"
+                  message={registerMessage}
+                  onClose={onHandleCloseNotification}
+                />
               )}
             </div>
           )}

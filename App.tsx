@@ -15,6 +15,7 @@ import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 import EditUserPage from "pages/EditUserPage/EditUserPage"
+import LoginPage from "pages/LoginPage/LoginPage"
 import CustomerComponent from "components/CustomerComponent/CustomerComponent"
 import BookingsListComponent from "components/BookingsList/BookingsListComponent"
 import CustomerListComponent from "components/CustomersListComponent/CustomersList"
@@ -23,6 +24,7 @@ import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
 import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
 import { userSelectors } from "store/redux/UserSlice/UserSlise"
 import { rentCarSelectors } from "store/redux/rentCarSlice/rentCarSlice"
+
 
 const App = () => {
   const dispatch = useAppDispatch()
@@ -47,7 +49,8 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+
+          <Route path="/login" element={<LoginPage />} />
           <Route
             path="/login/registration"
             element={<UserRegistrationForm />}

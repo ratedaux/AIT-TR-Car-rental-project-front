@@ -124,12 +124,13 @@ export const authSlice = createAppSlice({
          /*  const response = */
            await axios.post(REGISTER_URL, {firstName, lastName, email, password,
           });
-          const loginResponse = await thunkApi.dispatch(
+          return {};
+         /*  const loginResponse = await thunkApi.dispatch(
             authActions.loginUser({ email, password })
           ) as { payload: { accessToken: string; refreshToken: string; user: any } };
 
-          /* return response.data */
-          return loginResponse.payload;
+          return response.data 
+          return loginResponse.payload; */
 
         } catch (error: any) {
           return thunkApi.rejectWithValue(
@@ -144,9 +145,8 @@ export const authSlice = createAppSlice({
         },
         fulfilled: (state, action) => {
           state.status = "success"
-          state.user = action.payload.user
           state.registerError = undefined
-          state.registerMessage = "Registration and login successful"
+          state.registerMessage = "Registration successful! Please check your email to confirm your registration.";
         },
         rejected: (state, action) => {
           state.status = "error"

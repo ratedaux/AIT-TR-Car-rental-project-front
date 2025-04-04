@@ -9,8 +9,10 @@ import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import Loader from "components/Loader/Loader"
 import NotificationMessage from "components/Notification/Notification"
-import { useState } from "react"
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import Notification from "components/Notification/Notification1"
+import { useEffect, useState } from "react"
+import { FaEye, FaEyeSlash } from "react-icons/fa"
 
 /* 
 1
@@ -29,15 +31,14 @@ Aaaaaaa1234!$
 4-admin
 admin_1@car-rent.de
 Admin12345!
+
+акт
+admin@gmail.com
+Yyyyyyy12345!
  */
 
-type LoginProps = {
-  showHeader?: boolean
-  img?: boolean
-}
-
 const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -50,17 +51,28 @@ const validationSchema = Yup.object().shape({
     .required("Password is required")
     .matches(
       passwordRegex,
-      "Password must include an uppercase letter, a number, and a special character (@ $ ! % * ? &)",
+      "Password must include an uppercase letter, a number, and a special character (# ? ! @ $ % ^ & * -)",
     ),
 })
 
-function Login({ showHeader = true, img = true }: LoginProps) {
-  const dispatch = useAppDispatch();
+type LoginProps = {
+  showHeader?: boolean
+  img?: boolean
+  onLoginSuccess: () => void;
+  url?: string;
+  /* carId?: string | null; */
+}
 
-  const user = useAppSelector(authSelectors.userData)
+function Login({ showHeader = true, img = true, onLoginSuccess, url = "/" }: LoginProps) {
+
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate();
+
+  /* const user = useAppSelector(authSelectors.userData) */
   const status = useAppSelector(authSelectors.authStatus)
   const loginError = useAppSelector(authSelectors.loginError)
   const successMessage = useAppSelector(authSelectors.successMessage)
+  const isLoggedIn = useAppSelector(authSelectors.isLoggedIn);
 
   const formik = useFormik({
     initialValues: {
@@ -83,7 +95,44 @@ function Login({ showHeader = true, img = true }: LoginProps) {
     },
   })
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
+  const [isNotificationVisible, setIsNotificationVisible] = useState(true)
+
+  const onHandleCloseNotification = () => {
+    setIsNotificationVisible(false)
+  }
+
+
+
+/*   useEffect(() => {
+    if (status === "success" && isLoggedIn) {
+      onLoginSuccess();  // вызываем функцию для перенаправления
+      navigate("/");
+  
+      if (carId) {
+        navigate(`/rent-car/${carId}`);
+      } else {
+        navigate("/");
+      }
+    }
+  }, [status, isLoggedIn, carId, onLoginSuccess, navigate]);
+ 
+ */
+
+
+ /*  useEffect(() => {
+    if (status === "success" && isLoggedIn) {
+      onLoginSuccess(); 
+      navigate(url, { replace: true }); 
+    }
+  }, [status, isLoggedIn, onLoginSuccess, navigate, url]);
+ */
+
+  useEffect(() => {
+    if (loginError || successMessage) {
+      setIsNotificationVisible(true);
+    }
+  }, [loginError, successMessage]);
 
   return (
     <div className="flex justify-center items-center -mt-4 px-4 sm:px-6 lg:px-8">
@@ -99,15 +148,34 @@ function Login({ showHeader = true, img = true }: LoginProps) {
               </p>
             </div>
           )}
-          <form onSubmit={formik.handleSubmit} className="mb-4 relative">
 
-         {/*  Notifications */}
-      {(loginError || successMessage) && (
+          {/*  Notifications */}
+          {isNotificationVisible && (loginError || successMessage) && (
+            <div className="absolute top-46 left-0 w-full flex justify-center z-50">
+              {loginError && (
+                <Notification
+                  topic="Error"
+                  message={loginError}
+                  onClose={onHandleCloseNotification} 
+                />
+              )}
+              {successMessage && (
+                <Notification
+                  topic="Success"
+                  message={successMessage}
+                  onClose={onHandleCloseNotification} 
+                />
+              )}
+            </div>
+          )}
+
+          <form onSubmit={formik.handleSubmit} className="mb-4 relative">
+            {/* {(loginError || successMessage) && (
         <div className="absolute top-46 left-0 w-full flex justify-center z-50">
           {loginError && <NotificationMessage type="error" message={loginError} />}
           {successMessage && <NotificationMessage type="success" message={successMessage} />}
         </div>
-      )}
+      )} */}
 
             <div className="mb-6 mt-8 w-full">
               <Input
@@ -137,8 +205,8 @@ function Login({ showHeader = true, img = true }: LoginProps) {
                 autoComplete="current-password"
               />
 
-                <div
-                onClick={() => setShowPassword(!showPassword)} 
+              <div
+                onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 translate-y-[-26px] cursor-pointer"
               >
                 {showPassword ? (
