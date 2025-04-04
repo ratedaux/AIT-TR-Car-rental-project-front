@@ -11,14 +11,14 @@ import Notification1 from "components/Notification/Notification1";
 import {
   bookingActions,
   bookingSelectors,
-} from "store/redux/BookingSlice/BookingSlice"
+} from "store/redux/BookingSlice/BookingSlice";
 
 
 function BookingForm() {
 
 
   const navigate = useNavigate();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const car = location.state?.car;
 
@@ -73,15 +73,17 @@ function BookingForm() {
     validateOnBlur: true,
     onSubmit: (values: RentFormValues, { resetForm }) => {
       console.log("Submitted values:", values);
-        const bookingDataForDispatch = {
+      const bookingDataForDispatch = {
         rentalStartDate: values.rentalStartDate,
         rentalEndDate: values.rentalEndDate,
-        carId: carId,
-      }
+        totalPrice: values.totalPrice,
+        carId: car.id,
+
+      };
       resetForm();
       setShowNotification(true);
-      navigate("/account")
-      dispatch(bookingActions.createBooking(bookingDataForDispatch))
+      navigate("/account");
+      dispatch(bookingActions.createBooking(bookingDataForDispatch));
     },
   });
 
