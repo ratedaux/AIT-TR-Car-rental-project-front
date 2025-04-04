@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import logo from "../../assets/logo.svg"
 import mainImg from "../../assets/mainImg.jpg"
 import { LayoutProps } from "./types"
@@ -7,14 +7,20 @@ import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 
 function Layout({ children }: LayoutProps) {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const isLoggedIn = useSelector(authSelectors.isLoggedIn)
   const user = useSelector(authSelectors.userData)
 
   const location = useLocation()
   const isHomePage = location.pathname === "/"
-  
-  const onHandleLogout = () => {
+
+  const logout = () => {
     dispatch(authActions.logoutUser())
+  }
+
+  const onHandleLogout = () => {
+    logout()
+    navigate("/")
   }
 
   return (

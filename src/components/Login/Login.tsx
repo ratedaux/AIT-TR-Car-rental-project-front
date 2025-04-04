@@ -31,17 +31,14 @@ Aaaaaaa1234!$
 4-admin
 admin_1@car-rent.de
 Admin12345!
+
+акт
+admin@gmail.com
+Yyyyyyy12345!
  */
 
-type LoginProps = {
-  showHeader?: boolean
-  img?: boolean
-  onLoginSuccess: () => void;
-  carId?: string | null;
-}
-
 const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -54,16 +51,24 @@ const validationSchema = Yup.object().shape({
     .required("Password is required")
     .matches(
       passwordRegex,
-      "Password must include an uppercase letter, a number, and a special character (@ $ ! % * ? &)",
+      "Password must include an uppercase letter, a number, and a special character (# ? ! @ $ % ^ & * -)",
     ),
 })
 
-function Login({ showHeader = true, img = true, onLoginSuccess = () => {}, carId}: LoginProps) {
+type LoginProps = {
+  showHeader?: boolean
+  img?: boolean
+  onLoginSuccess: () => void;
+  url?: string;
+  /* carId?: string | null; */
+}
+
+function Login({ showHeader = true, img = true, onLoginSuccess, url = "/" }: LoginProps) {
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate();
 
-  const user = useAppSelector(authSelectors.userData)
+  /* const user = useAppSelector(authSelectors.userData) */
   const status = useAppSelector(authSelectors.authStatus)
   const loginError = useAppSelector(authSelectors.loginError)
   const successMessage = useAppSelector(authSelectors.successMessage)
@@ -115,16 +120,13 @@ function Login({ showHeader = true, img = true, onLoginSuccess = () => {}, carId
  */
 
 
-useEffect(() => {
-    // После успешного логина 
+ /*  useEffect(() => {
     if (status === "success" && isLoggedIn) {
-      onLoginSuccess();
-      navigate(`/`);
+      onLoginSuccess(); 
+      navigate(url, { replace: true }); 
     }
-  }, [status, isLoggedIn, onLoginSuccess, navigate]); 
-
- 
-
+  }, [status, isLoggedIn, onLoginSuccess, navigate, url]);
+ */
 
   useEffect(() => {
     if (loginError || successMessage) {

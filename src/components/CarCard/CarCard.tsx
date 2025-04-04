@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ReactDOM from "react-dom"
 import Button from "components/Button/Button"
 import { CarCardProps } from "./types"
@@ -68,9 +68,22 @@ function CarCard({
     setshowLoginNotification(false)
   }
 
+  const handleLoginSuccess = () => {
+   /*  setshowLoginNotification(false) */
+    handleRentCar()  // Продолжить аренду после успешного входа
+  }
+
   function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
   }
+
+  //
+  useEffect(() => {
+    if (isLoggedIn && showLoginNotification) {
+      setshowLoginNotification(false); 
+    }
+  }, [isLoggedIn]); 
+
 
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:-translate-y-1 w-full p-6">
@@ -174,7 +187,7 @@ function CarCard({
           document.body,
         )}
 
-      {/*  LoginNotification */}
+      {/* Modal for LoginNotification */}
       {showLoginNotification &&
         ReactDOM.createPortal(
           <div className="fixed inset-0 flex items-center justify-center bg-gray bg-opacity-50 backdrop-blur-sm z-50">
@@ -185,7 +198,8 @@ function CarCard({
               >
                 ✖
               </button>
-              <LoginNotification carId={id} onLoginSuccess={handleCloseLoginNotification}  />
+              <LoginNotification onLoginSuccess={handleLoginSuccess} />
+              {/* <LoginNotification carId={id} onLoginSuccess={handleCloseLoginNotification}  /> */}
             </div>
           </div>,
           document.body,

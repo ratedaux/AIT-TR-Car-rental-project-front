@@ -15,6 +15,7 @@ import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 import EditUserPage from "pages/EditUserPage/EditUserPage"
+import LoginPage from "pages/LoginPage/LoginPage"
 
 
 const App = () => {
@@ -29,9 +30,7 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login onLoginSuccess={function (): void {
-            throw new Error("Function not implemented.")
-          } } />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/login/registration" element={<UserRegistrationForm />} />
           <Route path="/account" element={<MyAccount />} />
           <Route path="/admin" element={<AdminPage />} />
