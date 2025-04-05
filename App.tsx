@@ -11,7 +11,7 @@ import AdminPage from "pages/AdminPage/AdminPage"
 import EditCarPage from "pages/EditCarPage/EditCarPage"
 import RentCarPage from "pages/RentCarPage/RentCarPage"
 import EditBookingPage from "pages/EditBoookingPage/EditBookingPage"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 import EditUserPage from "pages/EditUserPage/EditUserPage"
@@ -23,8 +23,11 @@ import CarList from "components/CarList/CarList"
 import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
 import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
 import { userSelectors } from "store/redux/UserSlice/UserSlise"
-import { rentCarSelectors , rentCarActions} from "store/redux/rentCarSlice/rentCarSlice"
-
+import {
+  rentCarSelectors,
+  rentCarActions,
+} from "store/redux/rentCarSlice/rentCarSlice"
+import { Car } from "store/redux/rentCarSlice/types"
 
 const App = () => {
   const dispatch = useAppDispatch()
@@ -40,11 +43,13 @@ const App = () => {
     bookingSelectors.selectBookingListByUser,
   )
   //for admin page
-  //const { cars } = useAppSelector(rentCarSelectors.carsData)
-  //const {cars} = useAppDispatch(rentCarActions.getAllCars)
   const cars = useAppSelector(rentCarSelectors.selectAllCars)
   const customerList = useAppSelector(userSelectors.selectAllUsers)
   const bookingList = useAppSelector(bookingSelectors.selectBookingList)
+
+  useEffect(() => {
+    dispatch(rentCarActions.getAllCars())
+  }, [dispatch])
 
   return (
     <HashRouter>

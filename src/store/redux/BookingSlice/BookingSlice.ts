@@ -91,7 +91,7 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingListByUserId = action.payload.bookingListByUserId
+          state.bookingListByUserId = action.payload
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
@@ -116,7 +116,7 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingList = action.payload.bookingList
+          state.bookingList = action.payload
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
