@@ -100,7 +100,7 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingListByUserId = action.payload
+          state.bookingListByUser = action.payload
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
@@ -184,7 +184,7 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingData = action.payload.bookingDataToDispatch
+          state.bookingData = action.payload
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
@@ -275,12 +275,20 @@ export const bookingSlice = createAppSlice({
       },
     ),
     createBooking: create.asyncThunk(
-      async (bookingDataForDispatch: RentFormValues, thunkApi) => {
+      async (
+        { token, bookingDataForDispatch }: { token: string | null; bookingDataForDispatch: RentFormValues },
+        thunkApi
+      ) => {
         try {
           const result = await axios.post<BookingData>(
-            `/api/bookings`,
+            `/api/bookings`, 
             bookingDataForDispatch,
-          )
+            {
+              headers: {
+                Authorization: `Bearer ${token}`, 
+              },
+            },
+          );
           return result.data
         } catch (error: any) {
           return thunkApi.rejectWithValue(error.response?.data || error.message)
@@ -292,7 +300,7 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingData = action.payload
+          state.bookingList.push(action.payload);
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
@@ -306,8 +314,8 @@ export const bookingSlice = createAppSlice({
   selectors: {
     selectBookingData: (state: BookingSliceState) => state.bookingData,
     selectBookingList: (state: BookingSliceState) => state.bookingList,
-    selectBookingListByUserId: (state: BookingSliceState) =>
-      state.bookingListByUserId,
+    // selectBookingListByUserId: (state: BookingSliceState) =>
+    //   state.bookingListByUserId,
     selectBookingListByUser: (state: BookingSliceState) =>
       state.bookingListByUser,
     selectStatus: (state: BookingSliceState) => state.status,

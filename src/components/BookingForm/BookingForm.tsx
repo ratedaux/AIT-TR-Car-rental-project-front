@@ -12,12 +12,18 @@ import {
   bookingActions,
   bookingSelectors,
 } from "store/redux/BookingSlice/BookingSlice"
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 
 function BookingForm() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const location = useLocation()
   const car = location.state?.car
+
+  const token = useAppSelector(authSelectors.accessToken)
+  useEffect(() => {
+    dispatch(authActions.getCurrentUser())
+  }, [token])
 
   const [showNotification, setShowNotification] = useState(false)
   const { startDate, endDate } = useAppSelector(rentCarSelectors.selectDates)
@@ -86,7 +92,7 @@ function BookingForm() {
         carId: car.id,
       }
       setShowNotification(true)
-      dispatch(bookingActions.createBooking(bookingDataForDispatch))
+      dispatch(bookingActions.createBooking({ token, bookingDataForDispatch }))
       resetForm()
       navigate("/account/myBookings")
     },

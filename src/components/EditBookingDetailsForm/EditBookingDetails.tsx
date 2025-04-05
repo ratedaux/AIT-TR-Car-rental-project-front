@@ -131,6 +131,16 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     dispatch(bookingActions.extendBooking({ id, newEndDate }))
   }
 
+  const handleClose = () => {
+    if (user?.role === "ROLE_ADMIN") {
+      navigate("/admin/allBookings")
+    } else if (user?.role === "ROLE_CUSTOMER") {
+      navigate("/account/myBookings")
+    } else {
+      console.error("Unknown role")
+    }
+  }
+
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
       <h2 className="text-xl font-bold p-[60px] mb-6">
@@ -268,6 +278,15 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             />
           </div>
         )}
+
+        {/* close button */}
+        <div className="w-auto mt-2.5">
+          <Button
+            name="Exit"
+            customClasses="!w-full !rounded-lg  hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
+            onClick={handleClose}
+          />
+        </div>
       </form>
     </div>
   )

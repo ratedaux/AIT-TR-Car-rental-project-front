@@ -71,7 +71,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
       dispatch(rentCarActions.editCar(carData))
 
       alert("The car is edited")
-      navigate("/admin")
+      navigate("/admin/allCars")
     },
   })
 
@@ -86,7 +86,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
 
   // Handle close button click
   const handleClose = () => {
-    navigate("/admin")
+    navigate("/admin/allCars")
   }
 
   return (

@@ -27,7 +27,6 @@ import {
   rentCarSelectors,
   rentCarActions,
 } from "store/redux/rentCarSlice/rentCarSlice"
-import { Car } from "store/redux/rentCarSlice/types"
 
 const App = () => {
   const dispatch = useAppDispatch()
@@ -68,7 +67,7 @@ const App = () => {
   }, [dispatch])
 
   useEffect(() => {
-    dispatch(userActions.getAllUsers())
+    dispatch(userActions.getAllUsers(accessToken))
   }, [dispatch])
 
   return (
