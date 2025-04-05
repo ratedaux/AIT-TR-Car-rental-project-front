@@ -1,4 +1,4 @@
-import { UserSliceState } from "./types"
+import { UserData, UserSliceState } from "./types"
 import { CustomerProps } from "components/CustomerComponent/types"
 import { CustomerDataProps } from "components/CustomerComponent/CustomerComponent"
 import { createAppSlice } from "store/createAppSlice"
@@ -24,22 +24,26 @@ export const userSlice = createAppSlice({
   initialState: userInitialState,
   reducers: create => ({
     getAllUsers: create.asyncThunk(
-      async (__, thunkApi) => {
+      async (token: string | null, thunkApi) => {
         try {
-          const result = await axios.get(`/api/customers`)
+          const result = await axios.get<UserData[]>(`/api/customers`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
           return result.data
-        } catch (error) {
-          return thunkApi.rejectWithValue(error)
+        } catch (error: any) {
+          return thunkApi.rejectWithValue(error.response?.data || error.message)
         }
       },
       {
         pending: (state: UserSliceState) => {
-          state.userList = []
+          // state.userList = []
           state.status = "loading"
           state.error = undefined
         },
         fulfilled: (state: UserSliceState, action: any) => {
-          state.userList = action.payload.userList
+          state.userList = action.payload
           state.status = "success"
         },
         rejected: (state: UserSliceState, action: any) => {
@@ -59,7 +63,7 @@ export const userSlice = createAppSlice({
       },
       {
         pending: (state: UserSliceState) => {
-          (state.userData = {
+          ;(state.userData = {
             id: "",
             firstName: "",
             lastName: "",
@@ -93,7 +97,7 @@ export const userSlice = createAppSlice({
       async (
         //attention password is not updated and excluded from updated data
         { id, updatedData }: { id: string; updatedData: CustomerProps },
-        thunkApi
+        thunkApi,
       ) => {
         try {
           const { firstName, lastName, email } = updatedData
@@ -114,7 +118,7 @@ export const userSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: UserSliceState, action: any) => {
-          state.userData = action.payload.dataToUpdate
+          state.userData = action.payload
           state.status = "success"
         },
         rejected: (state: UserSliceState, action: any) => {

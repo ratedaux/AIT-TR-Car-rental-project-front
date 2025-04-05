@@ -1,44 +1,51 @@
-import Button from "../Button/Button";
-import Input from "../Input/Input";
-import * as Yup from "yup";
-import { useFormik } from "formik";
-import { BookingFormProps, RentFormValues } from "../BookingForm/types";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "store/hooks";
-import { rentCarSelectors } from "store/redux/rentCarSlice/rentCarSlice";
-import Notification1 from "components/Notification/Notification1";
+import Button from "../Button/Button"
+import Input from "../Input/Input"
+import * as Yup from "yup"
+import { useFormik } from "formik"
+import { BookingFormProps, RentFormValues } from "../BookingForm/types"
+import { useLocation, useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+import { rentCarSelectors } from "store/redux/rentCarSlice/rentCarSlice"
+import Notification1 from "components/Notification/Notification1"
 import {
   bookingActions,
   bookingSelectors,
-} from "store/redux/BookingSlice/BookingSlice";
-
+} from "store/redux/BookingSlice/BookingSlice"
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 
 function BookingForm() {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const location = useLocation();
-  const car = location.state?.car;
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const location = useLocation()
+  const car = location.state?.car
 
-  const [showNotification, setShowNotification] = useState(false);
-  const { startDate, endDate } = useAppSelector(rentCarSelectors.selectDates);
+  const token = useAppSelector(authSelectors.accessToken)
+  useEffect(() => {
+    dispatch(authActions.getCurrentUser())
+  }, [token])
 
-  const today = new Date().toLocaleDateString("en-CA");
+  const [showNotification, setShowNotification] = useState(false)
+  const { startDate, endDate } = useAppSelector(rentCarSelectors.selectDates)
 
-  const calculateTotalCost = (startDate: Date, endDate: Date, dayRentalPrice: number): number => {
+  const today = new Date().toLocaleDateString("en-CA")
 
-    const start = new Date(startDate.setHours(0, 0, 0, 0));
-    const end = new Date(endDate.setHours(0, 0, 0, 0));
+  const calculateTotalCost = (
+    startDate: Date,
+    endDate: Date,
+    dayRentalPrice: number,
+  ): number => {
+    const start = new Date(startDate.setHours(0, 0, 0, 0))
+    const end = new Date(endDate.setHours(0, 0, 0, 0))
     if (end < start) {
-      console.error("End date cannot be earlier than start date.");
-      return 0;
+      console.error("End date cannot be earlier than start date.")
+      return 0
     }
-    const timeDifference = end.getTime() - start.getTime();
-    const days = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1;
-    const totalRentCost = days >= 1 ? days * dayRentalPrice : dayRentalPrice;
-    return totalRentCost;
-  };
-
+    const timeDifference = end.getTime() - start.getTime()
+    const days = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1
+    const totalRentCost = days >= 1 ? days * dayRentalPrice : dayRentalPrice
+    return totalRentCost
+  }
 
   const validationSchema = Yup.object({
     rentalStartDate: Yup.date()
@@ -46,23 +53,30 @@ function BookingForm() {
       .min(today, "Start date cannot be in the past"),
     rentalEndDate: Yup.date()
       .required("End date is required")
-      .min(Yup.ref("rentalStartDate"), "End date must be later than start date"),
+      .min(
+        Yup.ref("rentalStartDate"),
+        "End date must be later than start date",
+      ),
     totalPrice: Yup.number()
       .required("Rent cost can't be empty")
       .min(0.01, "Rent cost can't be 0"),
     is18: Yup.boolean()
       .oneOf([true], "You must be 18 years old to rent a car")
       .required("You must be 18 years old to rent a car"),
-  });
+  })
 
   const formik = useFormik({
     initialValues: {
-      rentalStartDate: startDate ? new Date(startDate).toLocaleDateString("en-CA") : new Date().toLocaleDateString("en-CA"),
-      rentalEndDate: endDate ? new Date(endDate).toLocaleDateString("en-CA") : (() => {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        return tomorrow.toLocaleDateString("en-CA");
-      })(),
+      rentalStartDate: startDate
+        ? new Date(startDate).toLocaleDateString("en-CA")
+        : new Date().toLocaleDateString("en-CA"),
+      rentalEndDate: endDate
+        ? new Date(endDate).toLocaleDateString("en-CA")
+        : (() => {
+            const tomorrow = new Date()
+            tomorrow.setDate(tomorrow.getDate() + 1)
+            return tomorrow.toLocaleDateString("en-CA")
+          })(),
       totalPrice: "",
       is18: false,
     } as unknown as RentFormValues,
@@ -70,40 +84,43 @@ function BookingForm() {
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (values: RentFormValues, { resetForm }) => {
-      console.log("Submitted values:", values);
+      console.log("Submitted values:", values)
       const bookingDataForDispatch = {
         rentalStartDate: values.rentalStartDate,
         rentalEndDate: values.rentalEndDate,
-        totalPrice: values.totalPrice,
+        // totalPrice: values.totalPrice,
         carId: car.id,
-
-      };
-      resetForm();
-      setShowNotification(true);
-      navigate("/account");
-      dispatch(bookingActions.createBooking(bookingDataForDispatch));
+      }
+      setShowNotification(true)
+      dispatch(bookingActions.createBooking({ token, bookingDataForDispatch }))
+      resetForm()
+      navigate("/account/myBookings")
     },
-  });
+  })
 
   //Automatic calculation of renting price
   useEffect(() => {
-    const { rentalStartDate, rentalEndDate } = formik.values;
+    const { rentalStartDate, rentalEndDate } = formik.values
     if (rentalStartDate && rentalEndDate) {
-      const start = new Date(rentalStartDate);
-      const end = new Date(rentalEndDate);
-      const totalCost = calculateTotalCost(start, end, car.dayRentalPrice);
-      formik.setFieldValue("totalPrice", totalCost);
+      const start = new Date(rentalStartDate)
+      const end = new Date(rentalEndDate)
+      const totalCost = calculateTotalCost(start, end, car.dayRentalPrice)
+      formik.setFieldValue("totalPrice", totalCost)
     }
-  }, [formik.values.rentalStartDate, formik.values.rentalEndDate, car.dayRentalPrice]);
+  }, [
+    formik.values.rentalStartDate,
+    formik.values.rentalEndDate,
+    car.dayRentalPrice,
+  ])
 
   const handleClose = () => {
-    navigate("/");
-  };
+    navigate("/")
+  }
 
   const handleNotificationClose = () => {
-    setShowNotification(false);
-    navigate("/account");
-  };
+    setShowNotification(false)
+    navigate("/account")
+  }
 
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-4 rounded-md">
@@ -148,7 +165,7 @@ function BookingForm() {
             label="Total Rent Cost"
             placeholder="Total cost will be calculated automatically"
             value={formik.values.totalPrice}
-            onChange={() => { }}
+            onChange={() => {}}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.totalPrice}
             readOnly={true}
@@ -182,10 +199,7 @@ function BookingForm() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button
-            name="Confirm"
-            type="submit"
-          />
+          <Button name="Confirm" type="submit" />
         </div>
 
         {/* close button */}
@@ -206,6 +220,6 @@ function BookingForm() {
         />
       )}
     </div>
-  );
+  )
 }
-export default BookingForm;
+export default BookingForm

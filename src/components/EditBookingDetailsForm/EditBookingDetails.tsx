@@ -12,6 +12,7 @@ import {
 } from "store/redux/BookingSlice/BookingSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import { BookingProps } from "components/BookingComponent/types"
+import { authSelectors } from "store/redux/AuthSlice/authSlice"
 
 const costPerDay = 50 // Example cost per day
 // TODO add dispatch
@@ -36,6 +37,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   const dispatch = useAppDispatch()
   const location = useLocation()
   const { bookingDetails } = location.state || {}
+  const user = useSelector(authSelectors.userData)
 
   const today = new Date().toLocaleDateString("en-CA")
   const validationSchema = Yup.object({
@@ -69,8 +71,15 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     onSubmit: (values: BookingProps) => {
       console.log("Submitted values:", values)
       alert("The booking details are updated")
-      navigate("/account")
       handleExtendBooking(values.id, values)
+
+      if (user?.role === "ROLE_ADMIN") {
+        navigate("/admin/allUsers")
+      } else if (user?.role === "ROLE_CUSTOMER") {
+        navigate("/account/myData")
+      } else {
+        console.error("Unknown role")
+      }
     },
   })
 
@@ -93,23 +102,44 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
   const handleCancelBooking = (id: string) => {
     alert("The booking is cancelled")
-    navigate("/account")
     dispatch(bookingActions.cancelBooking(id))
+
+    if (user?.role === "ROLE_ADMIN") {
+      navigate("/admin/allUsers")
+    } else if (user?.role === "ROLE_CUSTOMER") {
+      navigate("/account/myData")
+    } else {
+      console.error("Unknown role")
+    }
   }
 
   const handleCloseBooking = (id: string) => {
     alert("The booking is cancelled")
-    navigate("/account")
     dispatch(bookingActions.cancelBooking(id))
+
+    if (user?.role === "ROLE_ADMIN") {
+      navigate("/admin/allUsers")
+    } else if (user?.role === "ROLE_CUSTOMER") {
+      navigate("/account/myData")
+    } else {
+      console.error("Unknown role")
+    }
   }
 
   const handleExtendBooking = (id: string, updatedData: BookingProps) => {
-    const bookingDataToDispatch = {
-      id,  
-      rentalEndDate: updatedData.rentalEndDate
+    const newEndDate = updatedData.rentalEndDate
+    dispatch(bookingActions.extendBooking({ id, newEndDate }))
+  }
+
+  const handleClose = () => {
+    if (user?.role === "ROLE_ADMIN") {
+      navigate("/admin/allBookings")
+    } else if (user?.role === "ROLE_CUSTOMER") {
+      navigate("/account/myBookings")
+    } else {
+      console.error("Unknown role")
     }
-      dispatch(bookingActions.extendBooking({ id, bookingDataToDispatch }))
-     }
+  }
 
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
@@ -121,11 +151,15 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
           <div className="flex flex-col gap-4 w-full mb-7 ">
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Car:</div>
-              <div className="w-2/3">{bookingDetails.brand} {bookingDetails.model}</div>
+              <div className="w-2/3">
+                {bookingDetails.brand} {bookingDetails.model}
+              </div>
             </div>
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Renter:</div>
-              <div className="w-2/3">{bookingDetails.firstName} {bookingDetails.lastName}</div>
+              <div className="w-2/3">
+                {bookingDetails.firstName} {bookingDetails.lastName}
+              </div>
             </div>
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Rent details updated on:</div>
@@ -244,6 +278,15 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             />
           </div>
         )}
+
+        {/* close button */}
+        <div className="w-auto mt-2.5">
+          <Button
+            name="Exit"
+            customClasses="!w-full !rounded-lg  hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
+            onClick={handleClose}
+          />
+        </div>
       </form>
     </div>
   )

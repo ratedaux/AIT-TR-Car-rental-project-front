@@ -1,6 +1,7 @@
 export interface BookingSliceState {
   bookingList: BookingData[]
   bookingListByUserId: BookingData[]
+  bookingListByUser: BookingData[]
   bookingData: BookingData
   error?: string
   status: "default" | "loading" | "success" | "error"

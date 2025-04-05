@@ -23,7 +23,7 @@ function CustomerPage() {
   const showCustomerData = () => navigate("/account/myData")
   const showBookingsList = () => navigate("/account/myBookings")
 
-  // const user = useAppSelector(authSelectors.userData)
+  const user = useAppSelector(authSelectors.userData)
   // const bookingListByUserId = useAppSelector(
   //   bookingSelectors.selectBookingListByUser,
   // )

@@ -146,7 +146,9 @@ function CarCard({
                 customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold !bg-gray-100 !text-gray-700 hover:!bg-gray-200 transition-colors duration-300"
                 onClick={handleMoreDetailsClick}
               />
-              {user?.role === "ROLE_ADMIN" && (
+
+              {/* remove role restrictions later if necessary */}
+              {user?.role === "ROLE_CUSTOMER" && (
               <Button
                 name="RENT"
                 customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"

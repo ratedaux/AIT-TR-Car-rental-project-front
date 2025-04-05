@@ -7,7 +7,7 @@ import { authSelectors } from "store/redux/AuthSlice/authSlice"
 import { useSelector } from "react-redux"
 
 export interface CustomerDataProps {
-  customer?: CustomerProps
+  customer: CustomerProps 
 }
 
 function CustomerComponent({ customer }: CustomerDataProps) {
