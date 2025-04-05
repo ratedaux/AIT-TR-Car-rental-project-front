@@ -1,4 +1,4 @@
-import { UserSliceState } from "./types"
+import { UserData, UserSliceState } from "./types"
 import { CustomerProps } from "components/CustomerComponent/types"
 import { CustomerDataProps } from "components/CustomerComponent/CustomerComponent"
 import { createAppSlice } from "store/createAppSlice"
@@ -26,20 +26,20 @@ export const userSlice = createAppSlice({
     getAllUsers: create.asyncThunk(
       async (__, thunkApi) => {
         try {
-          const result = await axios.get(`/api/customers`)
+          const result = await axios.get<UserData[]>(`/api/customers`)
           return result.data
-        } catch (error) {
-          return thunkApi.rejectWithValue(error)
+        } catch (error:any) {
+          return thunkApi.rejectWithValue(error.response?.data || error.message)
         }
       },
       {
         pending: (state: UserSliceState) => {
-          state.userList = []
+          // state.userList = []
           state.status = "loading"
           state.error = undefined
         },
         fulfilled: (state: UserSliceState, action: any) => {
-          state.userList = action.payload.userList
+          state.userList = action.payload
           state.status = "success"
         },
         rejected: (state: UserSliceState, action: any) => {

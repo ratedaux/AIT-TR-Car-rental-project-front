@@ -21,8 +21,8 @@ import BookingsListComponent from "components/BookingsList/BookingsListComponent
 import CustomerListComponent from "components/CustomersListComponent/CustomersList"
 import CarList from "components/CarList/CarList"
 import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
-import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
-import { userSelectors } from "store/redux/UserSlice/UserSlise"
+import { bookingActions, bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
+import { userActions, userSelectors } from "store/redux/UserSlice/UserSlise"
 import {
   rentCarSelectors,
   rentCarActions,
@@ -39,9 +39,21 @@ const App = () => {
 
   //for My Account page
   const user = useAppSelector(authSelectors.userData)
-  const bookingListByUserId = useAppSelector(
+  // const bookingListByUserId = useAppSelector(
+  //   bookingSelectors.selectBookingListByUserId,
+  // )
+  const bookingListByUser = useAppSelector(
     bookingSelectors.selectBookingListByUser,
   )
+
+  useEffect(() => {
+    dispatch(bookingActions.getBookingsByUser(accessToken))
+  }, [dispatch])
+
+  // useEffect(() => {
+  //   dispatch(bookingActions.getBookingsByUserId())
+  // }, [dispatch])
+
   //for admin page
   const cars = useAppSelector(rentCarSelectors.selectAllCars)
   const customerList = useAppSelector(userSelectors.selectAllUsers)
@@ -49,6 +61,14 @@ const App = () => {
 
   useEffect(() => {
     dispatch(rentCarActions.getAllCars())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(bookingActions.getAllBookings(accessToken))
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(userActions.getAllUsers())
   }, [dispatch])
 
   return (
@@ -69,7 +89,7 @@ const App = () => {
             />
             <Route
               path="/account/myBookings"
-              element={<BookingsListComponent bookings={bookingListByUserId} />}
+              element={<BookingsListComponent bookings={bookingListByUser} />}
             />
           </Route>
           <Route path="/admin" element={<AdminPage />}>
