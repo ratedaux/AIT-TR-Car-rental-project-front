@@ -3,7 +3,9 @@ import { CarCardProps } from "../CarCard/types"
 import Button from "components/Button/Button"
 import { useNavigate } from "react-router-dom"
 import { rentCarActions } from "store/redux/rentCarSlice/rentCarSlice"
-import { useAppDispatch } from "store/hooks"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+import { useEffect } from "react"
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 
 interface CarListProps {
   cars: CarCardProps[]
@@ -13,19 +15,25 @@ function CarList({ cars }: CarListProps) {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
+  const accessToken = useAppSelector(authSelectors.accessToken)
+    useEffect(() => {
+      if (localStorage.getItem("accessToken"))
+        dispatch(authActions.getCurrentUser())
+    }, [accessToken])
+
   const handleEditCar = (carId: string, carDetails: CarCardProps) => {
     console.log("Edit car with Id:", carId)
     navigate(`/edit-car/${carId}`, { state: { carDetails } })
-  }
+      }
 
   const handleDeleteCar = (carId: string) => {
     console.log("Delete car with Id:", carId)
-    dispatch(rentCarActions.deleteCar(carId))
+    dispatch(rentCarActions.deleteCar(carId, accessToken))
   }
 
   const handleRestoreCar = (carId: string) => {
     console.log("Restore car with Id:", carId)
-    dispatch(rentCarActions.restoreCar(carId))
+    dispatch(rentCarActions.restoreCar(carId,accessToken))
   }
 
   return (

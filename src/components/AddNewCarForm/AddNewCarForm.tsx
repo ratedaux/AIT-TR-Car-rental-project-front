@@ -5,11 +5,18 @@ import * as Yup from "yup"
 import { useFormik } from "formik"
 import { useNavigate } from "react-router"
 import { rentCarActions } from "store/redux/rentCarSlice/rentCarSlice"
-import { useAppDispatch } from "store/hooks"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
+import { useEffect } from "react"
 
 function AddNewCarForm() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+
+  const token = useAppSelector(authSelectors.accessToken)
+    useEffect(() => {
+      dispatch(authActions.getCurrentUser())
+    }, [token])
 
   const validationSchema = Yup.object({
     brand: Yup.string().required("Car brand is required"),
@@ -51,7 +58,18 @@ function AddNewCarForm() {
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
 
-      const carData = {
+      // const carData = {
+      //   brand: values.brand,
+      //   model: values.model,
+      //   year: values.year,
+      //   carStatus: "",
+      //   type: values.type,
+      //   fuelType: values.fuelType,
+      //   transmissionType: values.transmissionType,
+      //   dayRentalPrice: values.dayRentalPrice,
+      //   carImage: values.image,
+      // }
+      dispatch(rentCarActions.addCar({carData :{
         brand: values.brand,
         model: values.model,
         year: values.year,
@@ -60,9 +78,9 @@ function AddNewCarForm() {
         fuelType: values.fuelType,
         transmissionType: values.transmissionType,
         dayRentalPrice: values.dayRentalPrice,
-        image: values.image,
-      }
-      dispatch(rentCarActions.addCar(carData))
+        carImage: values.image,
+      },
+       token}))
       //dispatch(rentCarActions.uploadCarImage())
       resetForm()
       alert("The car is saved")

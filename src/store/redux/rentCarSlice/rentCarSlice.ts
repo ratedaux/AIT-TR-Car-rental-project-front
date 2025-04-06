@@ -1,6 +1,7 @@
 import { createAppSlice } from "store/createAppSlice"
 import { Car, RentCarSliceState } from "./types"
 import axios from "axios"
+import { string } from "yup"
 
 const initialCarState: RentCarSliceState = {
   car: {
@@ -13,7 +14,7 @@ const initialCarState: RentCarSliceState = {
     transmissionType: "",
     carStatus: "",
     dayRentalPrice: 0,
-    image: "",
+    carImage: "",
   },
   cars: [],
   status: "default",
@@ -106,34 +107,42 @@ export const carsSlice = createAppSlice({
     ),
     editCar: create.asyncThunk(
       async (
-        carData: {
-          id: string
-          brand: string
-          model: string
-          year: number
-          type: string
-          fuelType: string
-          transmissionType: string
-          isActive: boolean
-          carStatus: string
-          dayRentalPrice: number
-          carImage: string
-        },
+       { updatedCar, token}:{token: string; updatedCar:
+        {brand: string
+      model: string
+      year: number
+      type: string
+      fuelType: string
+      transmissionType: string
+      isActive: boolean
+      carStatus: string
+      dayRentalPrice: number
+      carImage: string}
+    }     
+        ,
         thunkApi,
       ) => {
         try {
-          const response = await axios.put<Car>(CARS_URL, {
-            brand: carData.brand,
-            model: carData.model,
-            year: carData.year,
-            type: carData.type,
-            fuelType: carData.fuelType,
-            transmissionType: carData.transmissionType,
-            isActive: carData.isActive,
-            carStatus: carData.carStatus,
-            dayRentalPrice: carData.dayRentalPrice,
-            carImage: carData.carImage,
-          })
+          const response = await axios.put<Car>(
+            CARS_URL,
+          {
+              brand: updatedCar.brand,
+              model: updatedCar.model,
+              year: updatedCar.year,
+              type: updatedCar.type,
+              fuelType: updatedCar.fuelType,
+              transmissionType: updatedCar.transmissionType,
+              isActive: updatedCar.isActive,
+              carStatus: updatedCar.carStatus,
+              dayRentalPrice: updatedCar.dayRentalPrice,
+              carImage: updatedCar.carImage,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          )
           return response.data
         } catch (error: any) {
           return thunkApi.rejectWithValue(error.response?.data || error.message)
@@ -156,10 +165,18 @@ export const carsSlice = createAppSlice({
         },
       },
     ),
-    addCar: create.asyncThunk(
-      async (carData: Omit<Car, "id">, thunkApi) => {
+    addCar: create.asyncThunk<Car, { carData: Omit<Car, "id">; token: string | null}>(
+      async ({ carData, token }, thunkApi) => {
         try {
-          const response = await axios.post<Car>(CARS_URL, carData)
+          const response = await axios.post<Car>(
+            CARS_URL,
+             carData,
+             {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+            )
           return response.data
         } catch (error: any) {
           return thunkApi.rejectWithValue(error.response?.data || error.message)
@@ -181,9 +198,16 @@ export const carsSlice = createAppSlice({
       },
     ),
     restoreCar: create.asyncThunk(
-      async (carId: string, thunkApi) => {
+      async ({ carId, token }: { carId: string; token: string  }, thunkApi) => {
         try {
-          const response = await axios.put<Car>(`${CARS_URL}/restore/${carId}`)
+          const response = await axios.put<Car>(
+            `${CARS_URL}/restore/${carId}`,
+                         {
+            headers: {
+              Authorization: `Bearer ${token}`,  
+            }
+          },
+          )
           return response.data
         } catch (error: any) {
           return thunkApi.rejectWithValue(error.response?.data || error.message)
@@ -205,9 +229,16 @@ export const carsSlice = createAppSlice({
       },
     ),
     deleteCar: create.asyncThunk(
-      async (carId: string, thunkApi) => {
+      async ({ carId, token }: { carId: string; token: string | null }, thunkApi) => {
         try {
-          await axios.delete(`${CARS_URL}/delete/${carId}`)
+          await axios.delete(
+            `${CARS_URL}/delete/${carId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,  
+              }
+            },
+          )
           return carId
         } catch (error: any) {
           return thunkApi.rejectWithValue(error.response?.data || error.message)
@@ -305,7 +336,7 @@ export const carsSlice = createAppSlice({
             transmissionType: "",
             carStatus: "",
             dayRentalPrice: 0,
-            image: "",
+            carImage: "",
           }
           state.error = undefined
           state.status = "loading"

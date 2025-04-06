@@ -1,4 +1,5 @@
 export interface Car {
+  isActive?: boolean
   status?: "loading" | "success" | "default" | "error"
   error?: any
   id: string
@@ -10,7 +11,7 @@ export interface Car {
   transmissionType: string
   carStatus: string
   dayRentalPrice: number
-  image: string
+  carImage?: string
 }
 
 export interface RentCarSliceState {

@@ -7,13 +7,19 @@ import { useLocation, useNavigate } from "react-router"
 import { useEffect, useState } from "react"
 import { CarCardProps } from "components/CarCard/types"
 import { rentCarActions } from "store/redux/rentCarSlice/rentCarSlice"
-import { useAppDispatch } from "store/hooks"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 
 const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const { carDetails } = location.state || {}
   const dispatch = useAppDispatch()
+
+const token = useAppSelector(authSelectors.accessToken)
+  useEffect(() => {
+    dispatch(authActions.getCurrentUser())
+  }, [token])
 
   const [formData, setFormData] = useState<CarCardProps>(carDetails)
   useEffect(() => {
@@ -54,8 +60,8 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
 
-      const carData = {
-        id: values.id,
+      const updatedCar = {
+        // id: values.id,
         brand: values.brand,
         model: values.model,
         year: values.year,
@@ -64,10 +70,10 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
         fuelType: values.fuelType,
         transmissionType: values.transmissionType,
         dayRentalPrice: values.dayRentalPrice,
-        isActive: true,
+        isActive:true,
         carImage: values.image,
       }
-      dispatch(rentCarActions.editCar(carData))
+      dispatch(rentCarActions.editCar(updatedCar,token))
 
       alert("The car is edited")
       navigate("/admin/allCars")
