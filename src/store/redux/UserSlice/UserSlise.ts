@@ -100,12 +100,12 @@ export const userSlice = createAppSlice({
         thunkApi,
       ) => {
         try {
-          const { firstName, lastName, email } = updatedData
-          const dataToUpdate = { firstName, lastName, email }
+          //const { firstName, lastName, email } = updatedData
+          // const dataToUpdate = { firstName, lastName, email }
 
           const result = await axios.put(
             `/api/customers/update/${id}`,
-            dataToUpdate,
+            updatedData,
           )
           return result.data
         } catch (error) {
