@@ -12,23 +12,11 @@ import {
 } from "store/redux/BookingSlice/BookingSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import { BookingProps } from "components/BookingComponent/types"
-import { authSelectors } from "store/redux/AuthSlice/authSlice"
-
-const costPerDay = 50 // Example cost per day
-// TODO add dispatch
-
-const calculateTotalCost = (startDate: Date, endDate: Date): number => {
-  const start = new Date(startDate.setHours(0, 0, 0, 0))
-  const end = new Date(endDate.setHours(0, 0, 0, 0))
-  if (end < start) {
-    console.error("End date cannot be earlier than start date.")
-    return 0
-  }
-  const timeDifference = end.getTime() - start.getTime()
-  const days = timeDifference / (1000 * 3600 * 24)
-  const totalRentCost = days >= 1 ? days * costPerDay : costPerDay
-  return totalRentCost
-}
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
+import {
+  rentCarActions,
+  rentCarSelectors,
+} from "store/redux/rentCarSlice/rentCarSlice"
 
 const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   booking,
@@ -36,10 +24,39 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const location = useLocation()
-  const { bookingDetails } = location.state || {}
+  const {bookingDetails}  = location.state  || {};
   const user = useSelector(authSelectors.userData)
 
+  const carId = bookingDetails.carId
+  const car = useAppSelector(rentCarSelectors.selectCarById)
+  useEffect(() => {
+    dispatch(rentCarActions.getCarById(carId))
+  }, [dispatch])
+
+  const token = useAppSelector(authSelectors.accessToken)
+  useEffect(() => {
+    dispatch(authActions.getCurrentUser())
+  }, [token])
+
   const today = new Date().toLocaleDateString("en-CA")
+
+  const calculateTotalCost = (
+    startDate: Date,
+    endDate: Date,
+    dayRentalPrice: number,
+  ): number => {
+    const start = new Date(startDate.setHours(0, 0, 0, 0))
+    const end = new Date(endDate.setHours(0, 0, 0, 0))
+    if (end < start) {
+      console.error("End date cannot be earlier than start date.")
+      return 0
+    }
+    const timeDifference = end.getTime() - start.getTime()
+    const days = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1
+    const totalRentCost = days >= 1 ? days * dayRentalPrice : dayRentalPrice
+    return totalRentCost
+  }
+
   const validationSchema = Yup.object({
     rentalStartDate: Yup.date()
       .required("Start date is required")
@@ -61,7 +78,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     if (bookingDetails) {
       setFormData(bookingDetails)
     }
-  }, [booking])
+  }, [bookingDetails])
 
   const formik = useFormik({
     initialValues: formData,
@@ -83,26 +100,24 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     },
   })
 
-  // Сбрасываем стоимость аренды, если изменяется дата начала или конца
-  const handleDateChange = () => {
-    formik.setFieldValue("totalPrice", 0)
-  }
-
-  const handleCalculateTotalCost = () => {
+  //Automatic calculation of renting price
+  useEffect(() => {
     const { rentalStartDate, rentalEndDate } = formik.values
-    if (!rentalStartDate || !rentalEndDate) {
-      console.error("Both startDate and endDate are required.")
-      return
+    if (rentalStartDate && rentalEndDate) {
+      const start = new Date(rentalStartDate)
+      const end = new Date(rentalEndDate)
+      const totalCost = calculateTotalCost(start, end, car.dayRentalPrice)
+      formik.setFieldValue("totalPrice", totalCost)
     }
-    const start = new Date(rentalStartDate)
-    const end = new Date(rentalEndDate)
-    const totalCost = calculateTotalCost(start, end)
-    formik.setFieldValue("totalPrice", totalCost)
-  }
+  }, [
+    formik.values.rentalStartDate,
+    formik.values.rentalEndDate,
+    car.dayRentalPrice,
+  ])
 
   const handleCancelBooking = (id: string) => {
     alert("The booking is cancelled")
-    dispatch(bookingActions.cancelBooking(id))
+    dispatch(bookingActions.cancelBooking({ token, id }))
 
     if (user?.role === "ROLE_ADMIN") {
       navigate("/admin/allUsers")
@@ -115,7 +130,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
   const handleCloseBooking = (id: string) => {
     alert("The booking is cancelled")
-    dispatch(bookingActions.cancelBooking(id))
+    dispatch(bookingActions.closeBooking({ token, id }))
 
     if (user?.role === "ROLE_ADMIN") {
       navigate("/admin/allUsers")
@@ -128,7 +143,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
   const handleExtendBooking = (id: string, updatedData: BookingProps) => {
     const newEndDate = updatedData.rentalEndDate
-    dispatch(bookingActions.extendBooking({ id, newEndDate }))
+    dispatch(bookingActions.extendBooking({ id, newEndDate, token }))
   }
 
   const handleClose = () => {
@@ -177,10 +192,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             label="Start date"
             placeholder="Select start date"
             value={formik.values.rentalStartDate}
-            onChange={e => {
-              formik.handleChange(e)
-              handleDateChange()
-            }}
+            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             readOnly={true}
             disabled={true}
@@ -196,10 +208,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             label="End date"
             placeholder="Select end date"
             value={formik.values.rentalEndDate}
-            onChange={e => {
-              formik.handleChange(e)
-              handleDateChange()
-            }}
+            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             errorMessage={
               formik.errors.rentalEndDate
@@ -218,7 +227,6 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             errorMessage={formik.errors.totalPrice}
             readOnly={true}
           />
-          {/* must be available only for admin  */}
           <Input
             name="bookingStatus"
             type="select"
@@ -240,19 +248,6 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             errorMessage={formik.errors.bookingStatus}
           />
         </div>
-
-        <div className="mb-2.5">
-          <Button
-            name="Recalculate Total Cost"
-            type="button"
-            onClick={handleCalculateTotalCost}
-            disabled={
-              !(formik.values.rentalStartDate && formik.values.rentalEndDate)
-            }
-            customClasses="!w-full !rounded-lg  hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
-          />
-        </div>
-
         <div className="w-auto">
           <Button name="Apply" type="submit" />
         </div>

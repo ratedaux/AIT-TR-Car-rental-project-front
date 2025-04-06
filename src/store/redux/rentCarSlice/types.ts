@@ -1,4 +1,6 @@
 export interface Car {
+  status?: "loading" | "success" | "default" | "error"
+  error?: any
   id: string
   brand: string
   model: string
@@ -12,6 +14,7 @@ export interface Car {
 }
 
 export interface RentCarSliceState {
+  car: Car
   cars: Car[]
   status: "loading" | "success" | "default" | "error"
   error: any
