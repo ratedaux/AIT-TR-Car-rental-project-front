@@ -3,6 +3,18 @@ import { Car, RentCarSliceState } from "./types"
 import axios from "axios"
 
 const initialCarState: RentCarSliceState = {
+  car: {
+    id: "",
+    brand: "",
+    model: "",
+    year: 0,
+    type: "",
+    fuelType: "",
+    transmissionType: "",
+    carStatus: "",
+    dayRentalPrice: 0,
+    image: "",
+  },
   cars: [],
   status: "default",
   error: undefined,
@@ -272,16 +284,53 @@ export const carsSlice = createAppSlice({
         state.selectedEndDate = action.payload.endDate
       },
     ),
+    getCarById: create.asyncThunk(
+      async (id, thunkApi) => {
+        try {
+          const response = await axios.get<Car>(`api/cars/${id}`)
+          return response.data
+        } catch (error: any) {
+          return thunkApi.rejectWithValue(error.response?.data || error.message)
+        }
+      },
+      {
+        pending: (state: RentCarSliceState) => {
+          state.car = {
+            id: "",
+            brand: "",
+            model: "",
+            year: 0,
+            type: "",
+            fuelType: "",
+            transmissionType: "",
+            carStatus: "",
+            dayRentalPrice: 0,
+            image: "",
+          }
+          state.error = undefined
+          state.status = "loading"
+        },
+        fulfilled: (state: RentCarSliceState, action: any) => {
+          state.status = "success"
+          state.car = action.payload
+        },
+        rejected: (state: RentCarSliceState, action: any) => {
+          state.error = action.payload || "Something went wrong..."
+          state.status = "error"
+        },
+      },
+    ),
   }),
 
   selectors: {
     carsData: (state: RentCarSliceState) => state,
-    selectAllCars:(state:RentCarSliceState) => state.cars,
     selectPriceRange: (state: RentCarSliceState) => state.priceRange,
     selectDates: (state: RentCarSliceState) => ({
       startDate: state.selectedStartDate,
       endDate: state.selectedEndDate,
     }),
+    selectAllCars: (state: RentCarSliceState) => state.cars,
+    selectCarById: (state: RentCarSliceState) => state.car,
   },
 })
 

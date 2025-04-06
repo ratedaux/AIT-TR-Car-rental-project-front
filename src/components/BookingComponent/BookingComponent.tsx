@@ -1,5 +1,9 @@
 import { BookingProps } from "./types"
 
+function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
 function BookingComponent({
   rentalStartDate,
   rentalEndDate,
@@ -40,7 +44,7 @@ function BookingComponent({
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Status:</div>
-            <div className="w-3/4">{bookingStatus}</div>
+            <div className="w-3/4">{capitalizeFirstLetter(bookingStatus)}</div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Start Date:</div>

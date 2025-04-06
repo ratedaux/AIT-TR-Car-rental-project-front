@@ -16,7 +16,6 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
   const dispatch = useAppDispatch()
 
   const [formData, setFormData] = useState<CarCardProps>(carDetails)
-
   useEffect(() => {
     if (carDetails) {
       setFormData(carDetails)

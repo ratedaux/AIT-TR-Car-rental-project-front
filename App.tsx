@@ -38,10 +38,7 @@ const App = () => {
 
   //for My Account page
   const user = useAppSelector(authSelectors.userData)
-  // const bookingListByUserId = useAppSelector(
-  //   bookingSelectors.selectBookingListByUserId,
-  // )
-  const bookingListByUser = useAppSelector(
+    const bookingListByUser = useAppSelector(
     bookingSelectors.selectBookingListByUser,
   )
 
@@ -49,11 +46,7 @@ const App = () => {
     dispatch(bookingActions.getBookingsByUser(accessToken))
   }, [dispatch])
 
-  // useEffect(() => {
-  //   dispatch(bookingActions.getBookingsByUserId())
-  // }, [dispatch])
-
-  //for admin page
+   //for admin page
   const cars = useAppSelector(rentCarSelectors.selectAllCars)
   const customerList = useAppSelector(userSelectors.selectAllUsers)
   const bookingList = useAppSelector(bookingSelectors.selectBookingList)

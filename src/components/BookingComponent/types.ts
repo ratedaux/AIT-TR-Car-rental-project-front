@@ -6,7 +6,7 @@ export interface BookingProps {
   carStatus?: string
   brand?: string
   model?: string
-  bookingStatus?: string
+  bookingStatus?: string 
   totalPrice?: number
   firstName?: string
   lastName?: string
