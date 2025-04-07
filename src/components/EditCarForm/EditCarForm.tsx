@@ -23,7 +23,7 @@ const token = useAppSelector(authSelectors.accessToken)
     if (carDetails) {
       setFormData(carDetails)
     }
-  }, [car])
+  }, [carDetails])
 
   const validationSchema = Yup.object({
     brand: Yup.string().required("Car brand is required"),
