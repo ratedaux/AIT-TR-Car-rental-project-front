@@ -135,7 +135,7 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/" }: Log
   }, [loginError, successMessage]);
 
   return (
-    <div className="flex justify-center items-center -mt-4 px-4 sm:px-6 lg:px-8">
+    <div className="flex justify-center items-center mt-10 px-4 sm:px-6 lg:px-8">
       <div className="w-full sm:w-[250px] lg:w-[300px] xl:w-[350px] max-w-full rounded-lg p-4 bg-white lg:bg-transparent">
         <div className="flex flex-col w-full">
           {showHeader && (
