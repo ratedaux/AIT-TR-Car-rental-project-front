@@ -105,46 +105,34 @@ export const carsSlice = createAppSlice({
         },
       },
     ),
-    editCar: create.asyncThunk<Car,{ updatedCar: Omit<Car, "id">; token: string | null }>(
-      async (
-        { updatedCar, token },
-        //    :{token: string | null; updatedCar:
-        //     {brand: string
-        //   model: string
-        //   year: number
-        //   type: string
-        //   fuelType: string
-        //   transmissionType: string
-        //   isActive: boolean
-        //   carStatus: string
-        //   dayRentalPrice: number
-        //   carImage: string}
-        // }
-        //     ,
-        thunkApi,
-      ) => {
+
+    editCar: create.asyncThunk<
+      Car,
+      {
+        carId: string
+        updatedCar: {
+          brand: string
+          model: string
+          year: number
+          type: string
+          fuelType: string
+          transmissionType: string
+          isActive: boolean
+          carStatus: string
+          dayRentalPrice: number
+          carImage: string
+        }
+        token: string | null
+      }
+    >(
+      async ({ carId, updatedCar, token }, thunkApi) => {
         try {
-          const response = await axios.put<Car>(
-            `/api/cars`,
-            {
-              brand: updatedCar.brand,
-              model: updatedCar.model,
-              year: updatedCar.year,
-              type: updatedCar.type,
-              fuelType: updatedCar.fuelType,
-              transmissionType: updatedCar.transmissionType,
-              isActive: updatedCar.isActive,
-              carStatus: updatedCar.carStatus,
-              dayRentalPrice: updatedCar.dayRentalPrice,
-              carImage: updatedCar.carImage,
+          const response = await axios.put(`/api/cars/${carId}`, updatedCar, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": `application/json`,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": `application/json`,
-              },
-            },
-          )
+          })
           return response.data
         } catch (error: any) {
           return thunkApi.rejectWithValue(error.response?.data || error.message)
@@ -167,7 +155,10 @@ export const carsSlice = createAppSlice({
         },
       },
     ),
-    addCar: create.asyncThunk<Car,{ carData: Omit<Car, "id">; token: string | null }>(
+    addCar: create.asyncThunk<
+      Car,
+      { carData: Omit<Car, "id">; token: string | null }
+    >(
       async ({ carData, token }, thunkApi) => {
         try {
           const response = await axios.post<Car>(`api/cars`, carData, {

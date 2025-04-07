@@ -16,8 +16,8 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
   const { carDetails } = location.state || {}
   const dispatch = useAppDispatch()
 
-const token = useAppSelector(authSelectors.accessToken)
- 
+  const token = useAppSelector(authSelectors.accessToken)
+
   const [formData, setFormData] = useState<CarCardProps>(carDetails)
   useEffect(() => {
     if (carDetails) {
@@ -57,20 +57,9 @@ const token = useAppSelector(authSelectors.accessToken)
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
 
-      // const updatedCar = {
-      //   // id: values.id,
-      //   brand: values.brand,
-      //   model: values.model,
-      //   year: values.year,
-      //   carStatus: values.carStatus,
-      //   type: values.type,
-      //   fuelType: values.fuelType,
-      //   transmissionType: values.transmissionType,
-      //   dayRentalPrice: values.dayRentalPrice,
-      //   isActive:true,
-      //   carImage: values.image,
-      // }
-      dispatch(rentCarActions.editCar({updatedCar:{brand: values.brand,
+      const updatedCar = {
+        // id: values.id,
+        brand: values.brand,
         model: values.model,
         year: values.year,
         carStatus: values.carStatus,
@@ -79,7 +68,16 @@ const token = useAppSelector(authSelectors.accessToken)
         transmissionType: values.transmissionType,
         dayRentalPrice: values.dayRentalPrice,
         isActive:true,
-        carImage: values.image,},token}))
+        carImage: values.image,
+      }
+
+      dispatch(
+        rentCarActions.editCar({
+          updatedCar: updatedCar,
+          token: token,
+          carId: carDetails.id
+        }),
+      )
 
       alert("The car is edited")
       navigate("/admin/allCars")
@@ -136,7 +134,7 @@ const token = useAppSelector(authSelectors.accessToken)
               "AVAILABLE",
               "RENTED",
               "UNDER_REPAIR",
-              "REMOVER_FROM_RENT",
+              "REMOVED_FROM_RENT",
               "UNDER_INSPECTION",
             ]}
             label="Status"
