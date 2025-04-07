@@ -28,16 +28,12 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   const user = useSelector(authSelectors.userData)
 
   const carId = bookingDetails.carId
+  
   const car = useAppSelector(rentCarSelectors.selectCarById)
-  useEffect(() => {
-    dispatch(rentCarActions.getCarById(carId))
-  }, [dispatch])
+ 
 
   const token = useAppSelector(authSelectors.accessToken)
-  useEffect(() => {
-    dispatch(authActions.getCurrentUser())
-  }, [token])
-
+  
   const today = new Date().toLocaleDateString("en-CA")
 
   const calculateTotalCost = (
@@ -115,27 +111,27 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     car.dayRentalPrice,
   ])
 
-  const handleCancelBooking = (id: string) => {
+  const handleCancelBooking = (bookingId: string , token: string | null) => {
     alert("The booking is cancelled")
-    dispatch(bookingActions.cancelBooking({ token, id }))
+    dispatch(bookingActions.cancelBooking({ token: token, bookingId: bookingDetails.id }))
 
     if (user?.role === "ROLE_ADMIN") {
-      navigate("/admin/allUsers")
+      navigate("/admin/allBookings")
     } else if (user?.role === "ROLE_CUSTOMER") {
-      navigate("/account/myData")
+      navigate("/account/myBookings")
     } else {
       console.error("Unknown role")
     }
   }
 
-  const handleCloseBooking = (id: string) => {
-    alert("The booking is cancelled")
-    dispatch(bookingActions.closeBooking({ token, id }))
+  const handleCloseBooking = (bookingId: string, token: string | null) => {
+    alert("The booking is closed")
+    dispatch(bookingActions.closeBooking({ token: token, bookingId: bookingDetails.id  }))
 
     if (user?.role === "ROLE_ADMIN") {
-      navigate("/admin/allUsers")
+      navigate("/admin/allBookings")
     } else if (user?.role === "ROLE_CUSTOMER") {
-      navigate("/account/myData")
+      navigate("/account/myBookings")
     } else {
       console.error("Unknown role")
     }
@@ -143,7 +139,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
   const handleExtendBooking = (id: string, updatedData: BookingProps) => {
     const newEndDate = updatedData.rentalEndDate
-    dispatch(bookingActions.extendBooking({ id, newEndDate, token }))
+    dispatch(bookingActions.extendBooking({ id: bookingDetails.id, newEndDate: newEndDate, token: token }))
   }
 
   const handleClose = () => {
@@ -258,7 +254,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             <Button
               name="Cancel Booking"
               customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
-              onClick={() => handleCancelBooking(formik.values.id)}
+              onClick={() => handleCancelBooking(formik.values.id, token)}
             />
           </div>
         )}
@@ -269,7 +265,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             <Button
               name="Close Booking"
               customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
-              onClick={() => handleCloseBooking(formik.values.id)}
+              onClick={() => handleCloseBooking(formik.values.id, token)}
             />
           </div>
         )}

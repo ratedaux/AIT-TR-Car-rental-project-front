@@ -116,7 +116,7 @@ export const userSlice = createAppSlice({
                 "Content-Type": `application/json`,
               },
             },
-                     )
+          )
           return result.data
         } catch (error: any) {
           return thunkApi.rejectWithValue(error.response?.data || error.message)
