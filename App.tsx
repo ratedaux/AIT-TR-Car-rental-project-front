@@ -21,7 +21,10 @@ import BookingsListComponent from "components/BookingsList/BookingsListComponent
 import CustomerListComponent from "components/CustomersListComponent/CustomersList"
 import CarList from "components/CarList/CarList"
 import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
-import { bookingActions, bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
+import {
+  bookingActions,
+  bookingSelectors,
+} from "store/redux/BookingSlice/BookingSlice"
 import { userActions, userSelectors } from "store/redux/UserSlice/UserSlise"
 import {
   rentCarSelectors,
@@ -38,7 +41,7 @@ const App = () => {
 
   //for My Account page
   const user = useAppSelector(authSelectors.userData)
-    const bookingListByUser = useAppSelector(
+  const bookingListByUser = useAppSelector(
     bookingSelectors.selectBookingListByUser,
   )
 
@@ -46,7 +49,7 @@ const App = () => {
     dispatch(bookingActions.getBookingsByUser(accessToken))
   }, [dispatch])
 
-   //for admin page
+  //for admin page
   const cars = useAppSelector(rentCarSelectors.selectAllCars)
   const customerList = useAppSelector(userSelectors.selectAllUsers)
   const bookingList = useAppSelector(bookingSelectors.selectBookingList)
