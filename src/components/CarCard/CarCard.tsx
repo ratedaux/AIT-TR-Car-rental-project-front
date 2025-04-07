@@ -70,8 +70,9 @@ function CarCard({
   }
 
   const handleLoginSuccess = () => {
-   /*  setshowLoginNotification(false) */
+   setshowLoginNotification(false) 
     handleRentCar()  // Продолжить аренду после успешного входа
+   
   }
 
   function capitalizeFirstLetter(string: string) {
@@ -203,7 +204,8 @@ function CarCard({
               >
                 ✖
               </button>
-              <LoginNotification onLoginSuccess={handleLoginSuccess} />
+              <LoginNotification onLoginSuccess={handleLoginSuccess} 
+              />
               {/* <LoginNotification carId={id} onLoginSuccess={handleCloseLoginNotification}  /> */}
             </div>
           </div>,
