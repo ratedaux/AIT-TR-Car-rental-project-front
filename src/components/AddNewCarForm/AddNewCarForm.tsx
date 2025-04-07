@@ -28,7 +28,7 @@ function AddNewCarForm() {
         `Year must be at most ${new Date().getFullYear()}`,
       )
       .required("Year when car was produced is required"),
-    bodyType: Yup.string().required("Car body type is required"),
+    type: Yup.string().required("Car body type is required"),
     fuelType: Yup.string().required("Car fuel type is required"),
     transmissionType: Yup.string().required(
       "Car transmission type is required",
@@ -73,7 +73,7 @@ function AddNewCarForm() {
         brand: values.brand,
         model: values.model,
         year: values.year,
-        carStatus: "",
+        carStatus: "AVAILABLE",
         type: values.type,
         fuelType: values.fuelType,
         transmissionType: values.transmissionType,
@@ -134,7 +134,7 @@ function AddNewCarForm() {
             errorMessage={formik.errors.year}
           />
           <Input
-            name="bodyType"
+            name="type"
             type="select"
             options={[
               "SEDAN",

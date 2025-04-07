@@ -60,9 +60,20 @@ const token = useAppSelector(authSelectors.accessToken)
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
 
-      const updatedCar = {
-        // id: values.id,
-        brand: values.brand,
+      // const updatedCar = {
+      //   // id: values.id,
+      //   brand: values.brand,
+      //   model: values.model,
+      //   year: values.year,
+      //   carStatus: values.carStatus,
+      //   type: values.type,
+      //   fuelType: values.fuelType,
+      //   transmissionType: values.transmissionType,
+      //   dayRentalPrice: values.dayRentalPrice,
+      //   isActive:true,
+      //   carImage: values.image,
+      // }
+      dispatch(rentCarActions.editCar({updatedCar:{brand: values.brand,
         model: values.model,
         year: values.year,
         carStatus: values.carStatus,
@@ -71,9 +82,7 @@ const token = useAppSelector(authSelectors.accessToken)
         transmissionType: values.transmissionType,
         dayRentalPrice: values.dayRentalPrice,
         isActive:true,
-        carImage: values.image,
-      }
-      dispatch(rentCarActions.editCar(updatedCar,token))
+        carImage: values.image,},token}))
 
       alert("The car is edited")
       navigate("/admin/allCars")
