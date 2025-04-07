@@ -105,10 +105,7 @@ export const carsSlice = createAppSlice({
         },
       },
     ),
-    editCar: create.asyncThunk<
-      Car,
-      { updatedCar: Omit<Car, "id">; token: string | null }
-    >(
+    editCar: create.asyncThunk<Car,{ updatedCar: Omit<Car, "id">; token: string | null }>(
       async (
         { updatedCar, token },
         //    :{token: string | null; updatedCar:
@@ -170,10 +167,7 @@ export const carsSlice = createAppSlice({
         },
       },
     ),
-    addCar: create.asyncThunk<
-      Car,
-      { carData: Omit<Car, "id">; token: string | null }
-    >(
+    addCar: create.asyncThunk<Car,{ carData: Omit<Car, "id">; token: string | null }>(
       async ({ carData, token }, thunkApi) => {
         try {
           const response = await axios.post<Car>(`api/cars`, carData, {
@@ -244,9 +238,10 @@ export const carsSlice = createAppSlice({
         thunkApi,
       ) => {
         try {
-          await axios.delete(`${CARS_URL}/delete/${carId}`, {
+          await axios.delete(`api/cars/delete/${carId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
+              "Content-Type": `application/json`,
             },
           })
           return carId

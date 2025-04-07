@@ -16,27 +16,22 @@ function CarList({ cars }: CarListProps) {
   const dispatch = useAppDispatch()
 
   const accessToken = useAppSelector(authSelectors.accessToken)
-    useEffect(() => {
-      if (localStorage.getItem("accessToken"))
-        dispatch(authActions.getCurrentUser())
-    }, [accessToken])
+  useEffect(() => {
+    if (localStorage.getItem("accessToken"))
+      dispatch(authActions.getCurrentUser())
+  }, [accessToken])
 
   const handleEditCar = (carId: string, carDetails: CarCardProps) => {
-    console.log("Edit car with Id:", carId)
     navigate(`/edit-car/${carId}`, { state: { carDetails } })
-      }
+  }
 
-  const handleDeleteCar = (carId: string,accessToken: string | null) => {
-    console.log("Delete car with Id:", carId)
-    dispatch(rentCarActions.deleteCar(carId, accessToken))
-    alert("the car is deleted")
+  const handleDeleteCar = (carId: string, accessToken: string | null) => {
+    dispatch(rentCarActions.deleteCar({ carId, token: accessToken }))
+    alert("The car is deleted")
   }
 
   const handleRestoreCar = (carId: string, accessToken: string | null) => {
-    console.log("Restore car with Id:", carId)
-  
-    dispatch(rentCarActions.restoreCar({carId,token: accessToken}))
-      console.log(typeof(carId))
+    dispatch(rentCarActions.restoreCar({ carId, token: accessToken }))
     alert("The car is restored")
   }
 
@@ -73,7 +68,7 @@ function CarList({ cars }: CarListProps) {
                   onClick={() =>
                     car.isActive
                       ? handleDeleteCar(car.id, accessToken)
-                      : handleRestoreCar(car.id,accessToken)
+                      : handleRestoreCar(car.id, accessToken)
                   }
                   name={car.isActive ? "Delete" : "Restore"}
                 />
