@@ -17,11 +17,7 @@ function CustomerComponent({ customer }: CustomerDataProps) {
   const user = useSelector(authSelectors.userData)
 
   const accessToken = useAppSelector(authSelectors.accessToken)
-  useEffect(() => {
-    if (localStorage.getItem("accessToken"))
-      dispatch(authActions.getCurrentUser())
-  }, [accessToken])
-
+  
   const handleEditCustomer = (
     customerId: string,
     customerData: CustomerProps,

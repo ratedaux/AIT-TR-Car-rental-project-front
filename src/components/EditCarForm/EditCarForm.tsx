@@ -17,10 +17,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
   const dispatch = useAppDispatch()
 
 const token = useAppSelector(authSelectors.accessToken)
-  useEffect(() => {
-    dispatch(authActions.getCurrentUser())
-  }, [token])
-
+ 
   const [formData, setFormData] = useState<CarCardProps>(carDetails)
   useEffect(() => {
     if (carDetails) {
