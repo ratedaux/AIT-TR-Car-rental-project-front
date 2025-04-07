@@ -6,10 +6,11 @@ import { useEffect, useState } from "react"
 import { EditUserFormProps } from "./types"
 import { useLocation, useNavigate } from "react-router-dom"
 import { CustomerProps } from "components/CustomerComponent/types"
-import { useAppDispatch } from "store/hooks"
+import { useAppDispatch, useAppSelector } from "store/hooks"
 import { userActions } from "store/redux/UserSlice/UserSlise"
-import { authSelectors } from "store/redux/AuthSlice/authSlice"
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 import { useSelector } from "react-redux"
+import { AsyncThunkAction } from "@reduxjs/toolkit"
 
 const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
   const navigate = useNavigate()
@@ -17,6 +18,8 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
   const { customerData } = location.state || {}
   const dispatch = useAppDispatch()
   const user = useSelector(authSelectors.userData)
+
+  const accessToken = useAppSelector(authSelectors.accessToken)
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("First name"),
@@ -31,7 +34,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
     if (customerData) {
       setFormData(customerData)
     }
-  }, [customer])
+  }, [customerData])
 
   const formik = useFormik({
     initialValues: formData,
@@ -42,10 +45,18 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
       console.log("Submitted values:", values)
       console.log("Errors:", formik.errors)
       alert("The user is edited")
+
+      const updatedData = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+      }
+
       dispatch(
         userActions.updateUser({
-          id: customer.id,
-          updatedData: values,
+          customerId: customerData.id,
+          updatedData: updatedData,
+          token: accessToken,
         }),
       )
       if (user?.role === "ROLE_ADMIN") {
@@ -135,3 +146,21 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
   )
 }
 export default EditUserForm
+function dispatch(
+  arg0: AsyncThunkAction<
+    any,
+    void,
+    {
+      state?: undefined
+      dispatch?: undefined
+      extra?: unknown
+      rejectValue?: unknown
+      serializedErrorType?: unknown
+      pendingMeta?: unknown
+      fulfilledMeta?: unknown
+      rejectedMeta?: unknown
+    }
+  >,
+) {
+  throw new Error("Function not implemented.")
+}
