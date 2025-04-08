@@ -21,7 +21,10 @@ function BookingForm() {
   const car = location.state?.car
 
   const token = useAppSelector(authSelectors.accessToken)
-  
+  useEffect(() => {
+    dispatch(authActions.getCurrentUser())
+  }, [token])
+
   const [showNotification, setShowNotification] = useState(false)
   const { startDate, endDate } = useAppSelector(rentCarSelectors.selectDates)
 
