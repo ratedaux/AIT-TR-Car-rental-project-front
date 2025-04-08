@@ -145,7 +145,8 @@ function BookingForm() {
         <div className="flex flex-col gap-2 w-full">
           <Input
             name="rentalStartDate"
-            type="datetime-local"
+              // type="datetime-local"
+            type="date"
             label="Start date"
             placeholder="Select start date"
             value={formik.values.rentalStartDate}
@@ -159,7 +160,8 @@ function BookingForm() {
           />
           <Input
             name="rentalEndDate"
-            type="datetime-local"
+              // type="datetime-local"
+            type="date"
             label="End date"
             placeholder="Select end date"
             value={formik.values.rentalEndDate}
