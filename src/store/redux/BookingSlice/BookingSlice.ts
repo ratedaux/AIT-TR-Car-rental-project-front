@@ -182,13 +182,20 @@ export const bookingSlice = createAppSlice({
       },
     ),
     cancelBooking: create.asyncThunk(
-      async ({ token, bookingId }: { token: string | null; bookingId: string }, thunkApi) => {
+      async (
+        { bookingId, token }: { bookingId: string; token: string | null },
+        thunkApi,
+      ) => {
         try {
-          const result = await axios.put(`/api/bookings/cancel/${bookingId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
+          const result = await axios.put(
+            `/api/bookings/cancel/${bookingId}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
-          })
+          )
           return result.data
         } catch (error) {
           return thunkApi.rejectWithValue(error)
@@ -213,10 +220,14 @@ export const bookingSlice = createAppSlice({
       },
     ),
     closeBooking: create.asyncThunk(
-      async ({ token, bookingId }: { token: string | null; bookingId: string }, thunkApi) => {
+      async (
+        { token, bookingId }: { token: string | null; bookingId: string },
+        thunkApi,
+      ) => {
         try {
           const result = await axios.put<BookingData>(
             `/api/bookings/close/${bookingId}`,
+            {},
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -261,7 +272,7 @@ export const bookingSlice = createAppSlice({
             {
               headers: {
                 Authorization: `Bearer ${token}`,
-                'Content-Type': `application/json`,
+                "Content-Type": `application/json`,
               },
             },
           )
