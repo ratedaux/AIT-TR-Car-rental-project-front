@@ -151,8 +151,7 @@ export const bookingSlice = createAppSlice({
           const result = await axios.put(
             `/api/bookings/extend/${id}`,
             {
-              id,
-              newEndDate,
+                newEndDate,
             },
             {
               headers: {

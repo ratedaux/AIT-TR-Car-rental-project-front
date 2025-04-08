@@ -38,7 +38,7 @@ function BookingComponent({
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Price:</div>
-            <div className="w-3/4">{totalPrice} €</div>
+            <div className="w-3/4">{new Intl.NumberFormat('en-US').format(totalPrice || 0)} €</div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Status:</div>
