@@ -149,18 +149,18 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     }
   }
 
-  const formatDateTimeForInput = (dateTime: string) => {
-    if (!dateTime) return '';
-    const date = new Date(dateTime);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-  const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
-    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
-};
+//   const formatDateTimeForInput = (dateTime: string) => {
+//     if (!dateTime) return '';
+//     const date = new Date(dateTime);
+//     const year = date.getFullYear();
+//     const month = String(date.getMonth() + 1).padStart(2, '0');
+//     const day = String(date.getDate()).padStart(2, '0');
+//     const hours = String(date.getHours()).padStart(2, '0');
+//     const minutes = String(date.getMinutes()).padStart(2, '0');
+//     const seconds = String(date.getSeconds()).padStart(2, '0');
+//   
+//     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+// };
 
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
@@ -197,7 +197,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             type="datetime-local"
             label="Start date"
             placeholder="Select start date"
-            value={formatDateTimeForInput(formik.values.rentalStartDate)}
+            value={formik.values.rentalStartDate}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             readOnly={true}
@@ -213,7 +213,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             type="datetime-local"
             label="End date"
             placeholder="Select end date"
-            value={formatDateTimeForInput(formik.values.rentalEndDate)}
+            value={formik.values.rentalEndDate}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             errorMessage={
@@ -224,10 +224,10 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
           />
           <Input
             name="totalPrice"
-            type="number"
+            type="text"
             label="Total Rent Cost €"
-            placeholder="Click button to display total cost"
-            value={formik.values.totalPrice}
+            placeholder="Display total cost"
+            value={new Intl.NumberFormat('en-US').format(formik.values.totalPrice || 0)}
             onChange={() => {}}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.totalPrice}
