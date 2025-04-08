@@ -256,18 +256,26 @@ export const carsSlice = createAppSlice({
       },
     ),
     uploadCarImage: create.asyncThunk(
-      async ({ carId, file }: { carId: string; file: File }, thunkApi) => {
+      async (
+        {
+          carId,
+          file,
+          token,
+        }: { carId: string; file: File; token: string | null },
+        thunkApi,
+      ) => {
         try {
           const formData = new FormData()
-          formData.append("id", carId)
+          // formData.append("id", carId)
           formData.append("file", file)
 
           const response = await axios.post<string>(
-            `${CARS_URL}/upload-image`,
+            `/api/cars/upload-image/${carId}`,
             formData,
             {
               headers: {
                 "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
               },
             },
           )
@@ -284,7 +292,7 @@ export const carsSlice = createAppSlice({
         fulfilled: (state: RentCarSliceState, action: any) => {
           state.status = "success"
           // update URL of image in state
-          const imageUrl = action.payload.split("URL: ")[1]
+          const imageUrl = action.payload
           state.cars = state.cars.map(car =>
             car.id === action.meta.arg.carId
               ? { ...car, carImage: imageUrl }

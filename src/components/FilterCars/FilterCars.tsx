@@ -322,7 +322,7 @@ export default function FilterCars() {
                     {/* Cars list */}
                     <div className="w-3/4 h-screen overflow-y-auto space-y-6 p-4">
                         {cars.map(car => (
-                            <CarCard key={car.id} {...car} image={car.carImage || ""} />
+                            <CarCard key={car.id} {...car} carImage={car.carImage || ""} />
                         ))}
                     </div>
                 </div>
