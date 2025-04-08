@@ -157,13 +157,13 @@ export const bookingSlice = createAppSlice({
             {
               headers: {
                 Authorization: `Bearer ${token}`,
-                // 'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
               },
             },
           )
           return result.data
-        } catch (error) {
-          return thunkApi.rejectWithValue(error)
+        } catch (error:any) {
+          return thunkApi.rejectWithValue(error.response?.data || error.message)
         }
       },
       {
@@ -172,11 +172,13 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingData = action.payload
+          state.bookingData = {
+            ...state.bookingData,
+            ...action.payload}
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
-          state.error = action.payload
+          state.error = action.payload || "Something went wrong..."
           state.status = "error"
         },
       },
@@ -262,7 +264,7 @@ export const bookingSlice = createAppSlice({
         {
           token,
           bookingDataForDispatch,
-        }: { token: string | null; bookingDataForDispatch: RentFormValues },
+        }: { token: string | null; bookingDataForDispatch: {carId:string, rentalStartDate: string, rentalEndDate: string} },
         thunkApi,
       ) => {
         try {
@@ -291,7 +293,7 @@ export const bookingSlice = createAppSlice({
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
-          state.error = action.payload
+          state.error = action.payload || "Something went wrong..."
           state.status = "error"
         },
       },
