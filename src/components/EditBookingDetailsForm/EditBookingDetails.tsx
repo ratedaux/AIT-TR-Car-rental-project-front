@@ -27,11 +27,16 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   const {bookingDetails}  = location.state  || {};
   const user = useSelector(authSelectors.userData)
 
-  const carId = bookingDetails.carId
-  
-  const car = useAppSelector(rentCarSelectors.selectCarById)
- 
+  // const carId = bookingDetails.carId
+  // const car = useAppSelector(state => rentCarSelectors.selectCarById(state, carId));
+  // useEffect(() => {
+  //   if (car) {
+  //     const { dayRentalPrice } = car;
+  //         }
+  // }, [car]);
 
+  const car = bookingDetails.carDto
+  
   const token = useAppSelector(authSelectors.accessToken)
   
   const today = new Date().toLocaleDateString("en-CA")
@@ -163,13 +168,13 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Car:</div>
               <div className="w-2/3">
-                {bookingDetails.brand} {bookingDetails.model}
+                {car.brand} {car.model}
               </div>
             </div>
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Renter:</div>
               <div className="w-2/3">
-                {bookingDetails.firstName} {bookingDetails.lastName}
+                {bookingDetails.customerDto.firstName} {bookingDetails.customerDto.lastName}
               </div>
             </div>
             <div className="flex gap-4">
