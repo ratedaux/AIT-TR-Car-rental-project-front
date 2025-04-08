@@ -319,6 +319,7 @@ export const carsSlice = createAppSlice({
         state.selectedEndDate = action.payload.endDate
       },
     ),
+
     // getCarById: create.asyncThunk(
     //   async (carId: string, thunkApi) => {
     //     try {
@@ -357,6 +358,7 @@ export const carsSlice = createAppSlice({
     //   },
     // )
     // ,
+
   }),
 
   selectors: {

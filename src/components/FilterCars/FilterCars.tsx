@@ -24,7 +24,6 @@ export default function FilterCars() {
     const [showFilters, setShowFilters] = useState(false);
     const [showNotification, setShowNotification] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    //const [priceRange, setPriceRange] = useState<[number, number]>([20, 100]);
     const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
     const [selectedBodyTypes, setSelectedBodyTypes] = useState<string[]>([]);
     const [selectedFuelTypes, setSelectedFuelTypes] = useState<string[]>([]);
@@ -101,22 +100,27 @@ export default function FilterCars() {
         } as FilterCarsValues,
         validationSchema: schema,
         validateOnChange: false,
-        onSubmit: (values) => {
-            dispatch(rentCarActions.fetchCars({
-                startDateTime: values.startDateTime,
-                endDateTime: values.endDateTime,
-                minPrice: priceRange[0],
-                maxPrice: priceRange[1],
-                brands: selectedBrands,
-                bodyTypes: selectedBodyTypes,
-                fuelTypes: selectedFuelTypes,
-                transmissionTypes: selectedTransmissionTypes
-            }));
-            dispatch(rentCarActions.setSelectedDates({
-                startDate: values.startDateTime,
-                endDate: values.endDateTime,
-            }));
-            setShowFilters(true);
+        onSubmit: async (values) => {
+            setIsLoading(true);
+            try {
+                await dispatch(rentCarActions.fetchCars({
+                    startDateTime: values.startDateTime,
+                    endDateTime: values.endDateTime,
+                    minPrice: priceRange[0],
+                    maxPrice: priceRange[1],
+                    brands: selectedBrands,
+                    bodyTypes: selectedBodyTypes,
+                    fuelTypes: selectedFuelTypes,
+                    transmissionTypes: selectedTransmissionTypes
+                }));
+                dispatch(rentCarActions.setSelectedDates({
+                    startDate: values.startDateTime,
+                    endDate: values.endDateTime,
+                }));
+                setShowFilters(true);
+            } finally {
+                setIsLoading(false);
+            }
         }
     });
 
@@ -169,6 +173,17 @@ export default function FilterCars() {
         setShowNotification(false);
     };
 
+    const formatDateTimeForInput = (dateTime: string) => {
+        if (!dateTime) return '';
+        const date = new Date(dateTime);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    };
+
     return (
         <div>
             <div className='max-w-5xl mx-auto bg-white rounded-lg shadow-lg relative -mt-30 py-5 border border-gray-100 mb-6'>
@@ -181,7 +196,7 @@ export default function FilterCars() {
                             type="datetime-local"
                             label="Pick-up Date and Time"
                             input_id="startDateTime"
-                            value={formik.values.startDateTime}
+                            value={formatDateTimeForInput(formik.values.startDateTime)}
                             onChange={formik.handleChange}
                             errorMessage={formik.errors.startDateTime}
                             min={today}
@@ -193,7 +208,7 @@ export default function FilterCars() {
                             type="datetime-local"
                             label="Return Date and Time"
                             input_id="endDateTime"
-                            value={formik.values.endDateTime}
+                            value={formatDateTimeForInput(formik.values.endDateTime)}
                             onChange={formik.handleChange}
                             errorMessage={formik.errors.endDateTime}
                             min={formik.values.startDateTime || today}
@@ -208,7 +223,8 @@ export default function FilterCars() {
                     </div>
                 </form>
             </div>
-            {showFilters && (
+            {isLoading && <Loader />}
+            {showFilters && !isLoading && (
                 <div className="max-w-5xl mx-auto h-screen flex">
 
                     {/* Filter sidebar */}
@@ -306,7 +322,7 @@ export default function FilterCars() {
                     {/* Cars list */}
                     <div className="w-3/4 h-screen overflow-y-auto space-y-6 p-4">
                         {cars.map(car => (
-                            <CarCard key={car.id} {...car} />
+                            <CarCard key={car.id} {...car} image={car.carImage || ""} />
                         ))}
                     </div>
                 </div>
@@ -318,7 +334,6 @@ export default function FilterCars() {
                     onClose={handleNotificationClose}
                 />
             )}
-            {isLoading && <Loader />}
         </div>
     );
 }
