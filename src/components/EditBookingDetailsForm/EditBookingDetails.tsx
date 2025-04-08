@@ -27,14 +27,6 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   const {bookingDetails}  = location.state  || {};
   const user = useSelector(authSelectors.userData)
 
-  // const carId = bookingDetails.carId
-  // const car = useAppSelector(state => rentCarSelectors.selectCarById(state, carId));
-  // useEffect(() => {
-  //   if (car) {
-  //     const { dayRentalPrice } = car;
-  //         }
-  // }, [car]);
-
   const car = bookingDetails.carDto
   
   const token = useAppSelector(authSelectors.accessToken)
@@ -118,7 +110,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
   const handleCancelBooking = (bookingId: string , token: string | null) => {
     alert("The booking is cancelled")
-    dispatch(bookingActions.cancelBooking({ token: token, bookingId: bookingDetails.id }))
+    dispatch(bookingActions.cancelBooking({ bookingId: bookingDetails.id, token: token }))
 
     if (user?.role === "ROLE_ADMIN") {
       navigate("/admin/allBookings")
@@ -131,7 +123,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
   const handleCloseBooking = (bookingId: string, token: string | null) => {
     alert("The booking is closed")
-    dispatch(bookingActions.closeBooking({ token: token, bookingId: bookingDetails.id  }))
+    dispatch(bookingActions.closeBooking({  bookingId: bookingDetails.id, token: token}))
 
     if (user?.role === "ROLE_ADMIN") {
       navigate("/admin/allBookings")
@@ -265,7 +257,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
         )}
 
         {/* close booking button */}
-        {formik.values.bookingStatus === "ACTIVE" && (
+        {formik.values.bookingStatus === "ACTIVE" && user?.role === "ROLE_ADMIN" && (
           <div className="w-auto mt-2.5">
             <Button
               name="Close Booking"
