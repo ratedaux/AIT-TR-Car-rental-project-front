@@ -77,6 +77,21 @@ export default function FilterCars() {
         }
     };
 
+    const handleDateTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        if (value.includes('.')) {
+            const [datePart, timePart] = value.split(' ');
+            const [day, month, year] = datePart.split('.');
+            const [hours, minutes] = timePart ? timePart.split(':') : ['00', '00'];
+
+            const formattedDateTime = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+            formik.setFieldValue(name, formattedDateTime);
+        } else {
+            formik.setFieldValue(name, value);
+        }
+    };
+
 
     const schema = Yup.object().shape({
         startDateTime: Yup.date()
@@ -197,7 +212,7 @@ export default function FilterCars() {
                             label="Pick-up Date and Time"
                             input_id="startDateTime"
                             value={formatDateTimeForInput(formik.values.startDateTime)}
-                            onChange={formik.handleChange}
+                            onChange={handleDateTimeChange}
                             errorMessage={formik.errors.startDateTime}
                             min={today}
                         />
@@ -209,7 +224,7 @@ export default function FilterCars() {
                             label="Return Date and Time"
                             input_id="endDateTime"
                             value={formatDateTimeForInput(formik.values.endDateTime)}
-                            onChange={formik.handleChange}
+                            onChange={handleDateTimeChange}
                             errorMessage={formik.errors.endDateTime}
                             min={formik.values.startDateTime || today}
                         />
