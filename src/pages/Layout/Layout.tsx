@@ -70,7 +70,7 @@ function Layout({ children }: LayoutProps) {
               {isLoggedIn &&
                 (user?.role === "ROLE_CUSTOMER" || !user?.role) && (
                   <Link
-                    to="/account"
+                    to="/account/myData"
                     className="text-white font-bold px-4 py-2 rounded-md transition-all duration-300 hover:bg-red-600 relative z-10 hover:text-white"
                   >
                     My Account
@@ -78,7 +78,7 @@ function Layout({ children }: LayoutProps) {
                 )}
               {isLoggedIn && user?.role === "ROLE_ADMIN" && (
                 <Link
-                  to="/admin"
+                  to="/admin/allCars"
                   className="text-white font-bold px-4 py-2 rounded-md transition-all duration-300 hover:bg-red-600 relative z-10 hover:text-white"
                 >
                   Admin

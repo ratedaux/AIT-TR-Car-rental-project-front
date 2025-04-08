@@ -79,14 +79,15 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (values: BookingProps) => {
-      console.log("Submitted values:", values)
       alert("The booking details are updated")
-      handleExtendBooking(values.id, values)
+
+      const newEndDate = values.rentalEndDate
+      handleExtendBooking(values.id, token , newEndDate)
 
       if (user?.role === "ROLE_ADMIN") {
-        navigate("/admin/allUsers")
+        navigate("/admin/allBookings")
       } else if (user?.role === "ROLE_CUSTOMER") {
-        navigate("/account/myData")
+        navigate("/account/myBookings")
       } else {
         console.error("Unknown role")
       }
@@ -134,8 +135,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     }
   }
 
-  const handleExtendBooking = (id: string, updatedData: BookingProps) => {
-    const newEndDate = updatedData.rentalEndDate
+  const handleExtendBooking = (id: string, token: string |null, newEndDate: string) => {
     dispatch(bookingActions.extendBooking({ id: bookingDetails.id, newEndDate: newEndDate, token: token }))
   }
 
@@ -194,7 +194,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
           <Input
             name="rentalStartDate"
-            type="date"
+            type="datetime-local"
             label="Start date"
             placeholder="Select start date"
             value={formatDateTimeForInput(formik.values.rentalStartDate)}
@@ -210,7 +210,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
           />
           <Input
             name="rentalEndDate"
-            type="date"
+            type="datetime-local"
             label="End date"
             placeholder="Select end date"
             value={formatDateTimeForInput(formik.values.rentalEndDate)}

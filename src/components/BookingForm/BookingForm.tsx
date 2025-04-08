@@ -128,8 +128,8 @@ function BookingForm() {
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-  const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
-    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+  // const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 };
 
   return (
@@ -142,7 +142,7 @@ function BookingForm() {
         <div className="flex flex-col gap-2 w-full">
           <Input
             name="rentalStartDate"
-            type="date"
+            type="datetime-local"
             label="Start date"
             placeholder="Select start date"
             value={formatDateTimeForInput(formik.values.rentalStartDate)}
@@ -156,7 +156,7 @@ function BookingForm() {
           />
           <Input
             name="rentalEndDate"
-            type="date"
+            type="datetime-local"
             label="End date"
             placeholder="Select end date"
             value={formatDateTimeForInput(formik.values.rentalEndDate)}
