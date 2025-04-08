@@ -92,7 +92,7 @@ function BookingForm() {
         carId: car.id,
       }
       setShowNotification(true)
-      dispatch(bookingActions.createBooking({ token, bookingDataForDispatch }))
+      dispatch(bookingActions.createBooking({ token: token, bookingDataForDispatch: bookingDataForDispatch }))
       resetForm()
       navigate("/account/myBookings")
     },
