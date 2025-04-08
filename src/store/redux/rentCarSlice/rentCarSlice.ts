@@ -106,28 +106,32 @@ export const carsSlice = createAppSlice({
       },
     ),
 
-    editCar: create.asyncThunk<
-      Car,
-      {
-        carId: string
-        updatedCar: {
-          brand: string
-          model: string
-          year: number
-          type: string
-          fuelType: string
-          transmissionType: string
-          isActive: boolean
-          carStatus: string
-          dayRentalPrice: number
-          carImage: string
-        }
-        token: string | null
-      }
-    >(
-      async ({ carId, updatedCar, token }, thunkApi) => {
+    editCar: create.asyncThunk(
+      async (
+        {
+          carId,
+          updatedCar,
+          token,
+        }: {
+          carId: string
+          updatedCar: {
+            // brand: string
+            // model: string
+            // year: number
+            // type: string
+            // fuelType: string
+            // transmissionType: string
+            // isActive: boolean
+            carStatus: string
+            dayRentalPrice: number
+            // carImage: string
+          }
+          token: string | null
+        },
+        thunkApi,
+      ) => {
         try {
-          const response = await axios.put(`/api/cars/${carId}`, updatedCar, {
+          const response = await axios.put(`/api/cars/update/${carId}`, updatedCar, {
             headers: {
               Authorization: `Bearer ${token}`,
               "Content-Type": `application/json`,
@@ -144,10 +148,14 @@ export const carsSlice = createAppSlice({
           state.status = "loading"
         },
         fulfilled: (state: RentCarSliceState, action: any) => {
+          // state.cars = state.cars.map(car =>
+          //   car.id === action.payload.id ? action.payload : car,
+          // )
+          state.cars = {
+            ...state.car,
+            ...action.payload,
+          }
           state.status = "success"
-          state.cars = state.cars.map(car =>
-            car.id === action.payload.id ? action.payload : car,
-          )
         },
         rejected: (state: RentCarSliceState, action: any) => {
           state.error = action.payload || "Something went wrong..."

@@ -59,16 +59,16 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
 
       const updatedCar = {
         // id: values.id,
-        brand: values.brand,
-        model: values.model,
-        year: values.year,
+        // brand: values.brand,
+        // model: values.model,
+        // year: values.year,
         carStatus: values.carStatus,
-        type: values.type,
-        fuelType: values.fuelType,
-        transmissionType: values.transmissionType,
+        // type: values.type,
+        // fuelType: values.fuelType,
+        // transmissionType: values.transmissionType,
         dayRentalPrice: values.dayRentalPrice,
-        isActive:true,
-        carImage: values.image,
+        // isActive:true,
+        // carImage: values.image,
       }
 
       dispatch(
@@ -78,7 +78,6 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
           carId: carDetails.id
         }),
       )
-
       alert("The car is edited")
       navigate("/admin/allCars")
     },
@@ -144,7 +143,6 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.carStatus}
           />
-
           <Input
             name="year"
             type="number"
