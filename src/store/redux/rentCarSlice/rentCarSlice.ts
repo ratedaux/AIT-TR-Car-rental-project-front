@@ -311,42 +311,44 @@ export const carsSlice = createAppSlice({
         state.selectedEndDate = action.payload.endDate
       },
     ),
-    getCarById: create.asyncThunk(
-      async (id, thunkApi) => {
-        try {
-          const response = await axios.get<Car>(`api/cars/${id}`)
-          return response.data
-        } catch (error: any) {
-          return thunkApi.rejectWithValue(error.response?.data || error.message)
-        }
-      },
-      {
-        pending: (state: RentCarSliceState) => {
-          state.car = {
-            id: "",
-            brand: "",
-            model: "",
-            year: 0,
-            type: "",
-            fuelType: "",
-            transmissionType: "",
-            carStatus: "",
-            dayRentalPrice: 0,
-            carImage: "",
-          }
-          state.error = undefined
-          state.status = "loading"
-        },
-        fulfilled: (state: RentCarSliceState, action: any) => {
-          state.status = "success"
-          state.car = action.payload
-        },
-        rejected: (state: RentCarSliceState, action: any) => {
-          state.error = action.payload || "Something went wrong..."
-          state.status = "error"
-        },
-      },
-    ),
+    // getCarById: create.asyncThunk(
+    //   async (carId: string, thunkApi) => {
+    //     try {
+    //       const response = await axios.get<Car>(`api/cars/${carId}`)
+    //       return response.data
+    //     } catch (error: any) {
+    //       return thunkApi.rejectWithValue(error.response?.data || error.message)
+    //     }
+    //   },
+    //   {
+    //     pending: (state: RentCarSliceState) => {
+    //       state.car = {
+    //         id: "",
+    //         brand: "",
+    //         model: "",
+    //         year: 0,
+    //         type: "",
+    //         fuelType: "",
+    //         transmissionType: "",
+    //         carStatus: "",
+    //         dayRentalPrice: 0,
+    //         carImage: "",
+    //         // isActive: true
+    //       }
+    //       state.error = undefined
+    //       state.status = "loading"
+    //     },
+    //     fulfilled: (state: RentCarSliceState, action: any) => {
+    //       state.status = "success"
+    //       state.car = action.payload
+    //     },
+    //     rejected: (state: RentCarSliceState, action: any) => {
+    //       state.error = action.payload || "Something went wrong..."
+    //       state.status = "error"
+    //     },
+    //   },
+    // )
+    // ,
   }),
 
   selectors: {
@@ -357,7 +359,9 @@ export const carsSlice = createAppSlice({
       endDate: state.selectedEndDate,
     }),
     selectAllCars: (state: RentCarSliceState) => state.cars,
-    selectCarById: (state: RentCarSliceState) => state.car,
+    // selectCarById: (state: RentCarSliceState, carId: string) => {
+    //   return state.cars.find(car => car.id === carId)
+    // },
   },
 })
 
