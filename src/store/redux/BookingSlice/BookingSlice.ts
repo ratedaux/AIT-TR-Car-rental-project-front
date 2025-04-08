@@ -182,9 +182,9 @@ export const bookingSlice = createAppSlice({
       },
     ),
     cancelBooking: create.asyncThunk(
-      async ({ token, id }: { token: string | null; id: string }, thunkApi) => {
+      async ({ token, bookingId }: { token: string | null; bookingId: string }, thunkApi) => {
         try {
-          const result = await axios.put(`/api/bookings/cancel/${id}`, {
+          const result = await axios.put(`/api/bookings/cancel/${bookingId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -213,10 +213,10 @@ export const bookingSlice = createAppSlice({
       },
     ),
     closeBooking: create.asyncThunk(
-      async ({ token, id }: { token: string | null; id: string }, thunkApi) => {
+      async ({ token, bookingId }: { token: string | null; bookingId: string }, thunkApi) => {
         try {
           const result = await axios.put<BookingData>(
-            `/api/bookings/close/${id}`,
+            `/api/bookings/close/${bookingId}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -261,6 +261,7 @@ export const bookingSlice = createAppSlice({
             {
               headers: {
                 Authorization: `Bearer ${token}`,
+                'Content-Type': `application/json`,
               },
             },
           )

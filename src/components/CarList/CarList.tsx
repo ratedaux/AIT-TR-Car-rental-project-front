@@ -16,24 +16,23 @@ function CarList({ cars }: CarListProps) {
   const dispatch = useAppDispatch()
 
   const accessToken = useAppSelector(authSelectors.accessToken)
-    useEffect(() => {
-      if (localStorage.getItem("accessToken"))
-        dispatch(authActions.getCurrentUser())
-    }, [accessToken])
+  useEffect(() => {
+    if (localStorage.getItem("accessToken"))
+      dispatch(authActions.getCurrentUser())
+  }, [accessToken])
 
   const handleEditCar = (carId: string, carDetails: CarCardProps) => {
-    console.log("Edit car with Id:", carId)
     navigate(`/edit-car/${carId}`, { state: { carDetails } })
-      }
-
-  const handleDeleteCar = (carId: string) => {
-    console.log("Delete car with Id:", carId)
-    dispatch(rentCarActions.deleteCar(carId, accessToken))
   }
 
-  const handleRestoreCar = (carId: string) => {
-    console.log("Restore car with Id:", carId)
-    dispatch(rentCarActions.restoreCar(carId,accessToken))
+  const handleDeleteCar = (carId: string, accessToken: string | null) => {
+    dispatch(rentCarActions.deleteCar({ carId, token: accessToken }))
+    alert("The car is deleted")
+  }
+
+  const handleRestoreCar = (carId: string, accessToken: string | null) => {
+    dispatch(rentCarActions.restoreCar({ carId, token: accessToken }))
+    alert("The car is restored")
   }
 
   return (
@@ -51,7 +50,7 @@ function CarList({ cars }: CarListProps) {
               year={car.year}
               fuelType={car.fuelType}
               id={car.id}
-              type={""}
+              type={car.type}
             />
 
             <div className="m-4 flex flex-row gap-4 justify-end">
@@ -68,8 +67,8 @@ function CarList({ cars }: CarListProps) {
                   customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"
                   onClick={() =>
                     car.isActive
-                      ? handleDeleteCar(car.id)
-                      : handleRestoreCar(car.id)
+                      ? handleDeleteCar(car.id, accessToken)
+                      : handleRestoreCar(car.id, accessToken)
                   }
                   name={car.isActive ? "Delete" : "Restore"}
                 />

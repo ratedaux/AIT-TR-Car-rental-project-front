@@ -105,49 +105,34 @@ export const carsSlice = createAppSlice({
         },
       },
     ),
-    editCar: create.asyncThunk(
-      async (
-        {
-          updatedCar,
-          token,
-        }: {
-          token: string
-          updatedCar: {
-            brand: string
-            model: string
-            year: number
-            type: string
-            fuelType: string
-            transmissionType: string
-            isActive: boolean
-            carStatus: string
-            dayRentalPrice: number
-            carImage: string
-          }
-        },
-        thunkApi,
-      ) => {
+
+    editCar: create.asyncThunk<
+      Car,
+      {
+        carId: string
+        updatedCar: {
+          brand: string
+          model: string
+          year: number
+          type: string
+          fuelType: string
+          transmissionType: string
+          isActive: boolean
+          carStatus: string
+          dayRentalPrice: number
+          carImage: string
+        }
+        token: string | null
+      }
+    >(
+      async ({ carId, updatedCar, token }, thunkApi) => {
         try {
-          const response = await axios.put<Car>(
-            CARS_URL,
-            {
-              brand: updatedCar.brand,
-              model: updatedCar.model,
-              year: updatedCar.year,
-              type: updatedCar.type,
-              fuelType: updatedCar.fuelType,
-              transmissionType: updatedCar.transmissionType,
-              isActive: updatedCar.isActive,
-              carStatus: updatedCar.carStatus,
-              dayRentalPrice: updatedCar.dayRentalPrice,
-              carImage: updatedCar.carImage,
+          const response = await axios.put(`/api/cars/${carId}`, updatedCar, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": `application/json`,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            },
-          )
+          })
           return response.data
         } catch (error: any) {
           return thunkApi.rejectWithValue(error.response?.data || error.message)
@@ -176,9 +161,10 @@ export const carsSlice = createAppSlice({
     >(
       async ({ carData, token }, thunkApi) => {
         try {
-          const response = await axios.post<Car>(CARS_URL, carData, {
+          const response = await axios.post<Car>(`api/cars`, carData, {
             headers: {
               Authorization: `Bearer ${token}`,
+              "Content-Type": `application/json`,
             },
           })
           return response.data
@@ -202,13 +188,18 @@ export const carsSlice = createAppSlice({
       },
     ),
     restoreCar: create.asyncThunk(
-      async ({ carId, token }: { carId: string; token: string }, thunkApi) => {
+      async (
+        { carId, token }: { carId: string; token: string | null },
+        thunkApi,
+      ) => {
         try {
           const response = await axios.put<Car>(
-            `${CARS_URL}/restore/${carId}`,
+            `api/cars/restore/${carId}`,
+            {},
             {
               headers: {
                 Authorization: `Bearer ${token}`,
+                "Content-Type": `application/json`,
               },
             },
           )
@@ -238,9 +229,10 @@ export const carsSlice = createAppSlice({
         thunkApi,
       ) => {
         try {
-          await axios.delete(`${CARS_URL}/delete/${carId}`, {
+          await axios.delete(`api/cars/delete/${carId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
+              "Content-Type": `application/json`,
             },
           })
           return carId

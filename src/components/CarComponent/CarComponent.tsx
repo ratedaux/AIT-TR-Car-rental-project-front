@@ -115,14 +115,16 @@ function CarComponent({ car }: CarComponentProps) {
         </div>
 
         {/* Action Buttons */}
+        {user?.role !== "ROLE_ADMIN" && (
         <div className="flex gap-2 flex-wrap">
           <Button name="Rent" type="button" onClick={() => handleRentCar()} />
-        </div>
+        </div>)}
 
         {/* Edit car only for Admin */}
+        {user?.role === "ROLE_ADMIN" && (
         <div className="w-auto">
           <Button name="Edit" type="button" onClick={() => handleEditCar(car.id, car)} />
-        </div>
+        </div>)}
       </div>
     </div>
   );

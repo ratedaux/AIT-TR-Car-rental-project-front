@@ -1,13 +1,14 @@
 import Button from "components/Button/Button"
 import { CustomerProps } from "./types"
 import { useNavigate } from "react-router-dom"
-import { useAppDispatch } from "store/hooks"
+import { useAppDispatch, useAppSelector } from "store/hooks"
 import { userActions } from "store/redux/UserSlice/UserSlise"
-import { authSelectors } from "store/redux/AuthSlice/authSlice"
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 import { useSelector } from "react-redux"
+import { useEffect } from "react"
 
 export interface CustomerDataProps {
-  customer: CustomerProps 
+  customer: CustomerProps
 }
 
 function CustomerComponent({ customer }: CustomerDataProps) {
@@ -15,6 +16,8 @@ function CustomerComponent({ customer }: CustomerDataProps) {
   const dispatch = useAppDispatch()
   const user = useSelector(authSelectors.userData)
 
+  const accessToken = useAppSelector(authSelectors.accessToken)
+  
   const handleEditCustomer = (
     customerId: string,
     customerData: CustomerProps,
@@ -23,16 +26,20 @@ function CustomerComponent({ customer }: CustomerDataProps) {
     navigate(`/edit-user/${customerId}`, { state: { customerData } })
   }
 
-  const handleDeleteCustomer = (customerId: string) => {
-    console.log("Deleting customer with ID:", customerId)
-    alert("The user is deactivated")
-    dispatch(userActions.deleteUser(customerId))
+  const handleDeleteCustomer = (
+    customerId: string,
+    accessToken: string | null,
+  ) => {
+        alert("The user is deactivated")
+    dispatch(userActions.deleteUser({ customerId, token: accessToken }))
   }
 
-  const handleRestoreCustomer = (customerId: string) => {
-    console.log("Deleting customer with ID:", customerId)
-    alert("The user is restored")
-    dispatch(userActions.restoreUser(customerId))
+  const handleRestoreCustomer = (
+    customerId: string,
+    accessToken: string | null,
+  ) => {
+        alert("The user is restored")
+    dispatch(userActions.restoreUser({ customerId, token: accessToken }))
   }
 
   return (
@@ -56,7 +63,6 @@ function CustomerComponent({ customer }: CustomerDataProps) {
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Status:</div>
             <div className="w-3/4">
-              {" "}
               {customer?.isActive ? "Active" : "Not Active"}{" "}
             </div>
           </div>
@@ -80,8 +86,8 @@ function CustomerComponent({ customer }: CustomerDataProps) {
               customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"
               onClick={() =>
                 customer.isActive
-                  ? handleDeleteCustomer(customer.id)
-                  : handleRestoreCustomer(customer.id)
+                  ? handleDeleteCustomer(customer.id, accessToken)
+                  : handleRestoreCustomer(customer.id, accessToken)
               }
               name={customer.isActive ? "Deactivate" : "Restore"}
             />
