@@ -312,9 +312,9 @@ export const carsSlice = createAppSlice({
       },
     ),
     getCarById: create.asyncThunk(
-      async (id, thunkApi) => {
+      async (carId: string, thunkApi) => {
         try {
-          const response = await axios.get<Car>(`api/cars/${id}`)
+          const response = await axios.get<Car>(`api/cars/${carId}`)
           return response.data
         } catch (error: any) {
           return thunkApi.rejectWithValue(error.response?.data || error.message)
@@ -322,18 +322,6 @@ export const carsSlice = createAppSlice({
       },
       {
         pending: (state: RentCarSliceState) => {
-          state.car = {
-            id: "",
-            brand: "",
-            model: "",
-            year: 0,
-            type: "",
-            fuelType: "",
-            transmissionType: "",
-            carStatus: "",
-            dayRentalPrice: 0,
-            carImage: "",
-          }
           state.error = undefined
           state.status = "loading"
         },
