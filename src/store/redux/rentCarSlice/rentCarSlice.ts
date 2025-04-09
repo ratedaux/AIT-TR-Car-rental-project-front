@@ -19,7 +19,7 @@ const initialCarState: RentCarSliceState = {
   cars: [],
   status: "default",
   error: undefined,
-  priceRange: [20, 100],
+  priceRange: [20, 200],
   selectedStartDate: "",
   selectedEndDate: "",
 }
