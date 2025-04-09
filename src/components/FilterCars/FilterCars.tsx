@@ -24,7 +24,6 @@ export default function FilterCars() {
     const [showFilters, setShowFilters] = useState(false);
     const [showNotification, setShowNotification] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    //const [priceRange, setPriceRange] = useState<[number, number]>([20, 100]);
     const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
     const [selectedBodyTypes, setSelectedBodyTypes] = useState<string[]>([]);
     const [selectedFuelTypes, setSelectedFuelTypes] = useState<string[]>([]);
@@ -78,14 +77,44 @@ export default function FilterCars() {
         }
     };
 
+    const handleDateTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        if (value.includes('.')) {
+            const [datePart, timePart] = value.split(' ');
+            const [day, month, year] = datePart.split('.');
+            const [hours, minutes] = timePart ? timePart.split(':') : ['00', '00'];
+
+            const formattedDateTime = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+            formik.setFieldValue(name, formattedDateTime);
+        } else {
+            formik.setFieldValue(name, value);
+        }
+    };
+
 
     const schema = Yup.object().shape({
         startDateTime: Yup.date()
+            .required('Start date and time is required')
             .min(new Date(new Date().setHours(0, 0, 0, 0)), 'Start date and time cannot be in the past')
-            .required('Start date and time is required'),
+            .test('valid-year', 'Start date must have a valid year', value => {
+                if (!value) return false;
+                const year = new Date(value).getFullYear();
+                return year >= 1900 && year <= 2100;
+            })
+            .test('year-length', 'Year must be exactly 4 digits', (value) => {
+                if (!value) return false;
+                const year = new Date(value).getFullYear().toString();
+                return year.length === 4;
+            }),
         endDateTime: Yup.date()
+            .required('End date and time is required')
             .min(Yup.ref('startDateTime'), 'End date and time must be later than start date and time')
-            .required('End date and time is required'),
+            .test('valid-year', 'End date must have a valid year', value => {
+                if (!value) return false;
+                const year = new Date(value).getFullYear();
+                return year >= 1900 && year <= 2100;
+            }),
     });
 
     const formik = useFormik({
@@ -100,23 +129,28 @@ export default function FilterCars() {
             transmissionTypes: []
         } as FilterCarsValues,
         validationSchema: schema,
-        validateOnChange: false,
-        onSubmit: (values) => {
-            dispatch(rentCarActions.fetchCars({
-                startDateTime: values.startDateTime,
-                endDateTime: values.endDateTime,
-                minPrice: priceRange[0],
-                maxPrice: priceRange[1],
-                brands: selectedBrands,
-                bodyTypes: selectedBodyTypes,
-                fuelTypes: selectedFuelTypes,
-                transmissionTypes: selectedTransmissionTypes
-            }));
-            dispatch(rentCarActions.setSelectedDates({
-                startDate: values.startDateTime,
-                endDate: values.endDateTime,
-            }));
-            setShowFilters(true);
+        validateOnChange: true,
+        onSubmit: async (values) => {
+            setIsLoading(true);
+            try {
+                await dispatch(rentCarActions.fetchCars({
+                    startDateTime: values.startDateTime,
+                    endDateTime: values.endDateTime,
+                    minPrice: priceRange[0],
+                    maxPrice: priceRange[1],
+                    brands: selectedBrands,
+                    bodyTypes: selectedBodyTypes,
+                    fuelTypes: selectedFuelTypes,
+                    transmissionTypes: selectedTransmissionTypes
+                }));
+                dispatch(rentCarActions.setSelectedDates({
+                    startDate: values.startDateTime,
+                    endDate: values.endDateTime,
+                }));
+                setShowFilters(true);
+            } finally {
+                setIsLoading(false);
+            }
         }
     });
 
@@ -156,7 +190,7 @@ export default function FilterCars() {
         setSelectedBodyTypes([]);
         setSelectedFuelTypes([]);
         setSelectedTransmissionTypes([]),
-            dispatch(rentCarActions.setPriceRange([20, 100]));
+            dispatch(rentCarActions.setPriceRange([20, 200]));
     }, [formik.values.startDateTime, formik.values.endDateTime]);
 
     const today = new Date().toISOString().split("T")[0];
@@ -167,6 +201,17 @@ export default function FilterCars() {
 
     const handleNotificationClose = () => {
         setShowNotification(false);
+    };
+
+    const formatDateTimeForInput = (dateTime: string) => {
+        if (!dateTime) return '';
+        const date = new Date(dateTime);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
     };
 
     return (
@@ -181,10 +226,11 @@ export default function FilterCars() {
                             type="datetime-local"
                             label="Pick-up Date and Time"
                             input_id="startDateTime"
-                            value={formik.values.startDateTime}
-                            onChange={formik.handleChange}
+                            value={formatDateTimeForInput(formik.values.startDateTime)}
+                            onChange={handleDateTimeChange}
                             errorMessage={formik.errors.startDateTime}
                             min={today}
+                            max="9999-12-31T23:59"
                         />
                     </div>
                     <div className="flex-1">
@@ -193,8 +239,8 @@ export default function FilterCars() {
                             type="datetime-local"
                             label="Return Date and Time"
                             input_id="endDateTime"
-                            value={formik.values.endDateTime}
-                            onChange={formik.handleChange}
+                            value={formatDateTimeForInput(formik.values.endDateTime)}
+                            onChange={handleDateTimeChange}
                             errorMessage={formik.errors.endDateTime}
                             min={formik.values.startDateTime || today}
                         />
@@ -208,7 +254,8 @@ export default function FilterCars() {
                     </div>
                 </form>
             </div>
-            {showFilters && (
+            {isLoading && <Loader />}
+            {showFilters && !isLoading && (
                 <div className="max-w-5xl mx-auto h-screen flex">
 
                     {/* Filter sidebar */}
@@ -306,7 +353,7 @@ export default function FilterCars() {
                     {/* Cars list */}
                     <div className="w-3/4 h-screen overflow-y-auto space-y-6 p-4">
                         {cars.map(car => (
-                            <CarCard key={car.id} {...car} />
+                            <CarCard key={car.id} {...car} carImage={car.carImage || ""} />
                         ))}
                     </div>
                 </div>
@@ -318,7 +365,6 @@ export default function FilterCars() {
                     onClose={handleNotificationClose}
                 />
             )}
-            {isLoading && <Loader />}
         </div>
     );
 }

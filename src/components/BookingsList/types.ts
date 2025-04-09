@@ -1,4 +1,4 @@
-import { BookingProps } from "components/BookingComponent/types"
+import { BookingProps ,CarDto, CustomerDto} from "components/BookingComponent/types"
 
 export interface BookingsListProps {
     bookings: BookingProps[];

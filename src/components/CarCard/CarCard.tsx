@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react"
-import ReactDOM from "react-dom"
-import Button from "components/Button/Button"
-import { CarCardProps } from "./types"
-import CarComponent from "components/CarComponent/CarComponent"
-import { useNavigate } from "react-router-dom"
-import { useSelector } from "react-redux"
-import { authSelectors } from "store/redux/AuthSlice/authSlice"
-import LoginNotification from "components/LoginNotification/LoginNotification"
+import { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import Button from "components/Button/Button";
+import { CarCardProps } from "./types";
+import CarComponent from "components/CarComponent/CarComponent";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { authSelectors } from "store/redux/AuthSlice/authSlice";
+import LoginNotification from "components/LoginNotification/LoginNotification";
 
 function CarCard({
   id,
@@ -18,16 +18,16 @@ function CarCard({
   transmissionType,
   carStatus,
   dayRentalPrice,
-  image,
+  carImage,
 }: CarCardProps) {
-  const [showCarComponent, setShowCarComponent] = useState(false)
-  const [showLoginNotification, setshowLoginNotification] = useState(false)
-  
+  const [showCarComponent, setShowCarComponent] = useState(false);
+  const [showLoginNotification, setshowLoginNotification] = useState(false);
 
-  const navigate = useNavigate()
 
-  const isLoggedIn = useSelector(authSelectors.isLoggedIn)
-  const user = useSelector(authSelectors.userData)
+  const navigate = useNavigate();
+
+  const isLoggedIn = useSelector(authSelectors.isLoggedIn);
+  const user = useSelector(authSelectors.userData);
 
   const handleRentCar = () => {
     navigate(`/rent-car/${id}`, {
@@ -39,53 +39,55 @@ function CarCard({
           dayRentalPrice,
           fuelType,
           transmissionType,
-          image,
+          carImage,
           type,
           carStatus,
           year,
         },
       },
-    })
-  }
+    });
+  };
 
   const handleMoreDetailsClick = () => {
-    setShowCarComponent(true)
-  }
+    setShowCarComponent(true);
+  };
 
   const handleCloseCarComponent = () => {
-    setShowCarComponent(false)
-  }
+    setShowCarComponent(false);
+  };
 
 
- const handleRentClick = () => {
+  const handleRentClick = () => {
     if (!isLoggedIn) {
-        setshowLoginNotification(true)
+      setshowLoginNotification(true);
     } else {
-        handleRentCar()
+      handleRentCar();
     }
-  } 
-      
+  };
+
   const handleCloseLoginNotification = () => {
-    setshowLoginNotification(false)
-  }
+    setshowLoginNotification(false);
+  };
 
   const handleLoginSuccess = () => {
+
    setshowLoginNotification(false) 
     handleRentCar()  // Продолжить аренду 
     navigate(`/booking-form/${id}`);
    
   }
 
+   
+
   function capitalizeFirstLetter(string: string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   }
 
-  //
   useEffect(() => {
     if (isLoggedIn && showLoginNotification) {
-      setshowLoginNotification(false); 
+      setshowLoginNotification(false);
     }
-  }, [isLoggedIn]); 
+  }, [isLoggedIn]);
 
 
   return (
@@ -95,7 +97,7 @@ function CarCard({
         <div className="w-full sm:w-1/3">
           <div className="w-full h-full min-h-[200px] overflow-hidden rounded-lg">
             <img
-              src={image}
+              src={carImage}
               alt={capitalizeFirstLetter(model)}
               className="w-full h-full object-cover"
             />
@@ -151,13 +153,13 @@ function CarCard({
 
               {/* remove role restrictions later if necessary */}
               {user?.role !== "ROLE_ADMIN" && (
-              <Button
-                name="RENT"
-                customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
-                onClick={handleRentClick}
+                <Button
+                  name="RENT"
+                  customClasses="!w-full !py-2.5 !px-5 !rounded-lg !font-semibold hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
+                  onClick={handleRentClick}
                 /* onClick={() => handleRentCar()} */
-              />
-            )}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -183,7 +185,7 @@ function CarCard({
                   fuelType,
                   transmissionType,
                   dayRentalPrice,
-                  image,
+                  carImage,
                   type,
                   carStatus,
                 }}
@@ -205,9 +207,8 @@ function CarCard({
               >
                 ✖
               </button>
-              <LoginNotification 
-               /* carId={id}  */
-              onLoginSuccess={handleLoginSuccess} 
+
+              <LoginNotification onLoginSuccess={handleLoginSuccess}
               />
               {/* <LoginNotification carId={id} onLoginSuccess={handleCloseLoginNotification}  /> */}
             </div>
@@ -215,7 +216,7 @@ function CarCard({
           document.body,
         )}
     </div>
-  )
+  );
 }
 
-export default CarCard
+export default CarCard;

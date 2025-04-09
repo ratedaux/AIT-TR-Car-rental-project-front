@@ -16,17 +16,14 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
   const { carDetails } = location.state || {}
   const dispatch = useAppDispatch()
 
-const token = useAppSelector(authSelectors.accessToken)
-  useEffect(() => {
-    dispatch(authActions.getCurrentUser())
-  }, [token])
+  const token = useAppSelector(authSelectors.accessToken)
 
   const [formData, setFormData] = useState<CarCardProps>(carDetails)
   useEffect(() => {
     if (carDetails) {
       setFormData(carDetails)
     }
-  }, [car])
+  }, [carDetails])
 
   const validationSchema = Yup.object({
     brand: Yup.string().required("Car brand is required"),
@@ -62,19 +59,25 @@ const token = useAppSelector(authSelectors.accessToken)
 
       const updatedCar = {
         // id: values.id,
-        brand: values.brand,
-        model: values.model,
-        year: values.year,
+        // brand: values.brand,
+        // model: values.model,
+        // year: values.year,
         carStatus: values.carStatus,
-        type: values.type,
-        fuelType: values.fuelType,
-        transmissionType: values.transmissionType,
+        // type: values.type,
+        // fuelType: values.fuelType,
+        // transmissionType: values.transmissionType,
         dayRentalPrice: values.dayRentalPrice,
-        isActive:true,
-        carImage: values.image,
+        // isActive:true,
+        // carImage: values.image,
       }
-      dispatch(rentCarActions.editCar(updatedCar,token))
 
+      dispatch(
+        rentCarActions.editCar({
+          updatedCar: updatedCar,
+          token: token,
+          carId: carDetails.id
+        }),
+      )
       alert("The car is edited")
       navigate("/admin/allCars")
     },
@@ -130,7 +133,7 @@ const token = useAppSelector(authSelectors.accessToken)
               "AVAILABLE",
               "RENTED",
               "UNDER_REPAIR",
-              "REMOVER_FROM_RENT",
+              "REMOVED_FROM_RENT",
               "UNDER_INSPECTION",
             ]}
             label="Status"
@@ -140,7 +143,6 @@ const token = useAppSelector(authSelectors.accessToken)
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.carStatus}
           />
-
           <Input
             name="year"
             type="number"

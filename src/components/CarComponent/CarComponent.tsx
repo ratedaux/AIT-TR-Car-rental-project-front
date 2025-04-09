@@ -9,6 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { CarCardProps } from "components/CarCard/types";
 import { useSelector } from "react-redux";
 import { authSelectors } from "store/redux/AuthSlice/authSlice";
+import { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import LoginNotification from "components/LoginNotification/LoginNotification";
 
 
 function capitalizeFirstLetter(string: string) {
@@ -18,6 +21,8 @@ function capitalizeFirstLetter(string: string) {
 function CarComponent({ car }: CarComponentProps) {
   const navigate = useNavigate();
   const user = useSelector(authSelectors.userData);
+  const isLoggedIn = useSelector(authSelectors.isLoggedIn);
+  const [showLoginNotification, setshowLoginNotification] = useState(false);
 
   const handleEditCar = (carId: string, carDetails: CarCardProps) => {
     console.log("Edit car with Id:", carId);
@@ -28,12 +33,36 @@ function CarComponent({ car }: CarComponentProps) {
     navigate(`/rent-car/${car.id}`, { state: { car } });
   };
 
+  const handleRentClick = () => {
+    if (!isLoggedIn) {
+      setshowLoginNotification(true);
+    } else {
+      handleRentCar();
+    }
+  };
+
+  const handleCloseLoginNotification = () => {
+    setshowLoginNotification(false);
+  };
+
+  const handleLoginSuccess = () => {
+    setshowLoginNotification(false);
+    handleRentCar();  // Продолжить аренду после успешного входа
+
+  };
+
+  useEffect(() => {
+    if (isLoggedIn && showLoginNotification) {
+      setshowLoginNotification(false);
+    }
+  }, [isLoggedIn]);
+
   return (
     <div className="relative flex flex-col md:flex-row w-full max-w-7xl justify-center rounded-lg bg-white shadow-lg overflow-hidden">
       {/* Image Block */}
       <div className="md:w-2/3 flex flex-col justify-between p-4">
         <img
-          src={car?.image}
+          src={car?.carImage}
           alt={car?.brand}
           className="rounded-lg w-full h-auto object-cover mb-2"
         />
@@ -93,7 +122,7 @@ function CarComponent({ car }: CarComponentProps) {
               <span className="font-semibold">Fuel:</span>
               <span>{capitalizeFirstLetter(car?.fuelType)}</span>
             </div>
-            <div className="flex flex-col sm:flex-row sm:justify-between text-sm">
+            <div className="flex flex-col sm:flex-row sm:justify-between text-sm flex-wrap">
               <span className="font-semibold mb-1 sm:mb-0">Transmission:</span>
               <span className="break-words">{capitalizeFirstLetter(car?.transmissionType)}</span>
             </div>
@@ -115,14 +144,34 @@ function CarComponent({ car }: CarComponentProps) {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-2 flex-wrap">
-          <Button name="Rent" type="button" onClick={() => handleRentCar()} />
-        </div>
+        {user?.role !== "ROLE_ADMIN" && (
+          <div className="flex gap-2 flex-wrap">
+            <Button name="Rent" type="button" onClick={handleRentClick} />
+          </div>)}
+
+        {showLoginNotification &&
+          ReactDOM.createPortal(
+            <div className="fixed inset-0 flex items-center justify-center bg-gray bg-opacity-50 backdrop-blur-sm z-50">
+              <div className="relative bg-white rounded-lg p-6 shadow-lg max-w-3xl mx-4 my-8">
+                <button
+                  className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+                  onClick={handleCloseLoginNotification}
+                >
+                  ✖
+                </button>
+                <LoginNotification onLoginSuccess={handleLoginSuccess}
+                />
+                {/* <LoginNotification carId={id} onLoginSuccess={handleCloseLoginNotification}  /> */}
+              </div>
+            </div>,
+            document.body,
+          )}
 
         {/* Edit car only for Admin */}
-        <div className="w-auto">
-          <Button name="Edit" type="button" onClick={() => handleEditCar(car.id, car)} />
-        </div>
+        {user?.role === "ROLE_ADMIN" && (
+          <div className="w-auto">
+            <Button name="Edit" type="button" onClick={() => handleEditCar(car.id, car)} />
+          </div>)}
       </div>
     </div>
   );

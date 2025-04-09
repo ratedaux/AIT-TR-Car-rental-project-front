@@ -1,22 +1,28 @@
-import { AddNewCarFormProps } from "./types"
-import Button from "components/Button/Button"
-import Input from "components/Input/Input"
-import * as Yup from "yup"
-import { useFormik } from "formik"
-import { useNavigate } from "react-router"
-import { rentCarActions } from "store/redux/rentCarSlice/rentCarSlice"
-import { useAppDispatch, useAppSelector } from "store/hooks"
-import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
-import { useEffect } from "react"
+import { AddNewCarFormProps } from "./types";
+import Button from "components/Button/Button";
+import Input from "components/Input/Input";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import { useNavigate } from "react-router";
+import { rentCarActions } from "store/redux/rentCarSlice/rentCarSlice";
+import { useAppDispatch, useAppSelector } from "store/hooks";
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice";
+import { useEffect, useState } from "react";
+import Notification1 from "components/Notification/Notification1";
+import Loader from "components/Loader/Loader";
 
 function AddNewCarForm() {
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationTopic, setNotificationTopic] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const token = useAppSelector(authSelectors.accessToken)
-    useEffect(() => {
-      dispatch(authActions.getCurrentUser())
-    }, [token])
+  const token = useAppSelector(authSelectors.accessToken);
+  useEffect(() => {
+    dispatch(authActions.getCurrentUser());
+  }, [token]);
 
   const validationSchema = Yup.object({
     brand: Yup.string().required("Car brand is required"),
@@ -28,7 +34,7 @@ function AddNewCarForm() {
         `Year must be at most ${new Date().getFullYear()}`,
       )
       .required("Year when car was produced is required"),
-    bodyType: Yup.string().required("Car body type is required"),
+    type: Yup.string().required("Car body type is required"),
     fuelType: Yup.string().required("Car fuel type is required"),
     transmissionType: Yup.string().required(
       "Car transmission type is required",
@@ -38,7 +44,26 @@ function AddNewCarForm() {
       .min(0.01, "Price must be more than 0")
       .required("Price per day is required"),
     carImage: Yup.string().required("Car image is required"),
-  })
+  });
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      try {
+        setIsLoading(true);
+        // temporary URL for preview
+        const previewUrl = URL.createObjectURL(file);
+        formik.setFieldValue('carImage', previewUrl);
+        formik.setFieldValue('image', file);
+      } catch (error) {
+        setNotificationTopic("Error");
+        setNotificationMessage("Failed to process image");
+        setShowNotification(true);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -54,47 +79,126 @@ function AddNewCarForm() {
     validationSchema: validationSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values: AddNewCarFormProps, { resetForm }) => {
-      console.log("Submitted values:", values)
-      console.log("Errors:", formik.errors)
+    onSubmit: async (values: AddNewCarFormProps) => {
+      try {
+        setIsLoading(true);
 
-      // const carData = {
-      //   brand: values.brand,
-      //   model: values.model,
-      //   year: values.year,
-      //   carStatus: "",
-      //   type: values.type,
-      //   fuelType: values.fuelType,
-      //   transmissionType: values.transmissionType,
-      //   dayRentalPrice: values.dayRentalPrice,
-      //   carImage: values.image,
-      // }
-      dispatch(rentCarActions.addCar({carData :{
-        brand: values.brand,
-        model: values.model,
-        year: values.year,
-        carStatus: "",
-        type: values.type,
-        fuelType: values.fuelType,
-        transmissionType: values.transmissionType,
-        dayRentalPrice: values.dayRentalPrice,
-        carImage: values.image,
-      },
-       token}))
-      //dispatch(rentCarActions.uploadCarImage())
-      resetForm()
-      alert("The car is saved")
-      navigate("/admin")
+        // Сначала создаем автомобиль без изображения
+        const response = await dispatch(rentCarActions.addCar({
+          carData: {
+            brand: values.brand,
+            model: values.model,
+            year: values.year,
+            carStatus: "AVAILABLE",
+            type: values.type,
+            fuelType: values.fuelType,
+            transmissionType: values.transmissionType,
+            dayRentalPrice: values.dayRentalPrice,
+            carImage: '',
+          },
+          token: token
+        })).unwrap();
+
+        // Если есть изображение, загружаем его
+        if (values.image instanceof File) {
+          const imageResponse = await dispatch(rentCarActions.uploadCarImage({
+            file: values.image,
+            carId: response.id, // use ID created car
+            token
+          })).unwrap();
+
+          // Обновляем машину с URL изображения
+          await dispatch(rentCarActions.editCar({
+            updatedCar: {
+              ...response,
+              carImage: imageResponse,
+              isActive: true
+            },
+            token: token,
+            carId: response.id
+          }));
+        }
+
+        setNotificationTopic("Success");
+        setNotificationMessage("The car is saved");
+        setShowNotification(true);
+        navigate("/admin/allCars");
+      } catch (error) {
+        setNotificationTopic("Error");
+        setNotificationMessage("Failed to save car");
+        setShowNotification(true);
+      } finally {
+        setIsLoading(false);
+      }
     },
-  })
+  });
+
+  // const formik = useFormik({
+  //   initialValues: {
+  //     brand: "",
+  //     model: "",
+  //     year: "",
+  //     type: "",
+  //     fuelType: "",
+  //     transmissionType: "",
+  //     dayRentalPrice: "",
+  //     image: "",
+  //   } as unknown as AddNewCarFormProps,
+  //   validationSchema: validationSchema,
+  //   validateOnChange: false,
+  //   validateOnBlur: true,
+  //   onSubmit: (values: AddNewCarFormProps, { resetForm }) => {
+  //     console.log("Submitted values:", values);
+  //     console.log("Errors:", formik.errors);
+
+  //     // const carData = {
+  //     //   brand: values.brand,
+  //     //   model: values.model,
+  //     //   year: values.year,
+  //     //   carStatus: "",
+  //     //   type: values.type,
+  //     //   fuelType: values.fuelType,
+  //     //   transmissionType: values.transmissionType,
+  //     //   dayRentalPrice: values.dayRentalPrice,
+  //     //   carImage: values.image,
+  //     // }
+  //     try {
+
+  //       dispatch(rentCarActions.addCar({
+  //         carData: {
+  //           brand: values.brand,
+  //           model: values.model,
+  //           year: values.year,
+  //           carStatus: "AVAILABLE",
+  //           type: values.type,
+  //           fuelType: values.fuelType,
+  //           transmissionType: values.transmissionType,
+  //           dayRentalPrice: values.dayRentalPrice,
+  //           carImage: values.image,
+  //         },
+  //         token
+  //       }));
+  //       //dispatch(rentCarActions.uploadCarImage())
+  //       resetForm();
+  //       setShowNotification(true);
+  //       setNotificationTopic("Success!");
+  //       setNotificationMessage("The car is saved");
+  //       // alert("The car is saved");
+  //       navigate("/admin");
+  //     }
+  //     finally {
+  //       setShowNotification(false);
+  //     }
+  //   },
+  // });
 
   // Handle file input change
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const file = event.target.files[0]
-      formik.setFieldValue("carImage", file) // Set file value in Formik state
-    }
-  }
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files) {
+  //     const file = event.target.files[0];
+  //     formik.setFieldValue("carImage", file); // Set file value in Formik state
+  //   }
+  // };
 
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
@@ -134,7 +238,7 @@ function AddNewCarForm() {
             errorMessage={formik.errors.year}
           />
           <Input
-            name="bodyType"
+            name="type"
             type="select"
             options={[
               "SEDAN",
@@ -229,11 +333,19 @@ function AddNewCarForm() {
           <Button
             name="Save"
             type="submit"
-            //disabled={!formik.isValid || !formik.values.totalRentCost || formik.isSubmitting}
+          //disabled={!formik.isValid || !formik.values.totalRentCost || formik.isSubmitting}
           />
         </div>
       </form>
+      {isLoading && <Loader />}
+      {showNotification && (
+        <Notification1
+          topic={notificationTopic}
+          message={notificationMessage}
+          onClose={() => setShowNotification(false)}
+        />
+      )}
     </div>
-  )
+  );
 }
-export default AddNewCarForm
+export default AddNewCarForm;

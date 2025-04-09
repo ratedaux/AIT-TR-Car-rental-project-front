@@ -151,19 +151,18 @@ export const bookingSlice = createAppSlice({
           const result = await axios.put(
             `/api/bookings/extend/${id}`,
             {
-              id,
-              newEndDate,
+                newEndDate,
             },
             {
               headers: {
                 Authorization: `Bearer ${token}`,
-                // 'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
               },
             },
           )
           return result.data
-        } catch (error) {
-          return thunkApi.rejectWithValue(error)
+        } catch (error:any) {
+          return thunkApi.rejectWithValue(error.response?.data || error.message)
         }
       },
       {
@@ -172,23 +171,32 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingData = action.payload
+          state.bookingData = {
+            ...state.bookingData,
+            ...action.payload}
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
-          state.error = action.payload
+          state.error = action.payload || "Something went wrong..."
           state.status = "error"
         },
       },
     ),
     cancelBooking: create.asyncThunk(
-      async ({ token, id }: { token: string | null; id: string }, thunkApi) => {
+      async (
+        { bookingId, token }: { bookingId: string; token: string | null },
+        thunkApi,
+      ) => {
         try {
-          const result = await axios.put(`/api/bookings/cancel/${id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
+          const result = await axios.put(
+            `/api/bookings/cancel/${bookingId}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
-          })
+          )
           return result.data
         } catch (error) {
           return thunkApi.rejectWithValue(error)
@@ -213,10 +221,14 @@ export const bookingSlice = createAppSlice({
       },
     ),
     closeBooking: create.asyncThunk(
-      async ({ token, id }: { token: string | null; id: string }, thunkApi) => {
+      async (
+        { token, bookingId }: { token: string | null; bookingId: string },
+        thunkApi,
+      ) => {
         try {
           const result = await axios.put<BookingData>(
-            `/api/bookings/close/${id}`,
+            `/api/bookings/close/${bookingId}`,
+            {},
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -251,7 +263,7 @@ export const bookingSlice = createAppSlice({
         {
           token,
           bookingDataForDispatch,
-        }: { token: string | null; bookingDataForDispatch: RentFormValues },
+        }: { token: string | null; bookingDataForDispatch: {carId:string, rentalStartDate: string, rentalEndDate: string} },
         thunkApi,
       ) => {
         try {
@@ -261,6 +273,7 @@ export const bookingSlice = createAppSlice({
             {
               headers: {
                 Authorization: `Bearer ${token}`,
+                "Content-Type": `application/json`,
               },
             },
           )
@@ -279,7 +292,7 @@ export const bookingSlice = createAppSlice({
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
-          state.error = action.payload
+          state.error = action.payload || "Something went wrong..."
           state.status = "error"
         },
       },

@@ -31,14 +31,11 @@ export interface InputProps {
   onChange?: ChangeEventHandler<any>
   autoComplete?: AutocompleteTypes
   min?: string
+  max?: string
   step?: string
-
-
-  options?: string[] | undefined 
+  options?: string[] | undefined
   // For dropdown options
-
   onBlur?: FocusEventHandler<HTMLSelectElement>
-
   accept?: string
   readOnly?: boolean
   disabled?: boolean
