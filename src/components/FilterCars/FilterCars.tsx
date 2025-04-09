@@ -95,11 +95,26 @@ export default function FilterCars() {
 
     const schema = Yup.object().shape({
         startDateTime: Yup.date()
+            .required('Start date and time is required')
             .min(new Date(new Date().setHours(0, 0, 0, 0)), 'Start date and time cannot be in the past')
-            .required('Start date and time is required'),
+            .test('valid-year', 'Start date must have a valid year', value => {
+                if (!value) return false;
+                const year = new Date(value).getFullYear();
+                return year >= 1900 && year <= 2100;
+            })
+            .test('year-length', 'Year must be exactly 4 digits', (value) => {
+                if (!value) return false;
+                const year = new Date(value).getFullYear().toString();
+                return year.length === 4;
+            }),
         endDateTime: Yup.date()
+            .required('End date and time is required')
             .min(Yup.ref('startDateTime'), 'End date and time must be later than start date and time')
-            .required('End date and time is required'),
+            .test('valid-year', 'End date must have a valid year', value => {
+                if (!value) return false;
+                const year = new Date(value).getFullYear();
+                return year >= 1900 && year <= 2100;
+            }),
     });
 
     const formik = useFormik({
@@ -114,7 +129,7 @@ export default function FilterCars() {
             transmissionTypes: []
         } as FilterCarsValues,
         validationSchema: schema,
-        validateOnChange: false,
+        validateOnChange: true,
         onSubmit: async (values) => {
             setIsLoading(true);
             try {
@@ -175,7 +190,7 @@ export default function FilterCars() {
         setSelectedBodyTypes([]);
         setSelectedFuelTypes([]);
         setSelectedTransmissionTypes([]),
-            dispatch(rentCarActions.setPriceRange([20, 100]));
+            dispatch(rentCarActions.setPriceRange([20, 200]));
     }, [formik.values.startDateTime, formik.values.endDateTime]);
 
     const today = new Date().toISOString().split("T")[0];
@@ -215,6 +230,7 @@ export default function FilterCars() {
                             onChange={handleDateTimeChange}
                             errorMessage={formik.errors.startDateTime}
                             min={today}
+                            max="9999-12-31T23:59"
                         />
                     </div>
                     <div className="flex-1">
