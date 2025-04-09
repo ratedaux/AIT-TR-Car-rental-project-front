@@ -9,6 +9,6 @@ export interface CarCardProps {
   carStatus: string
   isActive?: boolean
   dayRentalPrice: number
-  carImage: string
+  carImage?: string
   onRent?: () => void
 }

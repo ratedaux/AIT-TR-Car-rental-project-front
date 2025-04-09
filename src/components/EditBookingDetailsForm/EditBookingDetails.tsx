@@ -24,13 +24,13 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const location = useLocation()
-  const {bookingDetails}  = location.state  || {};
+  const { bookingDetails } = location.state || {}
   const user = useSelector(authSelectors.userData)
 
   const car = bookingDetails.carDto
-  
+
   const token = useAppSelector(authSelectors.accessToken)
-  
+
   const today = new Date().toLocaleDateString("en-CA")
 
   const calculateTotalCost = (
@@ -79,11 +79,10 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (values: BookingProps) => {
+      const newEndDate = values.rentalEndDate + ":00.000"
+      handleExtendBooking(values.id, token, newEndDate)
       alert("The booking details are updated")
-
-      const newEndDate = values.rentalEndDate
-      handleExtendBooking(values.id, token , newEndDate)
-
+      
       if (user?.role === "ROLE_ADMIN") {
         navigate("/admin/allBookings")
       } else if (user?.role === "ROLE_CUSTOMER") {
@@ -109,9 +108,14 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     car.dayRentalPrice,
   ])
 
-  const handleCancelBooking = (bookingId: string , token: string | null) => {
+  const handleCancelBooking = (bookingId: string, token: string | null) => {
     alert("The booking is cancelled")
-    dispatch(bookingActions.cancelBooking({ bookingId: bookingDetails.id, token: token }))
+    dispatch(
+      bookingActions.cancelBooking({
+        bookingId: bookingDetails.id,
+        token: token,
+      }),
+    )
 
     if (user?.role === "ROLE_ADMIN") {
       navigate("/admin/allBookings")
@@ -124,7 +128,12 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
   const handleCloseBooking = (bookingId: string, token: string | null) => {
     alert("The booking is closed")
-    dispatch(bookingActions.closeBooking({  bookingId: bookingDetails.id, token: token}))
+    dispatch(
+      bookingActions.closeBooking({
+        bookingId: bookingDetails.id,
+        token: token,
+      }),
+    )
 
     if (user?.role === "ROLE_ADMIN") {
       navigate("/admin/allBookings")
@@ -135,8 +144,18 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     }
   }
 
-  const handleExtendBooking = (id: string, token: string |null, newEndDate: string) => {
-    dispatch(bookingActions.extendBooking({ id: bookingDetails.id, newEndDate: newEndDate, token: token }))
+  const handleExtendBooking = (
+    id: string,
+    token: string | null,
+    newEndDate: string,
+  ) => {
+    dispatch(
+      bookingActions.extendBooking({
+        id: bookingDetails.id,
+        newEndDate: newEndDate,
+        token: token,
+      }),
+    )
   }
 
   const handleClose = () => {
@@ -148,19 +167,6 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
       console.error("Unknown role")
     }
   }
-
-//   const formatDateTimeForInput = (dateTime: string) => {
-//     if (!dateTime) return '';
-//     const date = new Date(dateTime);
-//     const year = date.getFullYear();
-//     const month = String(date.getMonth() + 1).padStart(2, '0');
-//     const day = String(date.getDate()).padStart(2, '0');
-//     const hours = String(date.getHours()).padStart(2, '0');
-//     const minutes = String(date.getMinutes()).padStart(2, '0');
-//     const seconds = String(date.getSeconds()).padStart(2, '0');
-//   
-//     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
-// };
 
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
@@ -179,7 +185,8 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Renter:</div>
               <div className="w-2/3">
-                {bookingDetails.customerDto.firstName} {bookingDetails.customerDto.lastName}
+                {bookingDetails.customerDto.firstName}{" "}
+                {bookingDetails.customerDto.lastName}
               </div>
             </div>
             <div className="flex gap-4">
@@ -227,7 +234,9 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             type="text"
             label="Total Rent Cost €"
             placeholder="Display total cost"
-            value={new Intl.NumberFormat('en-US').format(formik.values.totalPrice || 0)}
+            value={new Intl.NumberFormat("en-US").format(
+              formik.values.totalPrice || 0,
+            )}
             onChange={() => {}}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.totalPrice}
@@ -270,15 +279,16 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
         )}
 
         {/* close booking button */}
-        {formik.values.bookingStatus === "ACTIVE" && user?.role === "ROLE_ADMIN" && (
-          <div className="w-auto mt-2.5">
-            <Button
-              name="Close Booking"
-              customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
-              onClick={() => handleCloseBooking(formik.values.id, token)}
-            />
-          </div>
-        )}
+        {formik.values.bookingStatus === "ACTIVE" &&
+          user?.role === "ROLE_ADMIN" && (
+            <div className="w-auto mt-2.5">
+              <Button
+                name="Close Booking"
+                customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
+                onClick={() => handleCloseBooking(formik.values.id, token)}
+              />
+            </div>
+          )}
 
         {/* close button */}
         <div className="w-auto mt-2.5">

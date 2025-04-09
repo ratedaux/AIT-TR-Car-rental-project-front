@@ -20,6 +20,27 @@ const bookingInitialState: BookingSliceState = {
     updateBookingDate: "",
     createBookingDate: "",
     id: "",
+    customerDto: {
+      id: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      role: "",
+      isActive: true,
+    },
+    carDto: {
+      id: "",
+      brand: "",
+      model: "",
+      year: 0,
+      type: "",
+      fuelType: "",
+      transmissionType: "",
+      isActive: true,
+      carStatus: "",
+      dayRentalPrice: 0,
+      carImage: "",
+    }
   },
   status: "default",
   error: undefined,
@@ -150,18 +171,16 @@ export const bookingSlice = createAppSlice({
         try {
           const result = await axios.put(
             `/api/bookings/extend/${id}`,
-            {
-                newEndDate,
-            },
+            newEndDate,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
               },
             },
           )
           return result.data
-        } catch (error:any) {
+        } catch (error: any) {
           return thunkApi.rejectWithValue(error.response?.data || error.message)
         }
       },
@@ -171,9 +190,7 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingData = {
-            ...state.bookingData,
-            ...action.payload}
+          state.bookingData = action.payload
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
@@ -263,7 +280,14 @@ export const bookingSlice = createAppSlice({
         {
           token,
           bookingDataForDispatch,
-        }: { token: string | null; bookingDataForDispatch: {carId:string, rentalStartDate: string, rentalEndDate: string} },
+        }: {
+          token: string | null
+          bookingDataForDispatch: {
+            carId: string
+            rentalStartDate: string
+            rentalEndDate: string
+          }
+        },
         thunkApi,
       ) => {
         try {
@@ -288,7 +312,7 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingList.push(action.payload)
+          state.bookingListByUser.push(action.payload)
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {

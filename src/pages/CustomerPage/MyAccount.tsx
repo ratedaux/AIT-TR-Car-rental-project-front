@@ -1,13 +1,7 @@
-import React, { useEffect, useState } from "react"
 import Button from "components/Button/Button"
 import { Outlet, useNavigate } from "react-router-dom"
-import {
-  bookingActions,
-  bookingSelectors,
-} from "store/redux/BookingSlice/BookingSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import { authSelectors } from "store/redux/AuthSlice/authSlice"
-import { userSelectors } from "store/redux/UserSlice/UserSlise"
 
 function CustomerPage() {
   const navigate = useNavigate()

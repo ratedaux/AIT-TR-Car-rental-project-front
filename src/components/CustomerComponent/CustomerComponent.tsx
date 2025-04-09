@@ -2,23 +2,18 @@ import Button from "components/Button/Button"
 import { CustomerProps } from "./types"
 import { useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "store/hooks"
-import { userActions } from "store/redux/UserSlice/UserSlise"
+import { userActions, userSelectors } from "store/redux/UserSlice/UserSlise"
 import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 import { useSelector } from "react-redux"
-import { useEffect } from "react"
 
-export interface CustomerDataProps {
-  customer: CustomerProps
-}
-
-function CustomerComponent({ customer }: CustomerDataProps) {
+const CustomerComponent:React.FC<CustomerProps> = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const user = useSelector(authSelectors.userData)
-
-  const accessToken = useAppSelector(authSelectors.accessToken)
   
-  const handleEditCustomer = (
+  const user = useSelector(authSelectors.userData)
+  const accessToken = useAppSelector(authSelectors.accessToken)
+
+   const handleEditCustomer = (
     customerId: string,
     customerData: CustomerProps,
   ) => {
@@ -52,18 +47,18 @@ function CustomerComponent({ customer }: CustomerDataProps) {
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Customer Name:</div>
             <div className="w-3/4">
-              {customer?.firstName} {customer?.lastName}
+              {user?.firstName} {user?.lastName}
             </div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Email:</div>
-            <div className="w-3/4">{customer?.email} </div>
+            <div className="w-3/4">{user?.email} </div>
           </div>
 
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Status:</div>
             <div className="w-3/4">
-              {customer?.isActive ? "Active" : "Not Active"}{" "}
+              {user?.isActive ? "Active" : "Not Active"}
             </div>
           </div>
         </div>
@@ -73,7 +68,7 @@ function CustomerComponent({ customer }: CustomerDataProps) {
         <div>
           <Button
             type="button"
-            onClick={() => handleEditCustomer(customer?.id, customer)}
+            onClick={() => handleEditCustomer(user?.id, user)}
             name="Edit"
           />
           {/* this button must be available only for admin */}
@@ -85,11 +80,11 @@ function CustomerComponent({ customer }: CustomerDataProps) {
               type="button"
               customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"
               onClick={() =>
-                customer.isActive
-                  ? handleDeleteCustomer(customer.id, accessToken)
-                  : handleRestoreCustomer(customer.id, accessToken)
+                user.isActive
+                  ? handleDeleteCustomer(user.id, accessToken)
+                  : handleRestoreCustomer(user.id, accessToken)
               }
-              name={customer.isActive ? "Deactivate" : "Restore"}
+              name={user.isActive ? "Deactivate" : "Restore"}
             />
           )}
         </div>

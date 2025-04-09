@@ -2,25 +2,21 @@ import CarCard from "../CarCard/CarCard"
 import { CarCardProps } from "../CarCard/types"
 import Button from "components/Button/Button"
 import { useNavigate } from "react-router-dom"
-import { rentCarActions } from "store/redux/rentCarSlice/rentCarSlice"
+import { rentCarActions, rentCarSelectors } from "store/redux/rentCarSlice/rentCarSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import { useEffect } from "react"
 import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 
-interface CarListProps {
-  cars: CarCardProps[]
-}
+interface CarListProps {}
 
-function CarList({ cars }: CarListProps) {
+const CarList: React.FC<CarListProps> = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const accessToken = useAppSelector(authSelectors.accessToken)
-  useEffect(() => {
-    if (localStorage.getItem("accessToken"))
-      dispatch(authActions.getCurrentUser())
-  }, [accessToken])
+const cars = useAppSelector(rentCarSelectors.selectAllCars)
 
+  const accessToken = useAppSelector(authSelectors.accessToken)
+  
   const handleEditCar = (carId: string, carDetails: CarCardProps) => {
     navigate(`/edit-car/${carId}`, { state: { carDetails } })
   }
@@ -41,7 +37,7 @@ function CarList({ cars }: CarListProps) {
         cars.map(car => (
           <div key={car.id}>
             <CarCard
-              image={car.image}
+              carImage={car.carImage}
               brand={car.brand}
               model={car.model}
               carStatus={car.carStatus}

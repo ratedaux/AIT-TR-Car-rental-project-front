@@ -135,6 +135,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
               "UNDER_REPAIR",
               "REMOVED_FROM_RENT",
               "UNDER_INSPECTION",
+              "DELETED"
             ]}
             label="Status"
             placeholder="Select car status"
