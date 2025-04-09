@@ -13,7 +13,9 @@ function Input({
   options,
   onBlur,
   readOnly,
-  disabled
+  disabled,
+  min,
+  max
 }: InputProps) {
 
   // DropDownList
@@ -75,7 +77,8 @@ function Input({
           autoComplete={autoComplete}
           readOnly={readOnly}
           disabled={disabled}
-
+          min={min}
+          max={max}
         />
       </div>
       {errorMessage && (
