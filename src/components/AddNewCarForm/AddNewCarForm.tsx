@@ -122,7 +122,9 @@ function AddNewCarForm() {
         setNotificationTopic("Success");
         setNotificationMessage("The car is saved");
         setShowNotification(true);
-        navigate("/admin/allCars");
+        setTimeout(() => {
+          navigate("/admin/allCars");
+        }, 2000);
       } catch (error) {
         setNotificationTopic("Error");
         setNotificationMessage("Failed to save car");
