@@ -3,24 +3,36 @@ import BookingComponent from "components/BookingComponent/BookingComponent"
 import Button from "components/Button/Button"
 import { BookingProps } from "components/BookingComponent/types"
 import { useNavigate } from "react-router"
-import { useAppSelector } from "store/hooks"
-import { bookingSelectors } from "store/redux/BookingSlice/BookingSlice"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+import {
+  bookingActions,
+  bookingSelectors,
+} from "store/redux/BookingSlice/BookingSlice"
 import { authSelectors } from "store/redux/AuthSlice/authSlice"
 
-export interface BookingsListProps {
-  }
+export interface BookingsListProps {}
 
 const BookingsListComponent: React.FC<BookingsListProps> = () => {
   const user = useAppSelector(authSelectors.userData)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const token = useAppSelector(authSelectors.accessToken)
+
+  useEffect(() => {
+    dispatch(bookingActions.getBookingsByUser(token))
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(bookingActions.getAllBookings(token))
+  }, [dispatch])
 
   const bookingsForUser = useAppSelector(
     bookingSelectors.selectBookingListByUser,
   )
   const bookingsForAdmin = useAppSelector(bookingSelectors.selectBookingList)
 
-  const bookings = user?.role === "ROLE_ADMIN" ? bookingsForAdmin : bookingsForUser
-
-  const navigate = useNavigate()
+  const bookings =
+    user?.role === "ROLE_ADMIN" ? bookingsForAdmin : bookingsForUser
 
   const handleEditBooking = (
     bookingId: string,

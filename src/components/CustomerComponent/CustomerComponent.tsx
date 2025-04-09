@@ -5,13 +5,18 @@ import { useAppDispatch, useAppSelector } from "store/hooks"
 import { userActions, userSelectors } from "store/redux/UserSlice/UserSlise"
 import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 import { useSelector } from "react-redux"
+import { useEffect } from "react"
 
-const CustomerComponent:React.FC<CustomerProps> = () => {
+function CustomerComponent() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  
+
   const user = useSelector(authSelectors.userData)
   const accessToken = useAppSelector(authSelectors.accessToken)
+
+  useEffect(() => {
+        dispatch(authActions.getCurrentUser());
+  }, [dispatch]);
 
    const handleEditCustomer = (
     customerId: string,
