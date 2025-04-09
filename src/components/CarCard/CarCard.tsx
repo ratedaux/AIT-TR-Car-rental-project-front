@@ -71,7 +71,8 @@ function CarCard({
 
   const handleLoginSuccess = () => {
    setshowLoginNotification(false) 
-    handleRentCar()  // Продолжить аренду после успешного входа
+    handleRentCar()  // Продолжить аренду 
+    navigate(`/booking-form/${id}`);
    
   }
 
@@ -204,7 +205,9 @@ function CarCard({
               >
                 ✖
               </button>
-              <LoginNotification onLoginSuccess={handleLoginSuccess} 
+              <LoginNotification 
+               /* carId={id}  */
+              onLoginSuccess={handleLoginSuccess} 
               />
               {/* <LoginNotification carId={id} onLoginSuccess={handleCloseLoginNotification}  /> */}
             </div>
