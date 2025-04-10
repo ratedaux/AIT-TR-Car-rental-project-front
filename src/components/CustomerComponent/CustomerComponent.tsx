@@ -40,7 +40,7 @@ const CustomerComponent: React.FC<CustomerComponentProps> = ({ customer }) => {
   const handleDeactivateUser = async (userId: string) => {
     try {
       setIsLoading(true);
-      await dispatch(userActions.deleteUser({ customerId: userId, token: accessToken }));
+      await dispatch(userActions.deleteUser({ customerId: userId, token: accessToken })).unwrap();
       setNotificationTopic("Success");
       setNotificationMessage("The user is deactivated");
       setShowNotification(true);
@@ -57,7 +57,7 @@ const CustomerComponent: React.FC<CustomerComponentProps> = ({ customer }) => {
   const handleRestoreUser = async (userId: string) => {
     try {
       setIsLoading(true);
-      await dispatch(userActions.restoreUser({ customerId: userId, token: accessToken }));
+      await dispatch(userActions.restoreUser({ customerId: userId, token: accessToken })).unwrap();
       setNotificationTopic("Success");
       setNotificationMessage("The user is restored");
       setShowNotification(true);
