@@ -82,7 +82,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
             token: token,
             carId: carDetails.id,
           }),
-        );
+        ).unwrap();
 
         setNotificationTopic("Success");
         setNotificationMessage("The car is edited");

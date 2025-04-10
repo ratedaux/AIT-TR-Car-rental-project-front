@@ -55,7 +55,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
             updatedData: values,
             token: accessToken,
           }),
-        );
+        ).unwrap();
         setNotificationTopic("Success");
         setNotificationMessage("The user is edited");
         setShowNotification(true);
