@@ -25,19 +25,17 @@ function EmailConfirmation() {
       setShowModal(true)
       const timer = setTimeout(() => {
         navigate("/login")
-      }, 5000);
+      }, 5000)
       return () => clearTimeout(timer)
     }
   }, [isEmailConfirmed, navigate])
 
-
   const handleClose = () => {
-    setShowModal(false);
-    navigate("/login");
-  };
+    setShowModal(false)
+    navigate("/login")
+  }
 
-
-  return(
+  return (
     <div className="flex items-center justify-center p4">
       {showModal ? (
         <Notification1
@@ -62,13 +60,14 @@ function EmailConfirmation() {
 
           <p className="text-gray-700">
             We’ve sent an email to{" "}
-            <span className="font-semibold">{email || "your email"}</span> with a link to confirm your email address.
-            Please check your inbox and follow the instructions to activate your account.
+            <span className="font-semibold">{email || "your email"}</span> with
+            a link to confirm your email address. Please check your inbox and
+            follow the instructions to activate your account.
           </p>
         </div>
       )}
     </div>
-  );
+  )
 }
-  
+
 export default EmailConfirmation
