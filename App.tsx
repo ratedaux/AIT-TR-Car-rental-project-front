@@ -32,6 +32,7 @@ import {
   rentCarActions,
 } from "store/redux/rentCarSlice/rentCarSlice"
 import EmailConfirmation from "components/EmailConfirmation/EmailConfirmation"
+import CustomerContainer from "components/CustomerContainer/CustomerContainer"
 
 
 const App = () => {
@@ -50,7 +51,7 @@ const App = () => {
           <Route path="/account" element={<MyAccount />}>
             <Route
               path="/account/myData"
-              element={<CustomerComponent />}
+              element={<CustomerContainer />}
             />
             <Route
               path="/account/myBookings"
