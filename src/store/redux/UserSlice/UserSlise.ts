@@ -50,47 +50,30 @@ export const userSlice = createAppSlice({
         },
       },
     ),
-    // getUser: create.asyncThunk(
-    //   async (id, thunkApi) => {
-    //     try {
-    //       const result = await axios.get(`/api/customers/${id}`)
-    //       return result.data
-    //     } catch (error) {
-    //       return thunkApi.rejectWithValue(error)
-    //     }
-    //   },
-    //   {
-    //     pending: (state: UserSliceState) => {
-    //       ;(state.userData = {
-    //         id: "",
-    //         firstName: "",
-    //         lastName: "",
-    //         email: "",
-    //         password: "",
-    //         role: "",
-    //         isActive: true,
-    //       }),
-    //         (state.error = undefined)
-    //       state.status = "default"
-    //     },
-    //     fulfilled: (state: UserSliceState, action: any) => {
-    //       state.userData = {
-    //         id: action.payload.id,
-    //         firstName: action.payload.firstName,
-    //         lastName: action.payload.lastName,
-    //         email: action.payload.email,
-    //         password: action.payload.password,
-    //         role: action.payload.role,
-    //         isActive: action.payload.isActive,
-    //       }
-    //       state.status = "success"
-    //     },
-    //     rejected: (state: UserSliceState, action: any) => {
-    //       state.error = action.payload
-    //       state.status = "error"
-    //     },
-    //   },
-    // ),
+    getUserById: create.asyncThunk(
+      async (id: string, thunkApi) => {
+        try {
+          const result = await axios.get(`/api/customers/${id}`);
+          return result.data;
+        } catch (error: any) {
+          return thunkApi.rejectWithValue(error.response?.data || error.message);
+        }
+      },
+      {
+        pending: (state: UserSliceState) => {
+          state.status = "loading";
+          state.error = undefined;
+        },
+        fulfilled: (state: UserSliceState, action:any ) => {
+          state.userData = action.payload;
+          state.status = "success";
+        },
+        rejected: (state: UserSliceState, action: any) => {
+          state.error = action.payload;
+          state.status = "error";
+        },
+      },
+    ),
     updateUser: create.asyncThunk(
       async (
         {
@@ -126,10 +109,12 @@ export const userSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: UserSliceState, action: any) => {
-          state.userData = {
-            ...state.userData,
-            ...action.payload,
-          }
+          state.userData = action.payload
+
+          state.userList = state.userList.map(userData =>
+            userData.id === action.payload.id ? action.payload : userData,
+          )
+
           state.status = "success"
         },
         rejected: (state: UserSliceState, action: any) => {
@@ -161,10 +146,12 @@ export const userSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: UserSliceState, action: any) => {
-          state.userData = {
-            ...state.userData,
-            isActive: false,
-          }
+          state.userData = action.payload
+
+          state.userList = state.userList.map(userData =>
+            userData.id === action.payload.id ? action.payload : userData,
+          )
+
           state.status = "success"
         },
         rejected: (state: UserSliceState, action: any) => {
@@ -200,10 +187,12 @@ export const userSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: UserSliceState, action: any) => {
-          state.userData = {
-            ...state.userData,
-            isActive: true,
-          }
+          state.userData = action.payload
+
+          state.userList = state.userList.map(userData =>
+            userData.id === action.payload.id ? action.payload : userData,
+          )
+
           state.status = "success"
         },
         rejected: (state: UserSliceState, action: any) => {
@@ -219,6 +208,7 @@ export const userSlice = createAppSlice({
     selectUserData: (state: UserSliceState) => state.userData,
     selectStatus: (state: UserSliceState) => state.status,
     selectError: (state: UserSliceState) => state.error,
+    selectUserById:(state:UserSliceState)=>state.userData
   },
 })
 
