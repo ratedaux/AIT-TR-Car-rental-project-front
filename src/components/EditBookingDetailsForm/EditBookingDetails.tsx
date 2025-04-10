@@ -57,21 +57,30 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     return totalRentCost;
   };
 
-  const validationSchema = Yup.object({
-    rentalStartDate: Yup.date()
-      .required("Start date is required")
-      .min(today, "Start date cannot be in the past"),
-    rentalEndDate: Yup.date()
-      .required("End date is required")
-      .min(
-        Yup.ref("rentalStartDate"),
-        "End date must be later than start date",
-      ),
-    totalPrice: Yup.number()
-      .required("Rent cost can't be empty")
-      .min(0.01, "Rent cost can't be 0"),
-    bookingStatus: Yup.string().required("Status is required"),
-  });
+  const validationSchema = (previousEndDate: string) =>
+    Yup.object({
+      rentalStartDate: Yup.date()
+        .required("Start date is required")
+        .min(today, "Start date cannot be in the past"),
+      rentalEndDate: Yup.date()
+        .required("End date is required")
+        .min(
+          Yup.ref("rentalStartDate"),
+          "End date must be later than start date"
+        )
+        .test(
+          "not-earlier-than-previous",
+          "New end date cannot be earlier than previous end date",
+          function (value) {
+            if (!value || !previousEndDate) return true;
+            return new Date(value) >= new Date(previousEndDate);
+          }
+        ),
+      totalPrice: Yup.number()
+        .required("Rent cost can't be empty")
+        .min(0.01, "Rent cost can't be 0"),
+      bookingStatus: Yup.string().required("Status is required"),
+    });
 
   const handleExtendBooking = async (id: string, token: string | null, newEndDate: string) => {
     try {
@@ -80,7 +89,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
         id: bookingDetails.id,
         newEndDate: newEndDate,
         token: token,
-      }));
+      })).unwrap();
       setNotificationTopic("Success");
       setNotificationMessage("Booking extended successfully");
       setShowNotification(true);
@@ -95,7 +104,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
   const formik = useFormik({
     initialValues: formData,
-    validationSchema: validationSchema,
+    validationSchema: validationSchema(bookingDetails.rentalEndDate),
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (values: BookingProps) => {
@@ -121,7 +130,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
       await dispatch(bookingActions.cancelBooking({
         bookingId: bookingDetails.id,
         token: token
-      }));
+      })).unwrap();
       setNotificationTopic("Success");
       setNotificationMessage("The booking is cancelled");
       setShowNotification(true);
@@ -141,7 +150,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
       await dispatch(bookingActions.closeBooking({
         bookingId: bookingDetails.id,
         token: token
-      }));
+      })).unwrap();
       setNotificationTopic("Success");
       setNotificationMessage("The booking is closed");
       setShowNotification(true);

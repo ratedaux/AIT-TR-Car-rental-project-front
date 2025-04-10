@@ -73,7 +73,7 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
           </div>
         ))
       ) : (
-        <p>No bookings available</p>
+        <p>Loading...</p>
       )}
     </div>
   )
