@@ -122,7 +122,7 @@ function CarList() {
           </div>
         ))
       ) : (
-        <p>No cars available</p>
+        <p>Loading...</p>
       )}
       {isLoading && <Loader />}
       {showNotification && (

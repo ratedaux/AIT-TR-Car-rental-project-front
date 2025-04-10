@@ -121,7 +121,7 @@ function AddNewCarForm() {
             },
             token: token,
             carId: response.id
-          }));
+          })).unwrap();
         }
 
         setNotificationTopic("Success");

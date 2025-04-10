@@ -33,7 +33,7 @@ const CustomerListComponent: React.FC = () => {
           </div>
         ))
       ) : (
-        <p>No customers available</p>
+        <p>Loading...</p>
       )}
     </div>
   )
