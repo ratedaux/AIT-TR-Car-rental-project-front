@@ -70,14 +70,10 @@ function CarCard({
   };
 
   const handleLoginSuccess = () => {
+    setshowLoginNotification(false);
+    handleRentCar();  // Продолжить аренду после успешного входа
 
-   setshowLoginNotification(false) 
-    handleRentCar()  // Продолжить аренду 
-    navigate(`/booking-form/${id}`);
-   
-  }
-
-   
+  };
 
   function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -207,7 +203,6 @@ function CarCard({
               >
                 ✖
               </button>
-
               <LoginNotification onLoginSuccess={handleLoginSuccess}
               />
               {/* <LoginNotification carId={id} onLoginSuccess={handleCloseLoginNotification}  /> */}

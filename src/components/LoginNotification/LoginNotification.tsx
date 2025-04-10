@@ -1,11 +1,6 @@
 import Login from "components/Login/Login";
 
-type LoginNotificationProps = {
-  onLoginSuccess: () => void;
- /*  carId: string | null;  */
-};
-
-function LoginNotification({ onLoginSuccess/* , carId */ }: LoginNotificationProps) {
+function LoginNotification({ onLoginSuccess }: { onLoginSuccess: () => void }) {
   return (
     <div className="w-full max-w-sm p-6 border border-gray-300 shadow-md rounded bg-white">
       <div className="mb-4">
@@ -19,8 +14,7 @@ function LoginNotification({ onLoginSuccess/* , carId */ }: LoginNotificationPro
       <Login 
         showHeader={false} 
         img={false} 
-        onLoginSuccess={onLoginSuccess}  
-      /*   carId={carId} */
+        onLoginSuccess={onLoginSuccess}  // передаем handleLoginSuccess
       />
     </div>
   );

@@ -2,7 +2,6 @@ import axios from "axios"
 
 import { createAppSlice } from "store/createAppSlice"
 import { AuthSliceState } from "./type"
-import { a } from "vitest/dist/chunks/suite.d.FvehnV49.js"
 
 const initialAuthState: AuthSliceState = {
   user: null,
@@ -14,20 +13,17 @@ const initialAuthState: AuthSliceState = {
   accessToken: localStorage.getItem("accessToken"),
   refreshToken: undefined,
   isLoggedIn: false,
-  isEmailConfirmed: false,
 }
 
 const LOGIN_URL = "/api/auth/login"
 //const LOGOUT_URL = "/api/auth/logout"
 const REGISTER_URL = "/api/auth/register"
 const PROFILE_URL = "/api/customers/find-me"
-const CONFIRM_EMAIL = "/api/auth/confirm"
 
 export const authSlice = createAppSlice({
   name: "AUTH",
   initialState: initialAuthState,
   reducers: create => ({
-   
     loginUser: create.asyncThunk(
       async (
         { email, password }: { email: string; password: string },
@@ -67,7 +63,6 @@ export const authSlice = createAppSlice({
         },
       },
     ),
-
     getCurrentUser: create.asyncThunk(
       async (_, thunkApi) => {
         try {
@@ -164,47 +159,6 @@ export const authSlice = createAppSlice({
         },
       },
     ),
-
-    confirmEmail: create.asyncThunk(
-      async (token: string, thunkApi) => {
-        try {
-          const response = await axios.get(`${CONFIRM_EMAIL}/${token}`);
-          return response.data; 
-        } catch (error: any) {
-         
-          return thunkApi.rejectWithValue(
-            error.response?.data?.message || "Email confirmation failed"
-          );
-        }
-      },
-      {
-        pending: (state) => {
-          state.status = "loading";
-          state.registerError = undefined;  
-          state.successMessage = undefined;  
-        },
-    
-        fulfilled: (state, action) => {
-          state.status = "success";
-          state.isEmailConfirmed = true; 
-          state.registerError = undefined;
-          state.successMessage = "Email successfully confirmed! Please log in."; 
-        },
-    
-        rejected: (state, action) => {
-          state.status = "error";
-          state.successMessage = undefined;  
-          state.registerMessage = undefined; 
-          state.registerError = 
-          typeof action.payload === "string"
-          ? action.payload
-          : "Something went wrong"
-        },
-
-      }
-    )
-
-
   }),
   selectors: {
     userData: (state: AuthSliceState) => state.user,
@@ -216,7 +170,6 @@ export const authSlice = createAppSlice({
     accessToken: (state: AuthSliceState) => state.accessToken,
     refreshToken: (state: AuthSliceState) => state.refreshToken,
     isLoggedIn: (state: AuthSliceState) => state.isLoggedIn,
-    isEmailConfirmed: (state: AuthSliceState) => state.isEmailConfirmed,
   },
 })
 
