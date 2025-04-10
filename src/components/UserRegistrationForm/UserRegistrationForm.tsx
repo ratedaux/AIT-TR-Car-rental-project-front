@@ -11,7 +11,7 @@ import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 import Notification from "components/Notification/Notification1"
 import Loader from "components/Loader/Loader"
 import { FaEye, FaEyeSlash } from "react-icons/fa"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 
 type UserRegistrationFormProps = {
   img?: boolean
@@ -24,13 +24,28 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
   }, [])
 
   const dispatch = useAppDispatch()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const status = useAppSelector(authSelectors.authStatus)
   const registerError = useAppSelector(authSelectors.registerError)
   const registerMessage = useAppSelector(authSelectors.registerMessage)
+  const isEmailConfirmed = useAppSelector(authSelectors.isEmailConfirmed)
 
   const [showPassword, setShowPassword] = useState(false)
   const [isNotificationVisible, setIsNotificationVisible] = useState(false)
+
+  const onHandleCloseNotification = () => {
+    setIsNotificationVisible(false)
+    /* if (isEmailConfirmed) {
+      navigate("/login")
+    } */
+  }
+
+  useEffect(() => {
+    if (registerError || registerMessage /* || isEmailConfirmed */) {
+      setIsNotificationVisible(true)
+    }
+  }, [registerError, registerMessage/* , isEmailConfirmed */])
+
 
   const passwordRegex =
     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
@@ -66,26 +81,14 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
     validationSchema,
     validateOnChange: false,
 
-    onSubmit: (values: RegisrtationFormValues) => {
+    onSubmit: async (values: RegisrtationFormValues) => {
       console.table(values) // временно
-      dispatch(authActions.registerNewCustomer(values))
+     await dispatch(authActions.registerNewCustomer(values))
       formik.resetForm()
       setIsNotificationVisible(true)
+      navigate(`/confirm-email/${values.email}`);
     },
   })
-
-  const onHandleCloseNotification = () => {
-    setIsNotificationVisible(false) 
-    if (registerMessage) {
-      navigate("/login"); // на страницу логина
-    }
-  }
-
-  useEffect(() => {
-    if (registerError || registerMessage) {
-      setIsNotificationVisible(true)
-    }
-  }, [registerError, registerMessage])
 
   return (
     <div className="flex justify-center items-center -mt-4 px-4 sm:px-6 lg:px-8">
@@ -216,7 +219,11 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
               </a>
             </span>
           </label>
-
+          {status === "loading" && (
+        <div className="flex justify-center items-center mt-4">
+          <Loader />
+        </div>
+      )}
           <Button
             name="Create"
             type="submit"
@@ -230,11 +237,11 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
           />
         </form>
       </div>
-      {status === "loading" && (
+     {/*  {status === "loading" && (
         <div className="flex justify-center items-center mt-4">
           <Loader />
         </div>
-      )}
+      )} */}
       {img && (
         <div className="hidden lg:block w-[350px] h-[450px] relative ml-6">
           <img
