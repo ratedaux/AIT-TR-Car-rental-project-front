@@ -19,7 +19,7 @@ const initialCarState: RentCarSliceState = {
   cars: [],
   status: "default",
   error: undefined,
-  priceRange: [20, 100],
+  priceRange: [20, 200],
   selectedStartDate: "",
   selectedEndDate: "",
 }
@@ -131,12 +131,17 @@ export const carsSlice = createAppSlice({
         thunkApi,
       ) => {
         try {
-          const response = await axios.put(`/api/cars/update/${carId}`, updatedCar, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": `application/json`,
+          const response = await axios.put(
+            `/api/cars/update/${carId}`,
+            updatedCar,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": `application/json`,
+              },
+
             },
-          })
+          )
           return response.data
         } catch (error: any) {
           return thunkApi.rejectWithValue(error.response?.data || error.message)
@@ -274,11 +279,11 @@ export const carsSlice = createAppSlice({
       ) => {
         try {
           const formData = new FormData()
-          // formData.append("id", carId)
+          formData.append("id", carId)
           formData.append("file", file)
 
           const response = await axios.post<string>(
-            `/api/cars/upload-image/${carId}`,
+            "/api/cars/upload-image",
             formData,
             {
               headers: {

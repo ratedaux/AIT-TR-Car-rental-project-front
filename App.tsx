@@ -22,6 +22,19 @@ import CustomerListComponent from "components/CustomersListComponent/CustomersLi
 import CarList from "components/CarList/CarList"
 import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
 
+import {
+  bookingActions,
+  bookingSelectors,
+} from "store/redux/BookingSlice/BookingSlice"
+import { userActions, userSelectors } from "store/redux/UserSlice/UserSlise"
+import {
+  rentCarSelectors,
+  rentCarActions,
+} from "store/redux/rentCarSlice/rentCarSlice"
+import EmailConfirmation from "components/EmailConfirmation/EmailConfirmation"
+import EmailConfirmationPage from "pages/EmailConfirmation/EmailConfirmation"
+
+
 const App = () => {
    
      return (
@@ -59,6 +72,7 @@ const App = () => {
           </Route>
           <Route path="/edit-booking/:id" element={<EditBookingPage />} />
           <Route path="/edit-car/:id" element={<EditCarPage />} />
+          <Route path="/confirm-email/:token" element={<EmailConfirmation />} />
           <Route path="/rent-car/:id" element={<RentCarPage />} />
           <Route path="/edit-user/:id" element={<EditUserPage />} />
           <Route path="*" element={<NotFoundPage />} />

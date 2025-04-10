@@ -1,54 +1,61 @@
-import { EditBookingFormProps } from "./types"
-import Button from "components/Button/Button"
-import Input from "components/Input/Input"
-import * as Yup from "yup"
-import { useFormik } from "formik"
-import { useLocation, useNavigate } from "react-router"
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { EditBookingFormProps } from "./types";
+import Button from "components/Button/Button";
+import Input from "components/Input/Input";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import { useLocation, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   bookingActions,
   bookingSelectors,
-} from "store/redux/BookingSlice/BookingSlice"
-import { useAppDispatch, useAppSelector } from "store/hooks"
-import { BookingProps } from "components/BookingComponent/types"
-import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
+} from "store/redux/BookingSlice/BookingSlice";
+import { useAppDispatch, useAppSelector } from "store/hooks";
+import { BookingProps } from "components/BookingComponent/types";
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice";
 import {
   rentCarActions,
   rentCarSelectors,
-} from "store/redux/rentCarSlice/rentCarSlice"
+} from "store/redux/rentCarSlice/rentCarSlice";
+import Notification1 from "components/Notification/Notification1";
+import Loader from "components/Loader/Loader";
 
 const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   booking,
 }) => {
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-  const location = useLocation()
-  const { bookingDetails } = location.state || {}
-  const user = useSelector(authSelectors.userData)
 
-  const car = bookingDetails.carDto
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+  const { bookingDetails } = location.state || {};
+  const user = useSelector(authSelectors.userData);
 
-  const token = useAppSelector(authSelectors.accessToken)
+  const [formData, setFormData] = useState<BookingProps>(bookingDetails);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationTopic, setNotificationTopic] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const token = useAppSelector(authSelectors.accessToken);
 
-  const today = new Date().toLocaleDateString("en-CA")
+  const today = new Date().toLocaleDateString("en-CA");
+  const car = bookingDetails.carDto;
 
   const calculateTotalCost = (
     startDate: Date,
     endDate: Date,
     dayRentalPrice: number,
   ): number => {
-    const start = new Date(startDate.setHours(0, 0, 0, 0))
-    const end = new Date(endDate.setHours(0, 0, 0, 0))
+    const start = new Date(startDate.setHours(0, 0, 0, 0));
+    const end = new Date(endDate.setHours(0, 0, 0, 0));
     if (end < start) {
-      console.error("End date cannot be earlier than start date.")
-      return 0
+      console.error("End date cannot be earlier than start date.");
+      return 0;
     }
-    const timeDifference = end.getTime() - start.getTime()
-    const days = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1
-    const totalRentCost = days >= 1 ? days * dayRentalPrice : dayRentalPrice
-    return totalRentCost
-  }
+    const timeDifference = end.getTime() - start.getTime();
+    const days = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1;
+    const totalRentCost = days >= 1 ? days * dayRentalPrice : dayRentalPrice;
+    return totalRentCost;
+  };
 
   const validationSchema = Yup.object({
     rentalStartDate: Yup.date()
@@ -64,14 +71,27 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
       .required("Rent cost can't be empty")
       .min(0.01, "Rent cost can't be 0"),
     bookingStatus: Yup.string().required("Status is required"),
-  })
+  });
 
-  const [formData, setFormData] = useState<BookingProps>(bookingDetails)
-  useEffect(() => {
-    if (bookingDetails) {
-      setFormData(bookingDetails)
+  const handleExtendBooking = async (id: string, token: string | null, newEndDate: string) => {
+    try {
+      setIsLoading(true);
+      await dispatch(bookingActions.extendBooking({
+        id: bookingDetails.id,
+        newEndDate: newEndDate,
+        token: token,
+      }));
+      setNotificationTopic("Success");
+      setNotificationMessage("Booking extended successfully");
+      setShowNotification(true);
+    } catch (error) {
+      setNotificationTopic("Error");
+      setNotificationMessage("Failed to extend booking");
+      setShowNotification(true);
+    } finally {
+      setIsLoading(false);
     }
-  }, [bookingDetails])
+  };
 
   const formik = useFormik({
     initialValues: formData,
@@ -79,95 +99,92 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (values: BookingProps) => {
-      const newEndDate = values.rentalEndDate
 
-      handleExtendBooking(values.id, token, newEndDate)
-      alert("The booking details are updated")
+      const newEndDate = values.rentalEndDate;
+      handleExtendBooking(values.id, token, newEndDate);
 
       if (user?.role === "ROLE_ADMIN") {
-        navigate("/admin/allBookings")
+        navigate("/admin/allBookings");
       } else if (user?.role === "ROLE_CUSTOMER") {
-        navigate("/account/myBookings")
+        navigate("/account/myBookings");
       } else {
-        console.error("Unknown role")
+        console.error("Unknown role");
       }
     },
-  })
+  });
+
+
+  const handleCancelBooking = async () => {
+    if (!booking) return;
+    try {
+      setIsLoading(true);
+      await dispatch(bookingActions.cancelBooking({
+        bookingId: bookingDetails.id,
+        token: token
+      }));
+      setNotificationTopic("Success");
+      setNotificationMessage("The booking is cancelled");
+      setShowNotification(true);
+    } catch (error) {
+      setNotificationTopic("Error");
+      setNotificationMessage("Failed to cancel booking");
+      setShowNotification(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCloseBooking = async () => {
+    if (!booking) return;
+    try {
+      setIsLoading(true);
+      await dispatch(bookingActions.closeBooking({
+        bookingId: bookingDetails.id,
+        token: token
+      }));
+      setNotificationTopic("Success");
+      setNotificationMessage("The booking is closed");
+      setShowNotification(true);
+    } catch (error) {
+      setNotificationTopic("Error");
+      setNotificationMessage("Failed to close booking");
+      setShowNotification(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+  const handleClose = () => {
+    if (user?.role === "ROLE_ADMIN") {
+      navigate("/admin/allBookings");
+    } else if (user?.role === "ROLE_CUSTOMER") {
+      navigate("/account/myBookings");
+    } else {
+      console.error("Unknown role");
+    }
+  };
 
   //Automatic calculation of renting price
   useEffect(() => {
-    const { rentalStartDate, rentalEndDate } = formik.values
+    const { rentalStartDate, rentalEndDate } = formik.values;
     if (rentalStartDate && rentalEndDate) {
-      const start = new Date(rentalStartDate)
-      const end = new Date(rentalEndDate)
-      const totalCost = calculateTotalCost(start, end, car.dayRentalPrice)
-      formik.setFieldValue("totalPrice", totalCost)
+      const start = new Date(rentalStartDate);
+      const end = new Date(rentalEndDate);
+      const totalCost = calculateTotalCost(start, end, car.dayRentalPrice);
+      formik.setFieldValue("totalPrice", totalCost);
     }
   }, [
     formik.values.rentalStartDate,
     formik.values.rentalEndDate,
     car.dayRentalPrice,
-  ])
+  ]);
 
-  const handleCancelBooking = (bookingId: string, token: string | null) => {
-    alert("The booking is cancelled")
-    dispatch(
-      bookingActions.cancelBooking({
-        bookingId: bookingDetails.id,
-        token: token,
-      }),
-    )
-
-    if (user?.role === "ROLE_ADMIN") {
-      navigate("/admin/allBookings")
-    } else if (user?.role === "ROLE_CUSTOMER") {
-      navigate("/account/myBookings")
-    } else {
-      console.error("Unknown role")
+  useEffect(() => {
+    if (bookingDetails) {
+      setFormData(bookingDetails);
     }
-  }
-
-  const handleCloseBooking = (bookingId: string, token: string | null) => {
-    alert("The booking is closed")
-    dispatch(
-      bookingActions.closeBooking({
-        bookingId: bookingDetails.id,
-        token: token,
-      }),
-    )
-
-    if (user?.role === "ROLE_ADMIN") {
-      navigate("/admin/allBookings")
-    } else if (user?.role === "ROLE_CUSTOMER") {
-      navigate("/account/myBookings")
-    } else {
-      console.error("Unknown role")
-    }
-  }
-
-  const handleExtendBooking = (
-    id: string,
-    token: string | null,
-    newEndDate: string,
-  ) => {
-    dispatch(
-      bookingActions.extendBooking({
-        id: bookingDetails.id,
-        newEndDate: newEndDate,
-        token: token,
-      }),
-    )
-  }
-
-  const handleClose = () => {
-    if (user?.role === "ROLE_ADMIN") {
-      navigate("/admin/allBookings")
-    } else if (user?.role === "ROLE_CUSTOMER") {
-      navigate("/account/myBookings")
-    } else {
-      console.error("Unknown role")
-    }
-  }
+  }, [bookingDetails]);
 
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
@@ -235,10 +252,8 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             type="text"
             label="Total Rent Cost €"
             placeholder="Display total cost"
-            value={new Intl.NumberFormat("en-US").format(
-              formik.values.totalPrice || 0,
-            )}
-            onChange={() => {}}
+            value={new Intl.NumberFormat('en-US').format(formik.values.totalPrice || 0)}
+            onChange={() => { }}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.totalPrice}
             readOnly={true}
@@ -274,22 +289,22 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             <Button
               name="Cancel Booking"
               customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
-              onClick={() => handleCancelBooking(formik.values.id, token)}
+              onClick={() => handleCancelBooking}
             />
           </div>
         )}
 
         {/* close booking button */}
-        {formik.values.bookingStatus === "ACTIVE" &&
-          user?.role === "ROLE_ADMIN" && (
-            <div className="w-auto mt-2.5">
-              <Button
-                name="Close Booking"
-                customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
-                onClick={() => handleCloseBooking(formik.values.id, token)}
-              />
-            </div>
-          )}
+
+        {formik.values.bookingStatus === "ACTIVE" && user?.role === "ROLE_ADMIN" && (
+          <div className="w-auto mt-2.5">
+            <Button
+              name="Close Booking"
+              customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
+              onClick={() => handleCloseBooking}
+            />
+          </div>
+        )}
 
         {/* close button */}
         <div className="w-auto mt-2.5">
@@ -300,7 +315,15 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
           />
         </div>
       </form>
+      {isLoading && <Loader />}
+      {showNotification && (
+        <Notification1
+          topic={notificationTopic}
+          message={notificationMessage}
+          onClose={() => setShowNotification(false)}
+        />
+      )}
     </div>
-  )
-}
-export default EditBookingDetailsForm
+  );
+};
+export default EditBookingDetailsForm;

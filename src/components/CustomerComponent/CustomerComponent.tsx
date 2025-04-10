@@ -1,46 +1,86 @@
-import Button from "components/Button/Button"
-import { CustomerProps } from "./types"
-import { useNavigate } from "react-router-dom"
-import { useAppDispatch, useAppSelector } from "store/hooks"
+import Button from "components/Button/Button";
+import { CustomerProps } from "./types";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 import { userActions, userSelectors } from "store/redux/UserSlice/UserSlise"
-import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
-import { useSelector } from "react-redux"
-import { useEffect } from "react"
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import Notification1 from "components/Notification/Notification1";
+import Loader from "components/Loader/Loader";
 
 function CustomerComponent() {
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useSelector(authSelectors.userData);
 
-  const user = useSelector(authSelectors.userData)
-  const accessToken = useAppSelector(authSelectors.accessToken)
+  const accessToken = useAppSelector(authSelectors.accessToken);
 
-  useEffect(() => {
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationTopic, setNotificationTopic] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+      useEffect(() => {
         dispatch(authActions.getCurrentUser());
   }, [dispatch]);
 
-   const handleEditCustomer = (
+  const handleEditCustomer = (
+
     customerId: string,
     customerData: CustomerProps,
   ) => {
-    console.log("Editing customer with ID:", customerId)
-    navigate(`/edit-user/${customerId}`, { state: { customerData } })
-  }
+    console.log("Editing customer with ID:", customerId);
+    navigate(`/edit-user/${customerId}`, { state: { customerData } });
+  };
 
   const handleDeleteCustomer = (
     customerId: string,
     accessToken: string | null,
   ) => {
-        alert("The user is deactivated")
-    dispatch(userActions.deleteUser({ customerId, token: accessToken }))
-  }
+    // alert("The user is deactivated");
+    dispatch(userActions.deleteUser({ customerId, token: accessToken }));
+  };
 
   const handleRestoreCustomer = (
     customerId: string,
     accessToken: string | null,
   ) => {
-        alert("The user is restored")
-    dispatch(userActions.restoreUser({ customerId, token: accessToken }))
-  }
+    // alert("The user is restored");
+    dispatch(userActions.restoreUser({ customerId, token: accessToken }));
+  };
+
+  const handleDeactivateUser = async (userId: string) => {
+    try {
+      setIsLoading(true);
+      await dispatch(userActions.deleteUser({ customerId: userId, token: accessToken }));
+      setNotificationTopic("Success");
+      setNotificationMessage("The user is deactivated");
+      setShowNotification(true);
+    } catch (error) {
+      setNotificationTopic("Error");
+      setNotificationMessage("Failed to deactivate user");
+      setShowNotification(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRestoreUser = async (userId: string) => {
+    try {
+      setIsLoading(true);
+      await dispatch(userActions.restoreUser({ customerId: userId, token: accessToken }));
+      setNotificationTopic("Success");
+      setNotificationMessage("The user is restored");
+      setShowNotification(true);
+    } catch (error) {
+      setNotificationTopic("Error");
+      setNotificationMessage("Failed to restore user");
+      setShowNotification(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="m-4 rounded-lg transition-transform duration-300 hover:-translate-y-1 ">
@@ -94,7 +134,15 @@ function CustomerComponent() {
           )}
         </div>
       </div>
+      {isLoading && <Loader />}
+      {showNotification && (
+        <Notification1
+          topic={notificationTopic}
+          message={notificationMessage}
+          onClose={() => setShowNotification(false)}
+        />
+      )}
     </div>
-  )
+  );
 }
-export default CustomerComponent
+export default CustomerComponent;

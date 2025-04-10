@@ -1,29 +1,35 @@
-import { EditCarFormProps } from "./types"
-import Button from "components/Button/Button"
-import Input from "components/Input/Input"
-import * as Yup from "yup"
-import { useFormik } from "formik"
-import { useLocation, useNavigate } from "react-router"
-import { useEffect, useState } from "react"
-import { CarCardProps } from "components/CarCard/types"
-import { rentCarActions } from "store/redux/rentCarSlice/rentCarSlice"
-import { useAppDispatch, useAppSelector } from "store/hooks"
-import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
+import { EditCarFormProps } from "./types";
+import Button from "components/Button/Button";
+import Input from "components/Input/Input";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import { useLocation, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { CarCardProps } from "components/CarCard/types";
+import { rentCarActions } from "store/redux/rentCarSlice/rentCarSlice";
+import { useAppDispatch, useAppSelector } from "store/hooks";
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice";
+import Loader from "components/Loader/Loader";
+import Notification1 from "components/Notification/Notification1";
 
 const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { carDetails } = location.state || {}
-  const dispatch = useAppDispatch()
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { carDetails } = location.state || {};
+  const dispatch = useAppDispatch();
 
-  const token = useAppSelector(authSelectors.accessToken)
+  const token = useAppSelector(authSelectors.accessToken);
 
-  const [formData, setFormData] = useState<CarCardProps>(carDetails)
+  const [formData, setFormData] = useState<CarCardProps>(carDetails);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationTopic, setNotificationTopic] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (carDetails) {
-      setFormData(carDetails)
+      setFormData(carDetails);
     }
-  }, [carDetails])
+  }, [carDetails]);
 
   const validationSchema = Yup.object({
     brand: Yup.string().required("Car brand is required"),
@@ -46,56 +52,67 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
       .min(0.01, "Price must be more than 0")
       .required("Price per day is required"),
     // image: Yup.string().required("Car image is required"),
-  })
+  });
 
   const formik = useFormik({
     initialValues: formData,
     validationSchema: validationSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values: CarCardProps) => {
-      console.log("Submitted values:", values)
-      console.log("Errors:", formik.errors)
+    onSubmit: async (values: CarCardProps) => {
+      try {
+        setIsLoading(true);
 
-      const updatedCar = {
-        // id: values.id,
-        // brand: values.brand,
-        // model: values.model,
-        // year: values.year,
-        carStatus: values.carStatus,
-        // type: values.type,
-        // fuelType: values.fuelType,
-        // transmissionType: values.transmissionType,
-        dayRentalPrice: values.dayRentalPrice,
-        // isActive:true,
-        // carImage: values.image,
+        const updatedCar = {
+          brand: values.brand,
+          model: values.model,
+          year: values.year,
+          carStatus: values.carStatus,
+          type: values.type,
+          fuelType: values.fuelType,
+          transmissionType: values.transmissionType,
+          dayRentalPrice: values.dayRentalPrice,
+          isActive: true,
+          carImage: values.carImage,
+        };
+
+        await dispatch(
+          rentCarActions.editCar({
+            updatedCar: updatedCar,
+            token: token,
+            carId: carDetails.id,
+          }),
+        );
+
+        setNotificationTopic("Success");
+        setNotificationMessage("The car is edited");
+        setShowNotification(true);
+        setTimeout(() => {
+          navigate("/admin/allCars");
+        }, 2000);
+      } catch (error) {
+        setNotificationTopic("Error");
+        setNotificationMessage("Failed to upload image");
+        setShowNotification(true);
+      } finally {
+        setIsLoading(false);
       }
-
-      dispatch(
-        rentCarActions.editCar({
-          updatedCar: updatedCar,
-          token: token,
-          carId: carDetails.id
-        }),
-      )
-      alert("The car is edited")
-      navigate("/admin/allCars")
-    },
-  })
+    }
+  });
 
   // Handle file input change
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      const file = event.target.files[0]
-      formik.setFieldValue("image", file)
+      const file = event.target.files[0];
+      formik.setFieldValue("image", file);
       // Set file value in Formik state
     }
-  }
+  };
 
   // Handle close button click
   const handleClose = () => {
-    navigate("/admin/allCars")
-  }
+    navigate("/admin/allCars");
+  };
 
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
@@ -201,9 +218,9 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
             errorMessage={formik.errors.dayRentalPrice}
           />
           <div>
-            {formik.values.image && typeof formik.values.image === "string" && (
+            {formik.values.carImage && typeof formik.values.carImage === "string" && (
               <img
-                src={formik.values.image}
+                src={formik.values.carImage}
                 alt="Car"
                 className="w-32 h-32 object-cover mb-3 rounded-lg"
               />
@@ -217,7 +234,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
               placeholder="Upload car image"
               onChange={handleFileChange}
               onBlur={formik.handleBlur}
-              errorMessage={formik.errors.image}
+              errorMessage={formik.errors.carImage}
               readOnly={true}
               disabled={true}
             />
@@ -235,7 +252,15 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
           />
         </div>
       </form>
+      {isLoading && <Loader />}
+      {showNotification && (
+        <Notification1
+          topic={notificationTopic}
+          message={notificationMessage}
+          onClose={() => setShowNotification(false)}
+        />
+      )}
     </div>
-  )
-}
-export default EditCarForm
+  );
+};
+export default EditCarForm;

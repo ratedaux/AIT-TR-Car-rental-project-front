@@ -111,8 +111,8 @@ function AddNewCarForm() {
           await dispatch(rentCarActions.editCar({
             updatedCar: {
               ...response,
-              carImage: imageResponse,
-              isActive: true
+              // carImage: imageResponse,
+              // isActive: true
             },
             token: token,
             carId: response.id
@@ -122,7 +122,9 @@ function AddNewCarForm() {
         setNotificationTopic("Success");
         setNotificationMessage("The car is saved");
         setShowNotification(true);
-        navigate("/admin/allCars");
+        setTimeout(() => {
+          navigate("/admin/allCars");
+        }, 2000);
       } catch (error) {
         setNotificationTopic("Error");
         setNotificationMessage("Failed to save car");
