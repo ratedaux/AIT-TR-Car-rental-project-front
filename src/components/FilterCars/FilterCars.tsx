@@ -243,6 +243,7 @@ export default function FilterCars() {
                             onChange={handleDateTimeChange}
                             errorMessage={formik.errors.endDateTime}
                             min={formik.values.startDateTime || today}
+                            max="9999-12-31T23:59"
                         />
                     </div>
                     <div className="md: w-48">
