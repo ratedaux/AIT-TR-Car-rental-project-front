@@ -26,7 +26,7 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
     dispatch(bookingActions.getAllBookings(token))
   }, [dispatch])
 
-  const bookingsForUser = useAppSelector(
+   const bookingsForUser = useAppSelector(
     bookingSelectors.selectBookingListByUser,
   )
   const bookingsForAdmin = useAppSelector(bookingSelectors.selectBookingList)
