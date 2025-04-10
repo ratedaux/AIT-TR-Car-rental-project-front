@@ -26,6 +26,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
   const [notificationMessage, setNotificationMessage] = useState("");
   const [notificationTopic, setNotificationTopic] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState<CustomerProps>(customerData);
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("First name"),
@@ -33,8 +34,6 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
     email: Yup.string().required("Email is required"),
     // password: Yup.string().required("Password is required"),
   });
-
-  const [formData, setFormData] = useState<CustomerProps>(customerData);
 
   useEffect(() => {
     if (customerData) {
@@ -60,13 +59,15 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
         setNotificationTopic("Success");
         setNotificationMessage("The user is edited");
         setShowNotification(true);
-        if (user?.role === "ROLE_ADMIN") {
-          navigate("/admin/allUsers");
-        } else if (user?.role === "ROLE_CUSTOMER") {
-          navigate("/account/myData");
-        } else {
-          console.error("Unknown role");
-        }
+        setTimeout(() => {
+          if (user?.role === "ROLE_ADMIN") {
+            navigate("/admin/allUsers");
+          } else if (user?.role === "ROLE_CUSTOMER") {
+            navigate("/account/myData");
+          } else {
+            console.error("Unknown role");
+          }
+        }, 2000);
       } catch (error) {
         setNotificationTopic("Error");
         setNotificationMessage("Failed to edit user");
