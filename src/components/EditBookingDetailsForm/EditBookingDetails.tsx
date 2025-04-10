@@ -23,12 +23,12 @@ import Loader from "components/Loader/Loader";
 const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   booking,
 }) => {
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const location = useLocation();
   const { bookingDetails } = location.state || {};
   const user = useSelector(authSelectors.userData);
-
 
   const [formData, setFormData] = useState<BookingProps>(bookingDetails);
   const [showNotification, setShowNotification] = useState(false);
@@ -76,7 +76,11 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   const handleExtendBooking = async (id: string, token: string | null, newEndDate: string) => {
     try {
       setIsLoading(true);
-      await dispatch(bookingActions.extendBooking({ id, newEndDate, token }));
+      await dispatch(bookingActions.extendBooking({
+        id: bookingDetails.id,
+        newEndDate: newEndDate,
+        token: token,
+      }));
       setNotificationTopic("Success");
       setNotificationMessage("Booking extended successfully");
       setShowNotification(true);
@@ -95,8 +99,10 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (values: BookingProps) => {
+
       const newEndDate = values.rentalEndDate;
       handleExtendBooking(values.id, token, newEndDate);
+
       if (user?.role === "ROLE_ADMIN") {
         navigate("/admin/allBookings");
       } else if (user?.role === "ROLE_CUSTOMER") {
@@ -107,9 +113,9 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     },
   });
 
+
   const handleCancelBooking = async () => {
     if (!booking) return;
-
     try {
       setIsLoading(true);
       await dispatch(bookingActions.cancelBooking({
@@ -128,34 +134,12 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     }
   };
 
-  // const handleUpdateBooking = async (values: BookingProps) => {
-  //   try {
-  //     setIsLoading(true);
-  //     await dispatch(bookingActions.updateBooking({
-  //       bookingId: booking.id,
-  //       startDateTime: values.rentalStartDate,
-  //       endDateTime: values.rentalEndDate,
-  //       totalCost: calculateTotalCost(new Date(values.rentalStartDate), new Date(values.rentalEndDate), car.dayRentalPrice)
-  //     }));
-  //     setNotificationTopic("Success");
-  //     setNotificationMessage("The booking details are updated");
-  //     setShowNotification(true);
-  //   } catch (error) {
-  //     setNotificationTopic("Error");
-  //     setNotificationMessage("Failed to update booking details");
-  //     setShowNotification(true);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   const handleCloseBooking = async () => {
     if (!booking) return;
-
     try {
       setIsLoading(true);
       await dispatch(bookingActions.closeBooking({
-        bookingId: booking.id,
+        bookingId: bookingDetails.id,
         token: token
       }));
       setNotificationTopic("Success");
@@ -169,6 +153,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
       setIsLoading(false);
     }
   };
+
 
   const handleClose = () => {
     if (user?.role === "ROLE_ADMIN") {
@@ -218,7 +203,8 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Renter:</div>
               <div className="w-2/3">
-                {bookingDetails.customerDto.firstName} {bookingDetails.customerDto.lastName}
+                {bookingDetails.customerDto.firstName}{" "}
+                {bookingDetails.customerDto.lastName}
               </div>
             </div>
             <div className="flex gap-4">
@@ -309,6 +295,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
         )}
 
         {/* close booking button */}
+
         {formik.values.bookingStatus === "ACTIVE" && user?.role === "ROLE_ADMIN" && (
           <div className="w-auto mt-2.5">
             <Button

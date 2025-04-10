@@ -1,6 +1,4 @@
 import { UserData, UserSliceState } from "./types"
-import { CustomerProps } from "components/CustomerComponent/types"
-import { CustomerDataProps } from "components/CustomerComponent/CustomerComponent"
 import { createAppSlice } from "store/createAppSlice"
 import axios from "axios"
 

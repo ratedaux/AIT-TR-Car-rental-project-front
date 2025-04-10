@@ -21,6 +21,7 @@ import BookingsListComponent from "components/BookingsList/BookingsListComponent
 import CustomerListComponent from "components/CustomersListComponent/CustomersList"
 import CarList from "components/CarList/CarList"
 import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
+
 import {
   bookingActions,
   bookingSelectors,
@@ -33,42 +34,10 @@ import {
 import EmailConfirmation from "components/EmailConfirmation/EmailConfirmation"
 import EmailConfirmationPage from "pages/EmailConfirmation/EmailConfirmation"
 
+
 const App = () => {
-  const dispatch = useAppDispatch()
-  const accessToken = useAppSelector(authSelectors.accessToken)
-  useEffect(() => {
-    if (localStorage.getItem("accessToken"))
-      dispatch(authActions.getCurrentUser())
-  }, [accessToken])
-
-  //for My Account page
-  const user = useAppSelector(authSelectors.userData)
-  const bookingListByUser = useAppSelector(
-    bookingSelectors.selectBookingListByUser,
-  )
-
-  useEffect(() => {
-    dispatch(bookingActions.getBookingsByUser(accessToken))
-  }, [dispatch])
-
-  //for admin page
-  const cars = useAppSelector(rentCarSelectors.selectAllCars)
-  const customerList = useAppSelector(userSelectors.selectAllUsers)
-  const bookingList = useAppSelector(bookingSelectors.selectBookingList)
-
-  useEffect(() => {
-    dispatch(rentCarActions.getAllCars())
-  }, [dispatch])
-
-  useEffect(() => {
-    dispatch(bookingActions.getAllBookings(accessToken))
-  }, [dispatch])
-
-  useEffect(() => {
-    dispatch(userActions.getAllUsers(accessToken))
-  }, [dispatch])
-
-  return (
+   
+     return (
     <HashRouter>
       <Layout>
         <Routes>
@@ -82,23 +51,23 @@ const App = () => {
           <Route path="/account" element={<MyAccount />}>
             <Route
               path="/account/myData"
-              element={<CustomerComponent customer={user} />}
+              element={<CustomerComponent />}
             />
             <Route
               path="/account/myBookings"
-              element={<BookingsListComponent bookings={bookingListByUser} />}
+              element={<BookingsListComponent />}
             />
           </Route>
           <Route path="/admin" element={<AdminPage />}>
             <Route
               path="/admin/allUsers"
-              element={<CustomerListComponent users={customerList} />}
+              element={<CustomerListComponent />}
             />
             <Route
               path="/admin/allBookings"
-              element={<BookingsListComponent bookings={bookingList} />}
+              element={<BookingsListComponent />}
             />
-            <Route path="/admin/allCars" element={<CarList cars={cars} />} />
+            <Route path="/admin/allCars" element={<CarList />} />
             <Route path="/admin/newCar" element={<AddNewCarForm />} />
           </Route>
           <Route path="/edit-booking/:id" element={<EditBookingPage />} />

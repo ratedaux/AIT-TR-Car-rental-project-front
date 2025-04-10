@@ -1,8 +1,12 @@
+
 import CarCard from "../CarCard/CarCard";
 import { CarCardProps } from "../CarCard/types";
 import Button from "components/Button/Button";
 import { useNavigate } from "react-router-dom";
-import { rentCarActions } from "store/redux/rentCarSlice/rentCarSlice";
+import {
+  rentCarActions,
+  rentCarSelectors,
+} from "store/redux/rentCarSlice/rentCarSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { useEffect, useState } from "react";
 import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice";
@@ -10,13 +14,13 @@ import Notification1 from "components/Notification/Notification1";
 import Loader from "components/Loader/Loader";
 
 interface CarListProps {
-  cars: CarCardProps[];
+ 
 }
 
 function CarList({ cars }: CarListProps) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+const cars = useAppSelector(rentCarSelectors.selectAllCars)
   const accessToken = useAppSelector(authSelectors.accessToken);
 
   const [showNotification, setShowNotification] = useState(false);
@@ -24,10 +28,10 @@ function CarList({ cars }: CarListProps) {
   const [notificationTopic, setNotificationTopic] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (localStorage.getItem("accessToken"))
-      dispatch(authActions.getCurrentUser());
-  }, [accessToken]);
+ useEffect(() => {
+    dispatch(rentCarActions.getAllCars())
+  }, [dispatch])
+
 
   const handleEditCar = (carId: string, carDetails: CarCardProps) => {
     navigate(`/edit-car/${carId}`, { state: { carDetails } });
