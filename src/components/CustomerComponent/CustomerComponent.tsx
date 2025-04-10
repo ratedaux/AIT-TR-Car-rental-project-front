@@ -9,7 +9,11 @@ import { useEffect, useState } from "react";
 import Notification1 from "components/Notification/Notification1";
 import Loader from "components/Loader/Loader";
 
-function CustomerComponent() {
+interface CustomerComponentProps {
+  customer: CustomerProps;
+}
+
+const CustomerComponent: React.FC<CustomerComponentProps> = ({ customer }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const user = useSelector(authSelectors.userData);
@@ -92,18 +96,18 @@ function CustomerComponent() {
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Customer Name:</div>
             <div className="w-3/4">
-              {user?.firstName} {user?.lastName}
+              {customer?.firstName} {customer?.lastName}
             </div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Email:</div>
-            <div className="w-3/4">{user?.email} </div>
+            <div className="w-3/4">{customer?.email} </div>
           </div>
 
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Status:</div>
             <div className="w-3/4">
-              {user?.isActive ? "Active" : "Not Active"}
+              {customer?.isActive ? "Active" : "Not Active"}
             </div>
           </div>
         </div>
@@ -113,7 +117,7 @@ function CustomerComponent() {
         <div>
           <Button
             type="button"
-            onClick={() => handleEditCustomer(user?.id, user)}
+            onClick={() => handleEditCustomer(customer?.id, customer)}
             name="Edit"
           />
           {/* this button must be available only for admin */}
@@ -125,11 +129,11 @@ function CustomerComponent() {
               type="button"
               customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"
               onClick={() =>
-                user.isActive
-                  ? handleDeleteCustomer(user.id, accessToken)
-                  : handleRestoreCustomer(user.id, accessToken)
+                customer.isActive
+                  ? handleDeleteCustomer(customer.id, accessToken)
+                  : handleRestoreCustomer(customer.id, accessToken)
               }
-              name={user.isActive ? "Deactivate" : "Restore"}
+              name={customer.isActive ? "Deactivate" : "Restore"}
             />
           )}
         </div>
