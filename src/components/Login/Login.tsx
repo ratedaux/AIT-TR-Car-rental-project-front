@@ -69,7 +69,7 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/", carId
   const dispatch = useAppDispatch()
   const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
   const [isNotificationVisible, setIsNotificationVisible] = useState(true)
 
   /* const user = useAppSelector(authSelectors.userData) */
@@ -88,11 +88,9 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/", carId
     validateOnChange: false,
     onSubmit: values => {
       /* временно для проверки */
-       console.log("Login form submitted with:", values);
+  
 
       if (!isEmailConfirmed) {
-      /* уведомление чтобы подтверлил email  */
-      console.log("Email is not confirmed");
         return;
       }
       dispatch(
