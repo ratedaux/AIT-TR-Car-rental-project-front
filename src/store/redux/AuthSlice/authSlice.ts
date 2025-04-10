@@ -187,6 +187,7 @@ export const authSlice = createAppSlice({
         fulfilled: (state, action) => {
           state.status = "success";
           state.isEmailConfirmed = true; 
+          state.user = action.payload.user || state.user; 
           state.registerError = undefined;
           state.successMessage = "Email successfully confirmed! Please log in."; 
         },

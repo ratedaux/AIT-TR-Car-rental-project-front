@@ -114,13 +114,11 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/", carId
 
   useEffect(() => {
     if (status === "success" && isLoggedIn) {
-      onLoginSuccess();  //  функцию для перенаправления
-      navigate(url, { replace: true }); 
+      onLoginSuccess(); 
   
-      // Если есть carId, на страницу аренды
-      if (carId) {
-        navigate(`/rent-car/${carId}`);
-      }
+      const redirectUrl = carId ? `/rent-car/${carId}` : url;
+  
+      navigate(redirectUrl, { replace: true });
     }
   }, [status, isLoggedIn, carId, onLoginSuccess, navigate, url]);
 
