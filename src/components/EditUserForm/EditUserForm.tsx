@@ -29,10 +29,17 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
   const [formData, setFormData] = useState<CustomerProps>(customerData);
 
   const validationSchema = Yup.object({
-    firstName: Yup.string().required("First name"),
-    lastName: Yup.string().required("Last name is required"),
-    email: Yup.string().required("Email is required"),
-    // password: Yup.string().required("Password is required"),
+    firstName: Yup.string().required("First name")
+    .min(2, "Must have at least 2 characters")
+    .max(15, "Name must be less than 15 characters")
+    .matches(/^[a-zA-Z0-9 ]+$/, "Name must not contain special characters"),
+    lastName: Yup.string().required("Last name is required")
+    .min(2, "Must have at least 2 characters")
+    .max(15, "Name must be less than 15 characters")
+    .matches(/^[a-zA-Z0-9 ]+$/, "Name must not contain special characters"),
+    email: Yup.string().required("Email is required")
+    .email("Invalid email format"),
+        // password: Yup.string().required("Password is required"),
   });
 
   useEffect(() => {
@@ -44,7 +51,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ customer }) => {
   const formik = useFormik({
     initialValues: formData,
     validationSchema: validationSchema,
-    validateOnChange: false,
+    validateOnChange: true,
     validateOnBlur: true,
     onSubmit: async (values: CustomerProps) => {
       try {

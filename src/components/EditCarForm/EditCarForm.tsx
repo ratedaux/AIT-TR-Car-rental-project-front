@@ -50,6 +50,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
     dayRentalPrice: Yup.number()
       .positive("Price must be more than 0")
       .min(0.01, "Price must be more than 0")
+      .max(1000, "Price per day cannot exceed 1000")
       .required("Price per day is required"),
     // image: Yup.string().required("Car image is required"),
   });

@@ -25,8 +25,12 @@ function AddNewCarForm() {
   }, [token]);
 
   const validationSchema = Yup.object({
-    brand: Yup.string().required("Car brand is required"),
-    model: Yup.string().required("Car model is required"),
+    brand: Yup.string().required("Car brand is required")
+    .max(15, "Brand must be less than 15 characters")
+    .matches(/^[a-zA-Z0-9 ]+$/, "Brand must not contain special characters"),
+    model: Yup.string().required("Car model is required")
+    .max(15, "Model must be less than 15 characters")
+    .matches(/^[a-zA-Z0-9 ]+$/, "Model must not contain special characters"),
     year: Yup.number()
       .min(1900, "Year must be at least 1900 or later")
       .max(
@@ -42,6 +46,7 @@ function AddNewCarForm() {
     dayRentalPrice: Yup.number()
       .positive("Price must be more than 0")
       .min(0.01, "Price must be more than 0")
+      .max(1000, "Price per day cannot exceed 1000")
       .required("Price per day is required"),
     carImage: Yup.string().required("Car image is required"),
   });
@@ -77,7 +82,7 @@ function AddNewCarForm() {
       image: "",
     } as unknown as AddNewCarFormProps,
     validationSchema: validationSchema,
-    validateOnChange: false,
+    validateOnChange: true,
     validateOnBlur: true,
     onSubmit: async (values: AddNewCarFormProps) => {
       try {
