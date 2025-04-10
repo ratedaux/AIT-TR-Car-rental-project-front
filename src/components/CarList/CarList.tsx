@@ -5,21 +5,18 @@ import { useNavigate } from "react-router-dom";
 import {
   rentCarActions,
   rentCarSelectors,
-} from "store/redux/rentCarSlice/rentCarSlice"
+} from "store/redux/rentCarSlice/rentCarSlice";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { useEffect, useState } from "react";
 import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice";
 import Notification1 from "components/Notification/Notification1";
 import Loader from "components/Loader/Loader";
 
-interface CarListProps {
- 
-}
 
-function CarList({ cars }: CarListProps) {
+function CarList() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-const cars = useAppSelector(rentCarSelectors.selectAllCars)
+  const cars = useAppSelector(rentCarSelectors.selectAllCars);
   const accessToken = useAppSelector(authSelectors.accessToken);
 
   const [showNotification, setShowNotification] = useState(false);
@@ -27,9 +24,9 @@ const cars = useAppSelector(rentCarSelectors.selectAllCars)
   const [notificationTopic, setNotificationTopic] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
- useEffect(() => {
-    dispatch(rentCarActions.getAllCars())
-  }, [dispatch])
+  useEffect(() => {
+    dispatch(rentCarActions.getAllCars());
+  }, [dispatch]);
 
 
   const handleEditCar = (carId: string, carDetails: CarCardProps) => {
