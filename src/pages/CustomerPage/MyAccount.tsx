@@ -15,22 +15,10 @@ function CustomerPage() {
   const handleRentButtonClick = () => {
     navigate("/")
   }
-
-  // const [activeComponent, setActiveComponent] = useState("customerData")
-  // const showCustomerData = () => setActiveComponent("customerData")
-  // const showBookingsList = () => setActiveComponent("bookingsList")
-
   const showCustomerData = () => navigate("/account/myData")
   const showBookingsList = () => navigate("/account/myBookings")
 
   const user = useAppSelector(authSelectors.userData)
-  // const bookingListByUserId = useAppSelector(
-  //   bookingSelectors.selectBookingListByUser,
-  // )
-
-  // if (!user || !bookingListByUserId) {
-  //   return <div>Loading...</div>
-  // }
 
   return (
     <div className="flex flex-row w-auto bg-gray-100 justify-center rounded-lg">
@@ -77,13 +65,6 @@ function CustomerPage() {
       {/* правая часть с компонентами */}
       <div className="flex flex-col w-2/3 m-6 gap-6">
         <Outlet />
-        {/* {activeComponent === "customerData" && (
-          <CustomerComponent customer={user} />
-        )}
-
-        {activeComponent === "bookingsList" && (
-          <BookingsListComponent bookings={bookingListByUserId} />
-        )} */}
       </div>
     </div>
   )

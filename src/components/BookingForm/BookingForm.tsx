@@ -92,7 +92,7 @@ function BookingForm() {
         carId: car.id,
       }
       setShowNotification(true)
-      dispatch(bookingActions.createBooking({ token, bookingDataForDispatch }))
+      dispatch(bookingActions.createBooking({ token: token, bookingDataForDispatch: bookingDataForDispatch }))
       resetForm()
       navigate("/account/myBookings")
     },
@@ -122,6 +122,19 @@ function BookingForm() {
     navigate("/account")
   }
 
+//   const formatDateTimeForInput = (dateTime: string) => {
+//     if (!dateTime) return '';
+//     const date = new Date(dateTime);
+//     const year = date.getFullYear();
+//     const month = String(date.getMonth() + 1).padStart(2, '0');
+//     const day = String(date.getDate()).padStart(2, '0');
+//     const hours = String(date.getHours()).padStart(2, '0');
+//     const minutes = String(date.getMinutes()).padStart(2, '0');
+//     const seconds = String(date.getSeconds()).padStart(2, '0');
+//   
+//     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+// };
+
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-4 rounded-md">
       <h2 className="text-xl font-bold py-4 mb-2">
@@ -132,6 +145,7 @@ function BookingForm() {
         <div className="flex flex-col gap-2 w-full">
           <Input
             name="rentalStartDate"
+              // type="datetime-local"
             type="date"
             label="Start date"
             placeholder="Select start date"
@@ -146,6 +160,7 @@ function BookingForm() {
           />
           <Input
             name="rentalEndDate"
+              // type="datetime-local"
             type="date"
             label="End date"
             placeholder="Select end date"
@@ -161,10 +176,10 @@ function BookingForm() {
 
           <Input
             name="totalPrice"
-            type="number"
+            type="text"
             label="Total Rent Cost"
             placeholder="Total cost will be calculated automatically"
-            value={formik.values.totalPrice}
+            value={new Intl.NumberFormat('en-US').format(formik.values.totalPrice || 0)}
             onChange={() => {}}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.totalPrice}

@@ -160,7 +160,6 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.carStatus}
           />
-
           <Input
             name="year"
             type="number"

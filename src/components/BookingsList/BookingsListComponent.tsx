@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import BookingComponent from "components/BookingComponent/BookingComponent"
 import { BookingsListProps } from "./types"
 import Button from "components/Button/Button"
-import { BookingProps } from "components/BookingComponent/types"
+import { BookingProps, CarDto, CustomerDto } from "components/BookingComponent/types"
 import { useNavigate } from "react-router"
 
 const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
@@ -12,8 +12,7 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
     bookingId: string,
     bookingDetails: BookingProps,
   ) => {
-    console.log("Editing booking with ID:", bookingId)
-    navigate(`/edit-booking/${bookingId}`, { state: { bookingDetails } })
+     navigate(`/edit-booking/${bookingId}`, { state: { bookingDetails } })
   }
 
   // const handleDeleteBooking = (bookingId: number) => {
@@ -35,12 +34,10 @@ const BookingsListComponent: React.FC<BookingsListProps> = ({ bookings }) => {
             carId={booking.carId}
             carStatus={booking.carStatus}
             customerId={booking.customerId}
-            brand={booking.brand}
-            model={booking.model}
+            customerDto={booking.customerDto}
             bookingStatus={booking.bookingStatus}
             totalPrice={booking.totalPrice}
-            firstName={booking.firstName}
-            lastName={booking.lastName}
+            carDto={booking.carDto}
             updateBookingDate={booking.updateBookingDate}
             createBookingDate={booking.createBookingDate}
             id={booking.id}
