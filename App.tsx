@@ -32,7 +32,6 @@ import {
   rentCarActions,
 } from "store/redux/rentCarSlice/rentCarSlice"
 import EmailConfirmation from "components/EmailConfirmation/EmailConfirmation"
-import EmailConfirmationPage from "pages/EmailConfirmation/EmailConfirmation"
 
 
 const App = () => {

@@ -69,11 +69,15 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/", carId
   const dispatch = useAppDispatch()
   const navigate = useNavigate();
 
+  const [showPassword, setShowPassword] = useState(false)
+  const [isNotificationVisible, setIsNotificationVisible] = useState(true)
+
   /* const user = useAppSelector(authSelectors.userData) */
   const status = useAppSelector(authSelectors.authStatus)
   const loginError = useAppSelector(authSelectors.loginError)
   const successMessage = useAppSelector(authSelectors.successMessage)
   const isLoggedIn = useAppSelector(authSelectors.isLoggedIn);
+  const isEmailConfirmed = useAppSelector(authSelectors.isEmailConfirmed);
 
   const formik = useFormik({
     initialValues: {
@@ -83,29 +87,24 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/", carId
     validationSchema,
     validateOnChange: false,
     onSubmit: values => {
-      /* временно для проверки
-      console.table(values) */
+      /* временно для проверки */
+       console.log("Login form submitted with:", values);
 
-      const isEmailConfirmed = useAppSelector(authSelectors.isEmailConfirmed);
       if (!isEmailConfirmed) {
-        /*  уведомление чтобы подтверлил email
-      dispatch(authActions.updateLoginError("Please confirm your email address before logging in."));  */
+      /* уведомление чтобы подтверлил email  */
+      console.log("Email is not confirmed");
         return;
       }
-
       dispatch(
         authActions.loginUser({
           email: values.email,
           password: values.password,
         }),
       )
-
       formik.resetForm()
     },
   })
 
-  const [showPassword, setShowPassword] = useState(false)
-  const [isNotificationVisible, setIsNotificationVisible] = useState(true)
 
   const onHandleCloseNotification = () => {
     setIsNotificationVisible(false)
@@ -115,13 +114,11 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/", carId
 
   useEffect(() => {
     if (status === "success" && isLoggedIn) {
-      onLoginSuccess();  //  функцию для перенаправления
-      navigate(url, { replace: true }); 
+      onLoginSuccess(); 
   
-      // Если есть carId, на страницу аренды
-      if (carId) {
-        navigate(`/rent-car/${carId}`);
-      }
+      const redirectUrl = carId ? `/rent-car/${carId}` : url;
+  
+      navigate(redirectUrl, { replace: true });
     }
   }, [status, isLoggedIn, carId, onLoginSuccess, navigate, url]);
 
