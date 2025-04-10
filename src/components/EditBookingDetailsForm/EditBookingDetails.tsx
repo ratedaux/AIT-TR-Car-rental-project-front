@@ -38,10 +38,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   const token = useAppSelector(authSelectors.accessToken);
 
   const today = new Date().toLocaleDateString("en-CA");
-
-  const car = bookingDetails.carDto
-  
-
+  const car = bookingDetails.carDto;
 
   const calculateTotalCost = (
     startDate: Date,
@@ -76,11 +73,21 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     bookingStatus: Yup.string().required("Status is required"),
   });
 
-  useEffect(() => {
-    if (bookingDetails) {
-      setFormData(bookingDetails);
+  const handleExtendBooking = async (id: string, token: string | null, newEndDate: string) => {
+    try {
+      setIsLoading(true);
+      await dispatch(bookingActions.extendBooking({ id, newEndDate, token }));
+      setNotificationTopic("Success");
+      setNotificationMessage("Booking extended successfully");
+      setShowNotification(true);
+    } catch (error) {
+      setNotificationTopic("Error");
+      setNotificationMessage("Failed to extend booking");
+      setShowNotification(true);
+    } finally {
+      setIsLoading(false);
     }
-  }, [bookingDetails]);
+  };
 
   const formik = useFormik({
     initialValues: formData,
@@ -88,45 +95,17 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (values: BookingProps) => {
-      const newEndDate = values.rentalEndDate
- handleExtendBooking(values.id, token , newEndDate)
+      const newEndDate = values.rentalEndDate;
+      handleExtendBooking(values.id, token, newEndDate);
       if (user?.role === "ROLE_ADMIN") {
-       navigate("/admin/allBookings")
+        navigate("/admin/allBookings");
       } else if (user?.role === "ROLE_CUSTOMER") {
-          navigate("/account/myBookings")
+        navigate("/account/myBookings");
       } else {
         console.error("Unknown role");
       }
     },
   });
-
-  //Automatic calculation of renting price
-  useEffect(() => {
-    const { rentalStartDate, rentalEndDate } = formik.values;
-    if (rentalStartDate && rentalEndDate) {
-      const start = new Date(rentalStartDate);
-      const end = new Date(rentalEndDate);
-      const totalCost = calculateTotalCost(start, end, car.dayRentalPrice);
-      formik.setFieldValue("totalPrice", totalCost);
-    }
-  }, [
-    formik.values.rentalStartDate,
-    formik.values.rentalEndDate,
-    car.dayRentalPrice,
-  ]);
-
-   const handleCancelBooking = (bookingId: string, token: string | null) => {
-  dispatch(bookingActions.cancelBooking({ bookingId: bookingDetails.id, token: token }));
-
-
-  //   if (user?.role === "ROLE_ADMIN") {
-  //     navigate("/admin/allBookings");
-  //   } else if (user?.role === "ROLE_CUSTOMER") {
-  //     navigate("/account/myBookings");
-  //   } else {
-  //     console.error("Unknown role");
-  //   }
-  // };
 
   const handleCancelBooking = async () => {
     if (!booking) return;
@@ -134,7 +113,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     try {
       setIsLoading(true);
       await dispatch(bookingActions.cancelBooking({
-        bookingId: booking.id,
+        bookingId: bookingDetails.id,
         token: token
       }));
       setNotificationTopic("Success");
@@ -148,7 +127,6 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
       setIsLoading(false);
     }
   };
-
 
   // const handleUpdateBooking = async (values: BookingProps) => {
   //   try {
@@ -168,19 +146,6 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   //     setShowNotification(true);
   //   } finally {
   //     setIsLoading(false);
-  //   }
-  // };
-
-  // const handleCloseBooking = (bookingId: string, token: string | null) => {
-  //   alert("The booking is closed");
-  //   dispatch(bookingActions.closeBooking({ token: token, bookingId: bookingDetails.id }));
-
-  //   if (user?.role === "ROLE_ADMIN") {
-  //     navigate("/admin/allBookings");
-  //   } else if (user?.role === "ROLE_CUSTOMER") {
-  //     navigate("/account/myBookings");
-  //   } else {
-  //     console.error("Unknown role");
   //   }
   // };
 
@@ -205,11 +170,6 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     }
   };
 
-  const handleExtendBooking = (id: string, token: string |null, newEndDate: string) => {
-    dispatch(bookingActions.extendBooking({ id: bookingDetails.id, newEndDate: newEndDate, token: token }))
-  }
-
-
   const handleClose = () => {
     if (user?.role === "ROLE_ADMIN") {
       navigate("/admin/allBookings");
@@ -220,18 +180,26 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     }
   };
 
-//   const formatDateTimeForInput = (dateTime: string) => {
-//     if (!dateTime) return '';
-//     const date = new Date(dateTime);
-//     const year = date.getFullYear();
-//     const month = String(date.getMonth() + 1).padStart(2, '0');
-//     const day = String(date.getDate()).padStart(2, '0');
-//     const hours = String(date.getHours()).padStart(2, '0');
-//     const minutes = String(date.getMinutes()).padStart(2, '0');
-//     const seconds = String(date.getSeconds()).padStart(2, '0');
-//   
-//     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
-// };
+  //Automatic calculation of renting price
+  useEffect(() => {
+    const { rentalStartDate, rentalEndDate } = formik.values;
+    if (rentalStartDate && rentalEndDate) {
+      const start = new Date(rentalStartDate);
+      const end = new Date(rentalEndDate);
+      const totalCost = calculateTotalCost(start, end, car.dayRentalPrice);
+      formik.setFieldValue("totalPrice", totalCost);
+    }
+  }, [
+    formik.values.rentalStartDate,
+    formik.values.rentalEndDate,
+    car.dayRentalPrice,
+  ]);
+
+  useEffect(() => {
+    if (bookingDetails) {
+      setFormData(bookingDetails);
+    }
+  }, [bookingDetails]);
 
   return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
@@ -299,7 +267,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             label="Total Rent Cost €"
             placeholder="Display total cost"
             value={new Intl.NumberFormat('en-US').format(formik.values.totalPrice || 0)}
-            onChange={() => {}}
+            onChange={() => { }}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.totalPrice}
             readOnly={true}

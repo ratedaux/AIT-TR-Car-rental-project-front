@@ -111,8 +111,8 @@ function AddNewCarForm() {
           await dispatch(rentCarActions.editCar({
             updatedCar: {
               ...response,
-              carImage: imageResponse,
-              isActive: true
+              // carImage: imageResponse,
+              // isActive: true
             },
             token: token,
             carId: response.id
