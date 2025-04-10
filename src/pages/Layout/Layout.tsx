@@ -68,23 +68,7 @@ function Layout({ children }: LayoutProps) {
                 </button>
               )}
               {isLoggedIn &&
-                (user?.role === "ROLE_CUSTOMER" ? (
-                  <Link
-                    to="/account/myData"
-                    className="text-white font-bold px-4 py-2 rounded-md transition-all duration-300 hover:bg-red-600 relative z-10 hover:text-white"
-                  >
-                    My Account
-                  </Link>
-                ) : user?.role === "ROLE_ADMIN" ? (
-                  <Link
-                    to="/admin/allCars"
-                    className="text-white font-bold px-4 py-2 rounded-md transition-all duration-300 hover:bg-red-600 relative z-10 hover:text-white"
-                  >
-                    Admin
-                  </Link>
-                ) : null)}
-              {/*   {isLoggedIn &&
-                (user?.role === "ROLE_CUSTOMER" ) && (
+                (user?.role === "ROLE_CUSTOMER" || !user?.role) && (
                   <Link
                     to="/account/myData"
                     className="text-white font-bold px-4 py-2 rounded-md transition-all duration-300 hover:bg-red-600 relative z-10 hover:text-white"
@@ -99,7 +83,7 @@ function Layout({ children }: LayoutProps) {
                 >
                   Admin
                 </Link>
-              )} */}
+              )}
             </nav>
           </div>
         </div>
