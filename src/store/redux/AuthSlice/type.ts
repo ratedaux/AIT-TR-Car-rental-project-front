@@ -19,4 +19,5 @@ export interface AuthSliceState {
   registerMessage: string | undefined
   accessToken: string | null
   refreshToken: string | undefined  | null
+  isEmailConfirmed: boolean
 }
