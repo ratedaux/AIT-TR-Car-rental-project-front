@@ -1,4 +1,3 @@
-
 import CarCard from "../CarCard/CarCard";
 import { CarCardProps } from "../CarCard/types";
 import Button from "components/Button/Button";
