@@ -55,15 +55,16 @@ const validationSchema = Yup.object().shape({
     ),
 })
 
+
 type LoginProps = {
   showHeader?: boolean
   img?: boolean
   onLoginSuccess: () => void;
   url?: string;
-  /* carId?: string | null; */
+  carId?: string | null;
 }
 
-function Login({ showHeader = true, img = true, onLoginSuccess, url = "/" }: LoginProps) {
+function Login({ showHeader = true, img = true, onLoginSuccess, url = "/", carId = null,}: LoginProps) {
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate();
@@ -84,6 +85,14 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/" }: Log
     onSubmit: values => {
       /* временно для проверки
       console.table(values) */
+
+      const isEmailConfirmed = useAppSelector(authSelectors.isEmailConfirmed);
+      if (!isEmailConfirmed) {
+        /*  уведомление чтобы подтверлил email
+      dispatch(authActions.updateLoginError("Please confirm your email address before logging in."));  */
+        return;
+      }
+
       dispatch(
         authActions.loginUser({
           email: values.email,
@@ -104,20 +113,17 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/" }: Log
 
 
 
-/*   useEffect(() => {
+  useEffect(() => {
     if (status === "success" && isLoggedIn) {
-      onLoginSuccess();  // вызываем функцию для перенаправления
-      navigate("/");
+      onLoginSuccess();  //  функцию для перенаправления
+      navigate(url, { replace: true }); 
   
+      // Если есть carId, на страницу аренды
       if (carId) {
         navigate(`/rent-car/${carId}`);
-      } else {
-        navigate("/");
       }
     }
-  }, [status, isLoggedIn, carId, onLoginSuccess, navigate]);
- 
- */
+  }, [status, isLoggedIn, carId, onLoginSuccess, navigate, url]);
 
 
  /*  useEffect(() => {

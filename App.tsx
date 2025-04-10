@@ -31,6 +31,8 @@ import {
   rentCarSelectors,
   rentCarActions,
 } from "store/redux/rentCarSlice/rentCarSlice"
+import EmailConfirmation from "components/EmailConfirmation/EmailConfirmation"
+import EmailConfirmationPage from "pages/EmailConfirmation/EmailConfirmation"
 
 
 const App = () => {
@@ -70,6 +72,7 @@ const App = () => {
           </Route>
           <Route path="/edit-booking/:id" element={<EditBookingPage />} />
           <Route path="/edit-car/:id" element={<EditCarPage />} />
+          <Route path="/confirm-email/:token" element={<EmailConfirmation />} />
           <Route path="/rent-car/:id" element={<RentCarPage />} />
           <Route path="/edit-user/:id" element={<EditUserPage />} />
           <Route path="*" element={<NotFoundPage />} />
