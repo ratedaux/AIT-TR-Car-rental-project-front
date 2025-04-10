@@ -90,11 +90,11 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/", carId
       /* временно для проверки */
        console.log("Login form submitted with:", values);
 
-      if (!isEmailConfirmed) {
-      /* уведомление чтобы подтверлил email  */
+    /*   if (!isEmailConfirmed) {
+       уведомление чтобы подтверлил email  
       console.log("Email is not confirmed");
         return;
-      }
+      } */
       dispatch(
         authActions.loginUser({
           email: values.email,
