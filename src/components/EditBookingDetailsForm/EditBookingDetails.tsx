@@ -124,7 +124,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
 
   const handleCancelBooking = async () => {
-    if (!booking) return;
+    if (!bookingDetails) return;
     try {
       setIsLoading(true);
       await dispatch(bookingActions.cancelBooking({
@@ -134,6 +134,11 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
       setNotificationTopic("Success");
       setNotificationMessage("The booking is cancelled");
       setShowNotification(true);
+
+      setTimeout(() => {
+        handleClose();
+      }, 1500);
+
     } catch (error) {
       setNotificationTopic("Error");
       setNotificationMessage("Failed to cancel booking");
@@ -144,7 +149,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   };
 
   const handleCloseBooking = async () => {
-    if (!booking) return;
+    if (!bookingDetails) return;
     try {
       setIsLoading(true);
       await dispatch(bookingActions.closeBooking({
@@ -154,6 +159,11 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
       setNotificationTopic("Success");
       setNotificationMessage("The booking is closed");
       setShowNotification(true);
+
+      setTimeout(() => {
+        handleClose();
+      }, 1500);
+
     } catch (error) {
       setNotificationTopic("Error");
       setNotificationMessage("Failed to close booking");
@@ -298,7 +308,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             <Button
               name="Cancel Booking"
               customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
-              onClick={() => handleCancelBooking}
+              onClick={() => handleCancelBooking()}
             />
           </div>
         )}
