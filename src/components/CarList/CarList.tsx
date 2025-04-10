@@ -8,10 +8,9 @@ import {
 } from "store/redux/rentCarSlice/rentCarSlice";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { useEffect, useState } from "react";
-import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice";
+import { authSelectors } from "store/redux/AuthSlice/authSlice";
 import Notification1 from "components/Notification/Notification1";
 import Loader from "components/Loader/Loader";
-
 
 function CarList() {
   const navigate = useNavigate();
@@ -19,6 +18,7 @@ function CarList() {
   const cars = useAppSelector(rentCarSelectors.selectAllCars);
   const accessToken = useAppSelector(authSelectors.accessToken);
 
+  const [localCars, setLocalCars] = useState<CarCardProps[]>([]);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
   const [notificationTopic, setNotificationTopic] = useState("");
@@ -28,26 +28,27 @@ function CarList() {
     dispatch(rentCarActions.getAllCars());
   }, [dispatch]);
 
+  useEffect(() => {
+    setLocalCars(cars);
+  }, [cars]);
 
   const handleEditCar = (carId: string, carDetails: CarCardProps) => {
     navigate(`/edit-car/${carId}`, { state: { carDetails } });
   };
 
-  // const handleDeleteCar = (carId: string, accessToken: string | null) => {
-  //   dispatch(rentCarActions.deleteCar({ carId, token: accessToken }));
-  //   // alert("The car is deleted");
-  //   setNotificationTopic("Success");
-  //   setNotificationMessage("The car is deleted");
-  //   setShowNotification(true);
-  // };
-
   const handleDeleteCar = async (carId: string) => {
     try {
       setIsLoading(true);
-      await dispatch(rentCarActions.deleteCar({ carId, token: accessToken }));
+      await dispatch(rentCarActions.deleteCar({ carId, token: accessToken })).unwrap();
       setNotificationTopic("Success");
       setNotificationMessage("The car is deleted");
       setShowNotification(true);
+
+      setLocalCars(prev =>
+        prev.map(car =>
+          car.id === carId ? { ...car, isActive: false } : car
+        )
+      );
     } catch (error) {
       setNotificationTopic("Error");
       setNotificationMessage("Failed to delete car");
@@ -57,21 +58,19 @@ function CarList() {
     }
   };
 
-  // const handleRestoreCar = (carId: string, accessToken: string | null) => {
-  //   dispatch(rentCarActions.restoreCar({ carId, token: accessToken }));
-  //   // alert("The car is restored");
-  //   setNotificationTopic("Success");
-  //   setNotificationMessage("The car is restored");
-  //   setShowNotification(true);
-  // };
-
   const handleRestoreCar = async (carId: string) => {
     try {
       setIsLoading(true);
-      await dispatch(rentCarActions.restoreCar({ carId, token: accessToken }));
+      await dispatch(rentCarActions.restoreCar({ carId, token: accessToken })).unwrap();
       setNotificationTopic("Success");
       setNotificationMessage("The car is restored");
       setShowNotification(true);
+
+      setLocalCars(prev =>
+        prev.map(car =>
+          car.id === carId ? { ...car, isActive: true } : car
+        )
+      );
     } catch (error) {
       setNotificationTopic("Error");
       setNotificationMessage("Failed to restore car");
@@ -83,8 +82,8 @@ function CarList() {
 
   return (
     <div className="w-auto h-screen overflow-y-auto space-y-6 p-4">
-      {cars && cars.length > 0 ? (
-        cars.map(car => (
+      {localCars && localCars.length > 0 ? (
+        localCars.map(car => (
           <div key={car.id}>
             <CarCard
               carImage={car.carImage}
@@ -100,24 +99,24 @@ function CarList() {
             />
 
             <div className="m-4 flex flex-row gap-4 justify-end">
-              <div className="">
-                <Button
-                  type="button"
-                  onClick={() => handleEditCar(car.id, car)}
-                  name="Edit"
-                />
-              </div>
+            <div >
+              <Button
+                type="button"
+                onClick={() => handleEditCar(car.id, car)}
+                name="Edit"
+              />
+               </div>
               <div>
-                <Button
-                  type="button"
-                  customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"
-                  onClick={() =>
-                    car.isActive
-                      ? handleDeleteCar(car.id)
-                      : handleRestoreCar(car.id)
-                  }
-                  name={car.isActive ? "Delete" : "Restore"}
-                />
+              <Button
+                type="button"
+                customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"
+                onClick={() =>
+                  car.isActive
+                    ? handleDeleteCar(car.id)
+                    : handleRestoreCar(car.id)
+                }
+                name={car.isActive ? "Delete" : "Restore"}
+              />
               </div>
             </div>
           </div>
