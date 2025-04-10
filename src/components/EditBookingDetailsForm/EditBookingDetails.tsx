@@ -21,7 +21,6 @@ import Notification1 from "components/Notification/Notification1";
 import Loader from "components/Loader/Loader";
 
 const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
-  booking,
 }) => {
 
   const navigate = useNavigate();
