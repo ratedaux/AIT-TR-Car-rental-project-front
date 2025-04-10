@@ -93,8 +93,8 @@ function BookingForm() {
     onSubmit: (values: RentFormValues, { resetForm }) => {
       console.log("Submitted values:", values)
       const bookingDataForDispatch = {
-        rentalStartDate: values.rentalStartDate + ":00.000",
-        rentalEndDate: values.rentalEndDate + ":00.000",
+        rentalStartDate: values.rentalStartDate ,
+        rentalEndDate: values.rentalEndDate ,
         carId: car.id,
       }
       setShowNotification(true)

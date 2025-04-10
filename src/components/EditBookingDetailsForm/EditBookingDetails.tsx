@@ -79,10 +79,11 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (values: BookingProps) => {
-      const newEndDate = values.rentalEndDate + ":00.000"
+      const newEndDate = values.rentalEndDate
+
       handleExtendBooking(values.id, token, newEndDate)
       alert("The booking details are updated")
-      
+
       if (user?.role === "ROLE_ADMIN") {
         navigate("/admin/allBookings")
       } else if (user?.role === "ROLE_CUSTOMER") {

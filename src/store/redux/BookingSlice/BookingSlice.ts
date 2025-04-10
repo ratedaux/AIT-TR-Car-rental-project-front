@@ -169,9 +169,10 @@ export const bookingSlice = createAppSlice({
         thunkApi,
       ) => {
         try {
+          const encodedDate = encodeURIComponent(newEndDate);
           const result = await axios.put(
-            `/api/bookings/extend/${id}`,
-            newEndDate,
+            `/api/bookings/extend/${id}?newEndDate=${encodedDate}`,
+            {},
             {
               headers: {
                 Authorization: `Bearer ${token}`,
