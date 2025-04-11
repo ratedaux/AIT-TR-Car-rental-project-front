@@ -262,7 +262,12 @@ export const carsSlice = createAppSlice({
           state.status = "loading"
         },
         fulfilled: (state: RentCarSliceState, action: any) => {
-          state.cars = state.cars.filter(car => car.id !== action.payload)
+          state.car = action.payload
+
+          state.cars = state.cars.map(car =>
+            car.id === action.payload.id ? action.payload : car,
+          )
+
           state.status = "success"
         },
         rejected: (state: RentCarSliceState, action: any) => {

@@ -58,7 +58,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
   const formik = useFormik({
     initialValues: formData,
     validationSchema: validationSchema,
-    validateOnChange: false,
+    validateOnChange: true,
     validateOnBlur: true,
     onSubmit: async (values: CarCardProps) => {
       try {
