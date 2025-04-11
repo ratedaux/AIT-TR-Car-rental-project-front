@@ -79,8 +79,8 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
   const validationSchema = (previousEndDate: string) =>
     Yup.object({
-      // rentalStartDate: Yup.date()
-      //   .required("Start date is required")
+      rentalStartDate: Yup.date()
+        .required("Start date is required"),
       //   .min(today, "Start date cannot be in the past"),
       rentalEndDate: Yup.date()
         .required("End date is required")
@@ -99,7 +99,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
       totalPrice: Yup.number()
         .required("Rent cost can't be empty")
         .min(0.01, "Rent cost can't be 0"),
-      bookingStatus: Yup.string().required("Status is required"),
+      // bookingStatus: Yup.string().required("Status is required"),
     });
 
   const handleExtendBooking = async (id: string, token: string | null, newEndDate: string) => {
@@ -276,11 +276,11 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             onBlur={formik.handleBlur}
             readOnly={true}
             disabled={true}
-            errorMessage={
-              formik.errors.rentalStartDate
-                ? String(formik.errors.rentalStartDate)
-                : undefined
-            }
+            // errorMessage={
+            //   formik.errors.rentalStartDate
+            //     ? String(formik.errors.rentalStartDate)
+            //     : undefined
+            // }
           />
           <Input
             name="rentalEndDate"
