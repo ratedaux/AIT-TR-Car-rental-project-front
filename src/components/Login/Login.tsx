@@ -4,38 +4,21 @@ import { Link } from "react-router-dom"
 import fotoCar from "../../assets/fotoCar.jpg"
 import * as Yup from "yup"
 import { useFormik } from "formik"
-
 import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import Loader from "components/Loader/Loader"
-import NotificationMessage from "components/Notification/Notification"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 import Notification from "components/Notification/Notification1"
 import { useEffect, useState } from "react"
 import { FaEye, FaEyeSlash } from "react-icons/fa"
 
-/* 
-1
-customer_1@car-rent.de
-Qwertzu12345!$
-
-2
-customer_2@cr.de
-Qqqqqq1234!
-
-
-3
-customer_3@cr.de
-Aaaaaaa1234!$
-
-4-admin
-admin_1@car-rent.de
-Admin12345!
-
-акт
-admin@gmail.com
-Yyyyyyy12345!
- */
+type LoginProps = {
+  showHeader?: boolean
+  img?: boolean
+  onLoginSuccess: () => void
+  url?: string
+  carId?: string | null
+}
 
 const passwordRegex =
   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
@@ -55,29 +38,24 @@ const validationSchema = Yup.object().shape({
     ),
 })
 
-
-type LoginProps = {
-  showHeader?: boolean
-  img?: boolean
-  onLoginSuccess: () => void;
-  url?: string;
-  carId?: string | null;
-}
-
-function Login({ showHeader = true, img = true, onLoginSuccess, url = "/", carId = null,}: LoginProps) {
-
+function Login({
+  showHeader = true,
+  img = true,
+  onLoginSuccess,
+  url = "/",
+  carId = null,
+}: LoginProps) {
   const dispatch = useAppDispatch()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const [showPassword, setShowPassword] = useState(false)
   const [isNotificationVisible, setIsNotificationVisible] = useState(true)
 
-  /* const user = useAppSelector(authSelectors.userData) */
   const status = useAppSelector(authSelectors.authStatus)
   const loginError = useAppSelector(authSelectors.loginError)
   const successMessage = useAppSelector(authSelectors.successMessage)
-  const isLoggedIn = useAppSelector(authSelectors.isLoggedIn);
-  const isEmailConfirmed = useAppSelector(authSelectors.isEmailConfirmed);
+  const isLoggedIn = useAppSelector(authSelectors.isLoggedIn)
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const formik = useFormik({
     initialValues: {
@@ -87,14 +65,7 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/", carId
     validationSchema,
     validateOnChange: false,
     onSubmit: values => {
-      /* временно для проверки */
-       console.log("Login form submitted with:", values);
-
-    /*   if (!isEmailConfirmed) {
-       уведомление чтобы подтверлил email  
-      console.log("Email is not confirmed");
-        return;
-      } */
+      setIsSubmitted(true)
       dispatch(
         authActions.loginUser({
           email: values.email,
@@ -105,25 +76,21 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/", carId
     },
   })
 
-
   const onHandleCloseNotification = () => {
     setIsNotificationVisible(false)
   }
 
-
-
   useEffect(() => {
     if (status === "success" && isLoggedIn) {
-      onLoginSuccess(); 
-  
-      const redirectUrl = carId ? `/rent-car/${carId}` : url;
-  
-      navigate(redirectUrl, { replace: true });
+      onLoginSuccess()
+
+      const redirectUrl = carId ? `/rent-car/${carId}` : url
+
+      navigate(redirectUrl, { replace: true })
     }
-  }, [status, isLoggedIn, carId, onLoginSuccess, navigate, url]);
+  }, [status, isLoggedIn, carId, onLoginSuccess, navigate, url])
 
-
- /*  useEffect(() => {
+  /*  useEffect(() => {
     if (status === "success" && isLoggedIn) {
       onLoginSuccess(); 
       navigate(url, { replace: true }); 
@@ -133,9 +100,9 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/", carId
 
   useEffect(() => {
     if (loginError || successMessage) {
-      setIsNotificationVisible(true);
+      setIsNotificationVisible(true)
     }
-  }, [loginError, successMessage]);
+  }, [loginError, successMessage])
 
   return (
     <div className="flex justify-center items-center mt-10 px-4 sm:px-6 lg:px-8">
@@ -153,32 +120,26 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/", carId
           )}
 
           {/*  Notifications */}
-          {isNotificationVisible && (loginError || successMessage) && (
+          {isNotificationVisible && (loginError || successMessage) &&  isSubmitted && (
             <div className="absolute top-46 left-0 w-full flex justify-center z-50">
               {loginError && (
                 <Notification
                   topic="Error"
                   message={loginError}
-                  onClose={onHandleCloseNotification} 
+                  onClose={onHandleCloseNotification}
                 />
               )}
               {successMessage && (
                 <Notification
                   topic="Success"
                   message={successMessage}
-                  onClose={onHandleCloseNotification} 
+                  onClose={onHandleCloseNotification}
                 />
               )}
             </div>
           )}
 
           <form onSubmit={formik.handleSubmit} className="mb-4 relative">
-            {/* {(loginError || successMessage) && (
-        <div className="absolute top-46 left-0 w-full flex justify-center z-50">
-          {loginError && <NotificationMessage type="error" message={loginError} />}
-          {successMessage && <NotificationMessage type="success" message={successMessage} />}
-        </div>
-      )} */}
 
             <div className="mb-6 mt-8 w-full">
               <Input
@@ -229,8 +190,12 @@ function Login({ showHeader = true, img = true, onLoginSuccess, url = "/", carId
 
             <Button
               type="submit"
-              name="Login"
-              disabled={!formik.values.email || !formik.values.password}
+              name={status === "loading" ? "Logging in..." : "Login"}
+              disabled={
+                status === "loading" ||
+                !formik.values.email ||
+                !formik.values.password
+              }
             />
 
             {status === "loading" && (
