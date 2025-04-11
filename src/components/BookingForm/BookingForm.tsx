@@ -156,11 +156,12 @@ function BookingForm() {
         To rent a car please fill and submit the following form:
       </h2>
 
-      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
+      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3 mt-2">
         <div className="flex flex-col gap-2 w-full">
           <Input
             name="rentalStartDate"
             type="datetime-local"
+            label="Start date"
             placeholder="Select start date"
             value={formik.values.rentalStartDate}
             onChange={formik.handleChange}
