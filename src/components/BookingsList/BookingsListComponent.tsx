@@ -26,7 +26,7 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
     dispatch(bookingActions.getAllBookings(token))
   }, [dispatch])
 
-  const bookingsForUser = useAppSelector(
+   const bookingsForUser = useAppSelector(
     bookingSelectors.selectBookingListByUser,
   )
   const bookingsForAdmin = useAppSelector(bookingSelectors.selectBookingList)
@@ -73,7 +73,7 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
           </div>
         ))
       ) : (
-        <p>No bookings available</p>
+        <p>Loading...</p>
       )}
     </div>
   )

@@ -20,8 +20,11 @@ import {
 import Notification1 from "components/Notification/Notification1";
 import Loader from "components/Loader/Loader";
 
+const formatBookingDate = (date: string): string => {
+  return date.replace('T', ' ').substring(0, 16);  
+};
+
 const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
-  booking,
 }) => {
 
   const navigate = useNavigate();
@@ -40,38 +43,64 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   const today = new Date().toLocaleDateString("en-CA");
   const car = bookingDetails.carDto;
 
+  // const calculateTotalCost = (
+  //   startDate: Date,
+  //   endDate: Date,
+  //   dayRentalPrice: number,
+  // ): number => {
+  //   const start = new Date(startDate.setHours(0, 0, 0, 0));
+  //   const end = new Date(endDate.setHours(0, 0, 0, 0));
+  //   if (end < start) {
+  //     console.error("End date cannot be earlier than start date.");
+  //     return 0;
+  //   }
+  //   const timeDifference = end.getTime() - start.getTime();
+  //   const days = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1;
+  //   const totalRentCost = days >= 1 ? days * dayRentalPrice : dayRentalPrice;
+  //   return totalRentCost;
+  // };
+
   const calculateTotalCost = (
     startDate: Date,
     endDate: Date,
     dayRentalPrice: number,
   ): number => {
-    const start = new Date(startDate.setHours(0, 0, 0, 0));
-    const end = new Date(endDate.setHours(0, 0, 0, 0));
-    if (end < start) {
-      console.error("End date cannot be earlier than start date.");
-      return 0;
+    if (endDate <= startDate) {
+      console.error("End date must be after start date.")
+      return 0
     }
-    const timeDifference = end.getTime() - start.getTime();
-    const days = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1;
-    const totalRentCost = days >= 1 ? days * dayRentalPrice : dayRentalPrice;
-    return totalRentCost;
-  };
+  
+    const millisecondsPerDay = 1000 * 60 * 60 * 24
+    const timeDifference = endDate.getTime() - startDate.getTime()
+    const days = Math.ceil(timeDifference / millisecondsPerDay)
+  
+    return days * dayRentalPrice
+  }
 
-  const validationSchema = Yup.object({
-    rentalStartDate: Yup.date()
-      .required("Start date is required")
-      .min(today, "Start date cannot be in the past"),
-    rentalEndDate: Yup.date()
-      .required("End date is required")
-      .min(
-        Yup.ref("rentalStartDate"),
-        "End date must be later than start date",
-      ),
-    totalPrice: Yup.number()
-      .required("Rent cost can't be empty")
-      .min(0.01, "Rent cost can't be 0"),
-    bookingStatus: Yup.string().required("Status is required"),
-  });
+  const validationSchema = (previousEndDate: string) =>
+    Yup.object({
+      rentalStartDate: Yup.date()
+        .required("Start date is required")
+        .min(today, "Start date cannot be in the past"),
+      rentalEndDate: Yup.date()
+        .required("End date is required")
+        .min(
+          Yup.ref("rentalStartDate"),
+          "End date must be later than start date"
+        )
+        .test(
+          "not-earlier-than-previous",
+          "New end date cannot be earlier than previous end date",
+          function (value) {
+            if (!value || !previousEndDate) return true;
+            return new Date(value) >= new Date(previousEndDate);
+          }
+        ),
+      totalPrice: Yup.number()
+        .required("Rent cost can't be empty")
+        .min(0.01, "Rent cost can't be 0"),
+      bookingStatus: Yup.string().required("Status is required"),
+    });
 
   const handleExtendBooking = async (id: string, token: string | null, newEndDate: string) => {
     try {
@@ -80,10 +109,20 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
         id: bookingDetails.id,
         newEndDate: newEndDate,
         token: token,
-      }));
+      })).unwrap();
       setNotificationTopic("Success");
       setNotificationMessage("Booking extended successfully");
       setShowNotification(true);
+      await dispatch(bookingActions.getAllBookings(token));
+      setTimeout(() => {
+        if (user?.role === "ROLE_ADMIN") {
+          navigate("/admin/allBookings");
+        } else if (user?.role === "ROLE_CUSTOMER") {
+          navigate("/account/myBookings");
+        } else {
+          console.error("Unknown role");
+        }
+      }, 2000);
     } catch (error) {
       setNotificationTopic("Error");
       setNotificationMessage("Failed to extend booking");
@@ -95,36 +134,41 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
   const formik = useFormik({
     initialValues: formData,
-    validationSchema: validationSchema,
+    validationSchema: validationSchema(bookingDetails.rentalEndDate),
     validateOnChange: true,
     validateOnBlur: true,
-    onSubmit: (values: BookingProps) => {
+    onSubmit: async (values: BookingProps) => {
 
       const newEndDate = values.rentalEndDate;
-      handleExtendBooking(values.id, token, newEndDate);
+      await handleExtendBooking(values.id, token, newEndDate);
 
-      if (user?.role === "ROLE_ADMIN") {
-        navigate("/admin/allBookings");
-      } else if (user?.role === "ROLE_CUSTOMER") {
-        navigate("/account/myBookings");
-      } else {
-        console.error("Unknown role");
-      }
+      // if (user?.role === "ROLE_ADMIN") {
+      //   navigate("/admin/allBookings");
+      // } else if (user?.role === "ROLE_CUSTOMER") {
+      //   navigate("/account/myBookings");
+      // } else {
+      //   console.error("Unknown role");
+      // }
     },
   });
 
 
   const handleCancelBooking = async () => {
-    if (!booking) return;
+    if (!bookingDetails) return;
     try {
       setIsLoading(true);
       await dispatch(bookingActions.cancelBooking({
         bookingId: bookingDetails.id,
         token: token
-      }));
+      })).unwrap();
       setNotificationTopic("Success");
       setNotificationMessage("The booking is cancelled");
       setShowNotification(true);
+
+      setTimeout(() => {
+        handleClose();
+      }, 2000);
+
     } catch (error) {
       setNotificationTopic("Error");
       setNotificationMessage("Failed to cancel booking");
@@ -135,16 +179,21 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   };
 
   const handleCloseBooking = async () => {
-    if (!booking) return;
+    if (!bookingDetails) return;
     try {
       setIsLoading(true);
       await dispatch(bookingActions.closeBooking({
         bookingId: bookingDetails.id,
         token: token
-      }));
+      })).unwrap();
       setNotificationTopic("Success");
       setNotificationMessage("The booking is closed");
       setShowNotification(true);
+
+      setTimeout(() => {
+        handleClose();
+      }, 2000);
+
     } catch (error) {
       setNotificationTopic("Error");
       setNotificationMessage("Failed to close booking");
@@ -186,7 +235,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     }
   }, [bookingDetails]);
 
-  return (
+    return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
       <h2 className="text-xl font-bold p-[60px] mb-6">
         To edit the rental details please edit and submit the following form:
@@ -209,11 +258,11 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             </div>
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Rent details updated on:</div>
-              <div className="w-2/3">{bookingDetails.updateBookingDate}</div>
+              <div className="w-2/3">{formatBookingDate(bookingDetails.updateBookingDate)}</div>
             </div>
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Rent created on:</div>
-              <div className="w-2/3">{bookingDetails.createBookingDate}</div>
+              <div className="w-2/3">{formatBookingDate(bookingDetails.createBookingDate)}</div>
             </div>
           </div>
 
@@ -289,7 +338,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             <Button
               name="Cancel Booking"
               customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
-              onClick={() => handleCancelBooking}
+              onClick={() => handleCancelBooking()}
             />
           </div>
         )}
@@ -301,7 +350,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             <Button
               name="Close Booking"
               customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
-              onClick={() => handleCloseBooking}
+              onClick={() => handleCloseBooking()}
             />
           </div>
         )}

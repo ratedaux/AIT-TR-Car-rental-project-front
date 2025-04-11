@@ -26,29 +26,36 @@ const AdBanners = () => {
     ]);
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <h2 className="text-2xl font-bold mb-6 text-center">Special Offers</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 sm:mb-8 lg:mb-12 text-center">
+                Special Offers
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mt-6">
                 {banners.map((banner) => (
                     <div
                         key={banner.id}
-                        className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                        className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col"
                     >
-                        <div className="h-48 bg-gray-200">
+                        <div className="relative h-48 sm:h-56 lg:h-64 bg-gray-200">
                             <img
                                 src={banner.image}
                                 alt={banner.title}
                                 className="w-full h-full object-cover"
                             />
                         </div>
-                        <div className="p-6 group">
-                            <h3 className="text-xl font-semibold mb-2 transform transition-transform duration-300 group-hover:scale-105">{banner.title}</h3>
-                            <p className="text-gray-600 mb-4 transform transition-transform duration-300 group-hover:scale-105">{banner.description}</p>
+                        <div className="p-4 sm:p-6 lg:p-8 flex-1 flex flex-col group">
+                            <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 transform transition-transform duration-300 group-hover:scale-105">
+                                {banner.title}
+                            </h3>
+                            <p className="text-gray-600 text-sm sm:text-base mb-4 flex-1 transform transition-transform duration-300 group-hover:scale-105">
+                                {banner.description}
+                            </p>
                             <a
                                 href={banner.link}
-                                className="text-red-600 font-medium hover:text-red-700 transition-all duration-300 transform group-hover:scale-105"
+                                className="text-red-600 font-medium hover:text-red-700 transition-all duration-300 transform group-hover:scale-105 inline-flex items-center"
                             >
-                                Learn More →
+                                Learn More
+                                <span className="ml-2">→</span>
                             </a>
                         </div>
                     </div>

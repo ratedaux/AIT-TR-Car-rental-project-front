@@ -139,7 +139,6 @@ export const carsSlice = createAppSlice({
                 Authorization: `Bearer ${token}`,
                 "Content-Type": `application/json`,
               },
-
             },
           )
           return response.data
@@ -153,13 +152,12 @@ export const carsSlice = createAppSlice({
           state.status = "loading"
         },
         fulfilled: (state: RentCarSliceState, action: any) => {
-          // state.cars = state.cars.map(car =>
-          //   car.id === action.payload.id ? action.payload : car,
-          // )
-          state.cars = {
-            ...state.car,
-            ...action.payload,
-          }
+          state.car = action.payload
+
+          state.cars = state.cars.map(car =>
+            car.id === action.payload.id ? action.payload : car,
+          )
+
           state.status = "success"
         },
         rejected: (state: RentCarSliceState, action: any) => {
@@ -227,8 +225,13 @@ export const carsSlice = createAppSlice({
           state.status = "loading"
         },
         fulfilled: (state: RentCarSliceState, action: any) => {
+          state.car = action.payload
+
+          state.cars = state.cars.map(car =>
+            car.id === action.payload.id ? action.payload : car,
+          )
+
           state.status = "success"
-          state.cars.push(action.payload)
         },
         rejected: (state: RentCarSliceState, action: any) => {
           state.error = action.payload || "Something went wrong..."
@@ -259,8 +262,13 @@ export const carsSlice = createAppSlice({
           state.status = "loading"
         },
         fulfilled: (state: RentCarSliceState, action: any) => {
+          state.car = action.payload
+
+          state.cars = state.cars.map(car =>
+            car.id === action.payload.id ? action.payload : car,
+          )
+
           state.status = "success"
-          state.cars = state.cars.filter(car => car.id !== action.payload)
         },
         rejected: (state: RentCarSliceState, action: any) => {
           state.error = action.payload || "Something went wrong..."
@@ -371,7 +379,6 @@ export const carsSlice = createAppSlice({
     //   },
     // )
     // ,
-
   }),
 
   selectors: {

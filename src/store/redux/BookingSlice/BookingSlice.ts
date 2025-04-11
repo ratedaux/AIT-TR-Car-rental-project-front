@@ -40,7 +40,7 @@ const bookingInitialState: BookingSliceState = {
       carStatus: "",
       dayRentalPrice: 0,
       carImage: "",
-    }
+    },
   },
   status: "default",
   error: undefined,
@@ -169,7 +169,7 @@ export const bookingSlice = createAppSlice({
         thunkApi,
       ) => {
         try {
-          const encodedDate = encodeURIComponent(newEndDate);
+          const encodedDate = encodeURIComponent(newEndDate)
           const result = await axios.put(
             `/api/bookings/extend/${id}?newEndDate=${encodedDate}`,
             {},
@@ -191,7 +191,18 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingData = action.payload
+          const updatedBooking = action.payload
+
+          state.bookingData = updatedBooking
+
+          state.bookingListByUser = state.bookingListByUser.map(booking =>
+            booking.id === updatedBooking.id ? updatedBooking : booking,
+          )
+
+          state.bookingList = state.bookingList.map(booking =>
+            booking.id === updatedBooking.id ? updatedBooking : booking,
+          )
+
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {

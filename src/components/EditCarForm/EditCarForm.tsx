@@ -50,6 +50,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
     dayRentalPrice: Yup.number()
       .positive("Price must be more than 0")
       .min(0.01, "Price must be more than 0")
+      .max(1000, "Price per day cannot exceed 1000")
       .required("Price per day is required"),
     // image: Yup.string().required("Car image is required"),
   });
@@ -57,23 +58,23 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
   const formik = useFormik({
     initialValues: formData,
     validationSchema: validationSchema,
-    validateOnChange: false,
+    validateOnChange: true,
     validateOnBlur: true,
     onSubmit: async (values: CarCardProps) => {
       try {
         setIsLoading(true);
 
         const updatedCar = {
-          brand: values.brand,
-          model: values.model,
-          year: values.year,
+          // brand: values.brand,
+          // model: values.model,
+          // year: values.year,
           carStatus: values.carStatus,
-          type: values.type,
-          fuelType: values.fuelType,
-          transmissionType: values.transmissionType,
+          // type: values.type,
+          // fuelType: values.fuelType,
+          // transmissionType: values.transmissionType,
           dayRentalPrice: values.dayRentalPrice,
-          isActive: true,
-          carImage: values.carImage,
+          // isActive: true,
+          // carImage: values.carImage,
         };
 
         await dispatch(
@@ -82,7 +83,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
             token: token,
             carId: carDetails.id,
           }),
-        );
+        ).unwrap();
 
         setNotificationTopic("Success");
         setNotificationMessage("The car is edited");
@@ -92,7 +93,8 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
         }, 2000);
       } catch (error) {
         setNotificationTopic("Error");
-        setNotificationMessage("Failed to upload image");
+        // setNotificationMessage("Failed to upload image");
+        setNotificationMessage("Failed to edit car");
         setShowNotification(true);
       } finally {
         setIsLoading(false);
@@ -101,13 +103,13 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
   });
 
   // Handle file input change
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const file = event.target.files[0];
-      formik.setFieldValue("image", file);
-      // Set file value in Formik state
-    }
-  };
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files) {
+  //     const file = event.target.files[0];
+  //     formik.setFieldValue("image", file);
+  //     // Set file value in Formik state
+  //   }
+  // };
 
   // Handle close button click
   const handleClose = () => {
@@ -150,7 +152,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
               "AVAILABLE",
               "RENTED",
               "UNDER_REPAIR",
-              "REMOVED_FROM_RENT",
+              "REMOVER_FROM_RENT",
               "UNDER_INSPECTION",
               "DELETED"
             ]}
@@ -217,7 +219,8 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.dayRentalPrice}
           />
-          <div>
+
+          {/* <div>
             {formik.values.carImage && typeof formik.values.carImage === "string" && (
               <img
                 src={formik.values.carImage}
@@ -225,7 +228,7 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
                 className="w-32 h-32 object-cover mb-3 rounded-lg"
               />
             )}
-            {/* Файл изображения */}
+            
             <Input
               name="image"
               type="file"
@@ -238,8 +241,10 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
               readOnly={true}
               disabled={true}
             />
-          </div>
+          </div> */}
+          
         </div>
+
         <div className="w-auto">
           <Button name="Apply" type="submit" />
         </div>

@@ -64,7 +64,7 @@ function Input({
       <div className="relative">
         <label
           htmlFor={input_id}
-          className="absolute -top-3 left-3 bg-white px-1 text-sm font-semibold text-gray-800 z-10"
+          className="absolute -top-3 left-3 bg-white px-1 text-sm font-semibold text-gray-800"
         >
           {label}
         </label>
