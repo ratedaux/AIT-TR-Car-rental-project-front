@@ -20,6 +20,10 @@ import {
 import Notification1 from "components/Notification/Notification1";
 import Loader from "components/Loader/Loader";
 
+const formatBookingDate = (date: string): string => {
+  return date.replace('T', ' ').substring(0, 16);  
+};
+
 const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 }) => {
 
@@ -231,7 +235,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     }
   }, [bookingDetails]);
 
-  return (
+    return (
     <div className="flex flex-col w-[590px] mx-auto gap-8 rounded-md m-3">
       <h2 className="text-xl font-bold p-[60px] mb-6">
         To edit the rental details please edit and submit the following form:
@@ -254,11 +258,11 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             </div>
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Rent details updated on:</div>
-              <div className="w-2/3">{bookingDetails.updateBookingDate}</div>
+              <div className="w-2/3">{formatBookingDate(bookingDetails.updateBookingDate)}</div>
             </div>
             <div className="flex gap-4">
               <div className="w-1/3 font-bold">Rent created on:</div>
-              <div className="w-2/3">{bookingDetails.createBookingDate}</div>
+              <div className="w-2/3">{formatBookingDate(bookingDetails.createBookingDate)}</div>
             </div>
           </div>
 
