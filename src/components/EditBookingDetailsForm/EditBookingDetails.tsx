@@ -336,7 +336,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             <Button
               name="Close Booking"
               customClasses="!rounded-lg  !bg-gray-400 hover:!bg-red-700 text-white"
-              onClick={() => handleCloseBooking}
+              onClick={() => handleCloseBooking()}
             />
           </div>
         )}
