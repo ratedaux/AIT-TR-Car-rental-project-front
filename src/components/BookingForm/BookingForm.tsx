@@ -82,9 +82,20 @@ function BookingForm() {
       .required("You must be 18 years old to rent a car"),
   })
 
+  // const formatDateForInput = (date: string | Date) => {
+  //   const d = new Date(date)
+  //   return d.toISOString().slice(0, 16)
+  // }
+
   const formatDateForInput = (date: string | Date) => {
     const d = new Date(date)
-    return d.toISOString().slice(0, 16)
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    const hours = String(d.getHours()).padStart(2, '0')
+    const minutes = String(d.getMinutes()).padStart(2, '0')
+  
+    return `${year}-${month}-${day}T${hours}:${minutes}`
   }
 
   const formik = useFormik({
