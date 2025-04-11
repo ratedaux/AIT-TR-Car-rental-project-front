@@ -109,6 +109,16 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
       setNotificationTopic("Success");
       setNotificationMessage("Booking extended successfully");
       setShowNotification(true);
+      await dispatch(bookingActions.getAllBookings(token));
+      setTimeout(() => {
+        if (user?.role === "ROLE_ADMIN") {
+          navigate("/admin/allBookings");
+        } else if (user?.role === "ROLE_CUSTOMER") {
+          navigate("/account/myBookings");
+        } else {
+          console.error("Unknown role");
+        }
+      }, 2000);
     } catch (error) {
       setNotificationTopic("Error");
       setNotificationMessage("Failed to extend booking");
@@ -123,18 +133,18 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     validationSchema: validationSchema(bookingDetails.rentalEndDate),
     validateOnChange: true,
     validateOnBlur: true,
-    onSubmit: (values: BookingProps) => {
+    onSubmit: async (values: BookingProps) => {
 
       const newEndDate = values.rentalEndDate;
-      handleExtendBooking(values.id, token, newEndDate);
+      await handleExtendBooking(values.id, token, newEndDate);
 
-      if (user?.role === "ROLE_ADMIN") {
-        navigate("/admin/allBookings");
-      } else if (user?.role === "ROLE_CUSTOMER") {
-        navigate("/account/myBookings");
-      } else {
-        console.error("Unknown role");
-      }
+      // if (user?.role === "ROLE_ADMIN") {
+      //   navigate("/admin/allBookings");
+      // } else if (user?.role === "ROLE_CUSTOMER") {
+      //   navigate("/account/myBookings");
+      // } else {
+      //   console.error("Unknown role");
+      // }
     },
   });
 
@@ -153,7 +163,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
       setTimeout(() => {
         handleClose();
-      }, 1500);
+      }, 2000);
 
     } catch (error) {
       setNotificationTopic("Error");
@@ -178,7 +188,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
       setTimeout(() => {
         handleClose();
-      }, 1500);
+      }, 2000);
 
     } catch (error) {
       setNotificationTopic("Error");
