@@ -18,6 +18,10 @@ function Input({
   max
 }: InputProps) {
 
+  const inputClasses = `bg-white block w-full px-4 pt-5 py-3 border-1 rounded-md focus:outline-none ${
+    errorMessage ? "border-red-500" : "border-gray-400"
+  } ${readOnly || disabled ? "bg-gray-200 cursor-not-allowed" : ""}`;
+
   // DropDownList
   if (type === "select") {
     return (
@@ -31,8 +35,7 @@ function Input({
           </label>
           <select
             name={name}
-            className={`bg-white block w-full px-4 pt-5 py-3 border-1 rounded-md focus:outline-none ${errorMessage ? "border-red-500" : "border-gray-400"
-              }`}
+            className={inputClasses}
             value={value}
             onChange={onChange}
             onBlur={onBlur}
@@ -66,8 +69,7 @@ function Input({
           {label}
         </label>
         <input
-          className={`bg-white block w-full px-4 pt-5 py-3 border-1 rounded-md focus:outline-none ${errorMessage ? "border-red-500" : "border-gray-400"
-            }`}
+          className={inputClasses}
           name={name}
           id={input_id}
           type={type}

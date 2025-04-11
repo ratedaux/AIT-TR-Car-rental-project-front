@@ -105,8 +105,10 @@ function Layout({ children }: LayoutProps) {
                   Log out
                 </button>
               )}
-              {isLoggedIn &&
-                (user?.role === "ROLE_CUSTOMER" || !user?.role) && (
+             
+             {isLoggedIn &&
+                (user?.role === "ROLE_CUSTOMER" ) && (
+
                   <Link
                     to="/account/myData"
                     className="text-white text-sm sm:text-base font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-md transition-all duration-300 hover:bg-red-600 relative z-10 hover:text-white"
