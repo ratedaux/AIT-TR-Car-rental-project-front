@@ -39,22 +39,39 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
   const today = new Date().toLocaleDateString("en-CA");
   const car = bookingDetails.carDto;
 
+  // const calculateTotalCost = (
+  //   startDate: Date,
+  //   endDate: Date,
+  //   dayRentalPrice: number,
+  // ): number => {
+  //   const start = new Date(startDate.setHours(0, 0, 0, 0));
+  //   const end = new Date(endDate.setHours(0, 0, 0, 0));
+  //   if (end < start) {
+  //     console.error("End date cannot be earlier than start date.");
+  //     return 0;
+  //   }
+  //   const timeDifference = end.getTime() - start.getTime();
+  //   const days = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1;
+  //   const totalRentCost = days >= 1 ? days * dayRentalPrice : dayRentalPrice;
+  //   return totalRentCost;
+  // };
+
   const calculateTotalCost = (
     startDate: Date,
     endDate: Date,
     dayRentalPrice: number,
   ): number => {
-    const start = new Date(startDate.setHours(0, 0, 0, 0));
-    const end = new Date(endDate.setHours(0, 0, 0, 0));
-    if (end < start) {
-      console.error("End date cannot be earlier than start date.");
-      return 0;
+    if (endDate <= startDate) {
+      console.error("End date must be after start date.")
+      return 0
     }
-    const timeDifference = end.getTime() - start.getTime();
-    const days = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1;
-    const totalRentCost = days >= 1 ? days * dayRentalPrice : dayRentalPrice;
-    return totalRentCost;
-  };
+  
+    const millisecondsPerDay = 1000 * 60 * 60 * 24
+    const timeDifference = endDate.getTime() - startDate.getTime()
+    const days = Math.ceil(timeDifference / millisecondsPerDay)
+  
+    return days * dayRentalPrice
+  }
 
   const validationSchema = (previousEndDate: string) =>
     Yup.object({
