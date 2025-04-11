@@ -1,48 +1,34 @@
-import { HashRouter, Routes, Route } from "react-router-dom"
-import "@fortawesome/fontawesome-free/css/all.min.css"
-import "./src/styles/globalStyle.css"
-import Layout from "pages/Layout/Layout"
-import Home from "pages/Home/Home"
-import Login from "components/Login/Login"
-import UserRegistrationForm from "components/UserRegistrationForm/UserRegistrationForm"
-import MyAccount from "pages/CustomerPage/MyAccount"
-import NotFoundPage from "components/NotFoundPage/NotFoundPage"
-import AdminPage from "pages/AdminPage/AdminPage"
-import EditCarPage from "pages/EditCarPage/EditCarPage"
-import RentCarPage from "pages/RentCarPage/RentCarPage"
-import EditBookingPage from "pages/EditBoookingPage/EditBookingPage"
-import { useEffect, useState } from "react"
-import { useAppDispatch, useAppSelector } from "store/hooks"
-import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
-import EditUserPage from "pages/EditUserPage/EditUserPage"
-import LoginPage from "pages/LoginPage/LoginPage"
-import CustomerComponent from "components/CustomerComponent/CustomerComponent"
-import BookingsListComponent from "components/BookingsList/BookingsListComponent"
-import CustomerListComponent from "components/CustomersListComponent/CustomersList"
-import CarList from "components/CarList/CarList"
-import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm"
-
-import {
-  bookingActions,
-  bookingSelectors,
-} from "store/redux/BookingSlice/BookingSlice"
-import { userActions, userSelectors } from "store/redux/UserSlice/UserSlise"
-import {
-  rentCarSelectors,
-  rentCarActions,
-} from "store/redux/rentCarSlice/rentCarSlice"
-import EmailConfirmation from "components/EmailConfirmation/EmailConfirmation"
-import CustomerContainer from "components/CustomerContainer/CustomerContainer"
+import { HashRouter, Routes, Route } from "react-router-dom";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./src/styles/globalStyle.css";
+import Layout from "pages/Layout/Layout";
+import Home from "pages/Home/Home";
+import UserRegistrationForm from "components/UserRegistrationForm/UserRegistrationForm";
+import MyAccount from "pages/CustomerPage/MyAccount";
+import NotFoundPage from "components/NotFoundPage/NotFoundPage";
+import AdminPage from "pages/AdminPage/AdminPage";
+import EditCarPage from "pages/EditCarPage/EditCarPage";
+import RentCarPage from "pages/RentCarPage/RentCarPage";
+import EditBookingPage from "pages/EditBoookingPage/EditBookingPage";
+import EditUserPage from "pages/EditUserPage/EditUserPage";
+import LoginPage from "pages/LoginPage/LoginPage";
+import BookingsListComponent from "components/BookingsList/BookingsListComponent";
+import CustomerListComponent from "components/CustomersListComponent/CustomersList";
+import CarList from "components/CarList/CarList";
+import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm";
+import EmailConfirmation from "components/EmailConfirmation/EmailConfirmation";
+import CustomerContainer from "components/CustomerContainer/CustomerContainer";
+import AboutUs from "pages/AboutUs/AboutUs";
 
 
 const App = () => {
-   
-     return (
+
+  return (
     <HashRouter>
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-
+          <Route path="/about" element={<AboutUs />} />
           <Route path="/login" element={<LoginPage />} />
           <Route
             path="/login/registration"
@@ -79,7 +65,7 @@ const App = () => {
         </Routes>
       </Layout>
     </HashRouter>
-  )
-}
+  );
+};
 
-export default App
+export default App;

@@ -36,7 +36,14 @@ export const authSlice = createAppSlice({
           const response = await axios.post(LOGIN_URL, { email, password })
           const { accessToken, refreshToken } = response.data
           localStorage.setItem("accessToken", accessToken)
-          return { accessToken, refreshToken, user: response.data.user }
+
+          //
+
+          const userResponse = await thunkApi.dispatch(
+            authActions.getCurrentUser()
+          ) as { payload: AuthSliceState['user'] }
+
+          return { accessToken, refreshToken, user: userResponse.payload } //
         } catch (error: any) {
           return thunkApi.rejectWithValue(
             error.response?.data?.message || "Login failed",
@@ -54,7 +61,7 @@ export const authSlice = createAppSlice({
           state.accessToken = action.payload.accessToken
           state.refreshToken = action.payload.refreshToken
           state.user = action.payload.user
-          state.loginError = undefined
+          state.loginError = undefined 
           state.successMessage = "Login successful!"
           state.isLoggedIn = true
           localStorage.setItem("isLoggedIn", "true")
@@ -215,6 +222,11 @@ export const authSlice = createAppSlice({
         },
       },
     ),
+    clearRegisterStatus: create.reducer((state: AuthSliceState) => {
+      state.registerError = undefined
+      state.registerMessage = undefined
+    }),
+
   }),
   selectors: {
     userData: (state: AuthSliceState) => state.user,

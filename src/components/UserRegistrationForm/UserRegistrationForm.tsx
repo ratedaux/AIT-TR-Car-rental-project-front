@@ -7,7 +7,6 @@ import { useFormik } from "formik"
 import { RegisrtationFormValues } from "./types"
 import { useAppDispatch, useAppSelector } from "store/hooks"
 import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
-//import NotificationMessage from "components/Notification/Notification"
 import Notification from "components/Notification/Notification1"
 import Loader from "components/Loader/Loader"
 import { FaEye, FaEyeSlash } from "react-icons/fa"
@@ -18,17 +17,21 @@ type UserRegistrationFormProps = {
 }
 
 function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
-  useEffect(() => {
-    // Прокрутка страницы вверх
-    window.scrollTo(0, 0)
-  }, [])
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    dispatch(authActions.clearRegisterStatus())
+    // Прокрутка страницы вверх
+    window.scrollTo(0, 0)
+  }, [dispatch])
+
+ 
   const status = useAppSelector(authSelectors.authStatus)
   const registerError = useAppSelector(authSelectors.registerError)
   const registerMessage = useAppSelector(authSelectors.registerMessage)
-  const isEmailConfirmed = useAppSelector(authSelectors.isEmailConfirmed)
+
 
   const [showPassword, setShowPassword] = useState(false)
   const [isNotificationVisible, setIsNotificationVisible] = useState(false)
@@ -82,11 +85,15 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
     validateOnChange: false,
 
     onSubmit: async (values: RegisrtationFormValues) => {
-      console.table(values) // временно
-     await dispatch(authActions.registerNewCustomer(values))
+     
+     const result = await dispatch(authActions.registerNewCustomer(values))
+     
+     if(authActions.registerNewCustomer.fulfilled.match(result)){
       formik.resetForm()
       setIsNotificationVisible(true)
-      navigate(`/confirm-email/${values.email}`);
+      navigate(`/confirm-email/${values.email}`)
+     }
+     
     },
   })
 
@@ -103,13 +110,6 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
                 <Notification
                   topic="Error"
                   message={registerError}
-                  onClose={onHandleCloseNotification}
-                />
-              )}
-              {registerMessage && (
-                <Notification
-                  topic="Success"
-                  message={registerMessage}
                   onClose={onHandleCloseNotification}
                 />
               )}
@@ -225,23 +225,21 @@ function UserRegistrationForm({ img = true }: UserRegistrationFormProps) {
         </div>
       )}
           <Button
-            name="Create"
+            name={status === "loading" ? "Creating..." : "Create"}
             type="submit"
             disabled={
               !formik.values.isChecked ||
               !formik.values.firstName ||
               !formik.values.lastName ||
               !formik.values.email ||
-              !formik.values.password
+              !formik.values.password ||
+              status === "loading"
+
             }
           />
         </form>
       </div>
-     {/*  {status === "loading" && (
-        <div className="flex justify-center items-center mt-4">
-          <Loader />
-        </div>
-      )} */}
+  
       {img && (
         <div className="hidden lg:block w-[350px] h-[450px] relative ml-6">
           <img
