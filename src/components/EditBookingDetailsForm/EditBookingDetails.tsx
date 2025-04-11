@@ -79,9 +79,9 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 
   const validationSchema = (previousEndDate: string) =>
     Yup.object({
-      rentalStartDate: Yup.date()
-        .required("Start date is required")
-        .min(today, "Start date cannot be in the past"),
+      // rentalStartDate: Yup.date()
+      //   .required("Start date is required")
+      //   .min(today, "Start date cannot be in the past"),
       rentalEndDate: Yup.date()
         .required("End date is required")
         .min(
