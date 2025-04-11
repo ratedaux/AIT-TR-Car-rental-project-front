@@ -28,11 +28,17 @@ function AddNewCarForm() {
     brand: Yup.string()
       .required("Car brand is required")
       .max(15, "Brand must be less than 15 characters")
-      .matches(/^[A-Z][a-zA-Z0-9 ]*$/, "Brand must start with a capital letter and contain no special characters"),
+      .matches(
+        /^[A-Z0-9][a-zA-Z0-9 ]*$/,
+        "Brand must start with a capital letter or digit and contain only letters, digits, and spaces"
+      ),
     model: Yup.string()
       .required("Car model is required")
       .max(15, "Model must be less than 15 characters")
-      .matches(/^[A-Z][a-zA-Z0-9 ]*$/, "Model must start with a capital letter and contain no special characters"),
+      .matches(
+        /^[A-Z0-9][a-zA-Z0-9 ]*$/,
+        "Brand must start with a capital letter or digit and contain only letters, digits, and spaces"
+      ),
     year: Yup.number()
       .min(1900, "Year must be at least 1900 or later")
       .max(
