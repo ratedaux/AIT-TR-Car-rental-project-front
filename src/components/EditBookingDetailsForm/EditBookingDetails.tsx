@@ -24,6 +24,10 @@ const formatBookingDate = (date: string): string => {
   return date.replace('T', ' ').substring(0, 16);  
 };
 
+function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
 const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
 }) => {
 
@@ -81,7 +85,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
     Yup.object({
       rentalStartDate: Yup.date()
         .required("Start date is required"),
-      //   .min(today, "Start date cannot be in the past"),
+        // .min(today, "Start date cannot be in the past"),
       rentalEndDate: Yup.date()
         .required("End date is required")
         .min(
@@ -257,6 +261,10 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
               </div>
             </div>
             <div className="flex gap-4">
+              <div className="w-1/3 font-bold">Status:</div>
+              <div className="w-2/3">{capitalizeFirstLetter(bookingDetails.bookingStatus)}</div>
+            </div>
+            <div className="flex gap-4">
               <div className="w-1/3 font-bold">Rent details updated on:</div>
               <div className="w-2/3">{formatBookingDate(bookingDetails.updateBookingDate)}</div>
             </div>
@@ -276,11 +284,11 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             onBlur={formik.handleBlur}
             readOnly={true}
             disabled={true}
-            // errorMessage={
-            //   formik.errors.rentalStartDate
-            //     ? String(formik.errors.rentalStartDate)
-            //     : undefined
-            // }
+            errorMessage={
+              formik.errors.rentalStartDate
+                ? String(formik.errors.rentalStartDate)
+                : undefined
+            }
           />
           <Input
             name="rentalEndDate"
@@ -307,7 +315,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             errorMessage={formik.errors.totalPrice}
             readOnly={true}
           />
-          <Input
+          {/* <Input
             name="bookingStatus"
             type="select"
             options={[
@@ -326,7 +334,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
             readOnly={true}
             disabled={true}
             errorMessage={formik.errors.bookingStatus}
-          />
+          /> */}
         </div>
         <div className="w-auto">
           <Button name="Apply" type="submit" />

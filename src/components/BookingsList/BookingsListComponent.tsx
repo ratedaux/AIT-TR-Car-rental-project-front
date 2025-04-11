@@ -26,7 +26,7 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
     dispatch(bookingActions.getAllBookings(token))
   }, [dispatch])
 
-   const bookingsForUser = useAppSelector(
+  const bookingsForUser = useAppSelector(
     bookingSelectors.selectBookingListByUser,
   )
   const bookingsForAdmin = useAppSelector(bookingSelectors.selectBookingList)
@@ -39,6 +39,10 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
     bookingDetails: BookingProps,
   ) => {
     navigate(`/edit-booking/${bookingId}`, { state: { bookingDetails } })
+  }
+
+  const canEditBooking = (status: string | undefined) => {
+    return status === "ACTIVE" || status === "PENDING"
   }
 
   return (
@@ -61,7 +65,7 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
               id={booking.id}
             />
 
-            <div className="m-4 flex flex-row gap-4 justify-end">
+            {/* <div className="m-4 flex flex-row gap-4 justify-end">
               <div>
                 <Button
                   type="button"
@@ -69,7 +73,20 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
                   name="Edit"
                 />
               </div>
-            </div>
+            </div> */}
+
+            {canEditBooking(booking.bookingStatus) && (
+              
+                <div className="m-4 flex flex-row gap-4 justify-end">
+                  <div>
+                  <Button
+                    type="button"
+                    onClick={() => handleEditBooking(booking.id, booking)}
+                    name="Edit"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         ))
       ) : (

@@ -27,6 +27,9 @@ function BookingForm() {
 
   const [showNotification, setShowNotification] = useState(false)
   const { startDate, endDate } = useAppSelector(rentCarSelectors.selectDates)
+  const [notificationMessage, setNotificationMessage] = useState("")
+  const [notificationTopic, setNotificationTopic] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
   const today = new Date().toLocaleDateString("en-CA")
 
@@ -82,9 +85,20 @@ function BookingForm() {
       .required("You must be 18 years old to rent a car"),
   })
 
+  // const formatDateForInput = (date: string | Date) => {
+  //   const d = new Date(date)
+  //   return d.toISOString().slice(0, 16)
+  // }
+
   const formatDateForInput = (date: string | Date) => {
     const d = new Date(date)
-    return d.toISOString().slice(0, 16)
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    const hours = String(d.getHours()).padStart(2, '0')
+    const minutes = String(d.getMinutes()).padStart(2, '0')
+  
+    return `${year}-${month}-${day}T${hours}:${minutes}`
   }
 
   const formik = useFormik({
@@ -107,23 +121,56 @@ function BookingForm() {
     validationSchema: validationSchema,
     validateOnChange: true,
     validateOnBlur: true,
-    onSubmit: (values: RentFormValues, { resetForm }) => {
-      console.log("Submitted values:", values)
-      const bookingDataForDispatch = {
-        rentalStartDate: values.rentalStartDate ,
-        rentalEndDate: values.rentalEndDate ,
-        carId: car.id,
+    // onSubmit: (values: RentFormValues, { resetForm }) => {
+    //   console.log("Submitted values:", values)
+    //   const bookingDataForDispatch = {
+    //     rentalStartDate: values.rentalStartDate ,
+    //     rentalEndDate: values.rentalEndDate ,
+    //     carId: car.id,
+    //   }
+    //   setShowNotification(true)
+    //   dispatch(
+    //     bookingActions.createBooking({
+    //       token: token,
+    //       bookingDataForDispatch: bookingDataForDispatch,
+    //     }),
+    //   )
+    //   resetForm()
+    //   navigate("/account/myBookings")
+    // },
+
+    onSubmit: async (values: RentFormValues) => {
+      try {
+        setIsLoading(true)
+    
+        const bookingDataForDispatch = {
+          rentalStartDate: values.rentalStartDate,
+          rentalEndDate: values.rentalEndDate,
+          carId: car.id,
+        }
+    
+        const response = await dispatch(
+          bookingActions.createBooking({
+            token: token,
+            bookingDataForDispatch: bookingDataForDispatch,
+          })
+        ).unwrap()
+    
+        setNotificationTopic("Success")
+        setNotificationMessage("The car has been successfully rented!")
+        setShowNotification(true)
+    
+        setTimeout(() => {
+          navigate("/account/myBookings")
+        }, 2000)
+      } catch (error) {
+        setNotificationTopic("Error")
+        setNotificationMessage("Failed to create booking")
+        setShowNotification(true)
+      } finally {
+        setIsLoading(false)
       }
-      setShowNotification(true)
-      dispatch(
-        bookingActions.createBooking({
-          token: token,
-          bookingDataForDispatch: bookingDataForDispatch,
-        }),
-      )
-      resetForm()
-      navigate("/account/myBookings")
-    },
+    }
   })
 
   //Automatic calculation of renting price
@@ -156,11 +203,12 @@ function BookingForm() {
         To rent a car please fill and submit the following form:
       </h2>
 
-      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
+      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3 mt-2">
         <div className="flex flex-col gap-2 w-full">
           <Input
             name="rentalStartDate"
             type="datetime-local"
+            label="Start date"
             placeholder="Select start date"
             value={formik.values.rentalStartDate}
             onChange={formik.handleChange}
