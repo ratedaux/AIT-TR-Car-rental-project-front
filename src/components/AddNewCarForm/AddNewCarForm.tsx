@@ -30,14 +30,14 @@ function AddNewCarForm() {
       .max(15, "Brand must be less than 15 characters")
       .matches(
         /^[A-Z0-9][a-zA-Z0-9 ]*$/,
-        "Brand must start with a capital letter or digit and contain only letters, digits, and spaces"
+        "Brand must start with a capital letter or digit and contain only letters, digits, and spaces",
       ),
     model: Yup.string()
       .required("Car model is required")
       .max(15, "Model must be less than 15 characters")
       .matches(
         /^[A-Z0-9][a-zA-Z0-9 ]*$/,
-        "Brand must start with a capital letter or digit and contain only letters, digits, and spaces"
+        "Brand must start with a capital letter or digit and contain only letters, digits, and spaces",
       ),
     year: Yup.number()
       .min(1900, "Year must be at least 1900 or later")
@@ -101,7 +101,6 @@ function AddNewCarForm() {
       try {
         setIsLoading(true)
 
-        // Сначала создаем автомобиль без изображения
         const response = await dispatch(
           rentCarActions.addCar({
             carData: {
@@ -129,18 +128,18 @@ function AddNewCarForm() {
         //     }),
         //   ).unwrap()
 
-          // Обновляем машину с URL изображения
-          // await dispatch(
-          //   rentCarActions.editCar({
-          //     updatedCar: {
-          //       ...response,
-          //       // carImage: imageResponse,
-          //       // isActive: true
-          //     },
-          //     token: token,
-          //     carId: response.id,
-          //   }),
-          // ).unwrap()
+        // Обновляем машину с URL изображения
+        // await dispatch(
+        //   rentCarActions.editCar({
+        //     updatedCar: {
+        //       ...response,
+        //       // carImage: imageResponse,
+        //       // isActive: true
+        //     },
+        //     token: token,
+        //     carId: response.id,
+        //   }),
+        // ).unwrap()
         // }
 
         setNotificationTopic("Success")

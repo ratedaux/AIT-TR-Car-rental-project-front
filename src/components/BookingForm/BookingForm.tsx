@@ -27,6 +27,9 @@ function BookingForm() {
 
   const [showNotification, setShowNotification] = useState(false)
   const { startDate, endDate } = useAppSelector(rentCarSelectors.selectDates)
+  const [notificationMessage, setNotificationMessage] = useState("")
+  const [notificationTopic, setNotificationTopic] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
   const today = new Date().toLocaleDateString("en-CA")
 
@@ -118,23 +121,56 @@ function BookingForm() {
     validationSchema: validationSchema,
     validateOnChange: true,
     validateOnBlur: true,
-    onSubmit: (values: RentFormValues, { resetForm }) => {
-      console.log("Submitted values:", values)
-      const bookingDataForDispatch = {
-        rentalStartDate: values.rentalStartDate ,
-        rentalEndDate: values.rentalEndDate ,
-        carId: car.id,
+    // onSubmit: (values: RentFormValues, { resetForm }) => {
+    //   console.log("Submitted values:", values)
+    //   const bookingDataForDispatch = {
+    //     rentalStartDate: values.rentalStartDate ,
+    //     rentalEndDate: values.rentalEndDate ,
+    //     carId: car.id,
+    //   }
+    //   setShowNotification(true)
+    //   dispatch(
+    //     bookingActions.createBooking({
+    //       token: token,
+    //       bookingDataForDispatch: bookingDataForDispatch,
+    //     }),
+    //   )
+    //   resetForm()
+    //   navigate("/account/myBookings")
+    // },
+
+    onSubmit: async (values: RentFormValues) => {
+      try {
+        setIsLoading(true)
+    
+        const bookingDataForDispatch = {
+          rentalStartDate: values.rentalStartDate,
+          rentalEndDate: values.rentalEndDate,
+          carId: car.id,
+        }
+    
+        const response = await dispatch(
+          bookingActions.createBooking({
+            token: token,
+            bookingDataForDispatch: bookingDataForDispatch,
+          })
+        ).unwrap()
+    
+        setNotificationTopic("Success")
+        setNotificationMessage("The car has been successfully rented!")
+        setShowNotification(true)
+    
+        setTimeout(() => {
+          navigate("/account/myBookings")
+        }, 2000)
+      } catch (error) {
+        setNotificationTopic("Error")
+        setNotificationMessage("Failed to create booking")
+        setShowNotification(true)
+      } finally {
+        setIsLoading(false)
       }
-      setShowNotification(true)
-      dispatch(
-        bookingActions.createBooking({
-          token: token,
-          bookingDataForDispatch: bookingDataForDispatch,
-        }),
-      )
-      resetForm()
-      navigate("/account/myBookings")
-    },
+    }
   })
 
   //Automatic calculation of renting price
