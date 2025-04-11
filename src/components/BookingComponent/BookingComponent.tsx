@@ -4,6 +4,10 @@ function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
+const formatBookingDate = (date: string): string => {
+  return date.replace('T', ' ').substring(0, 16);  
+};
+
 function BookingComponent({
   rentalStartDate,
   rentalEndDate,
@@ -46,19 +50,19 @@ function BookingComponent({
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Start Date:</div>
-            <div className="w-3/4">{rentalStartDate}</div>
+            <div className="w-3/4">{formatBookingDate(rentalStartDate)}</div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">End Date:</div>
-            <div className="w-3/4">{rentalEndDate}</div>
+            <div className="w-3/4">{formatBookingDate(rentalEndDate)}</div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Rent details updated on:</div>
-            <div className="w-3/4">{updateBookingDate}</div>
+            <div className="w-3/4">{formatBookingDate(updateBookingDate)}</div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Rent created on:</div>
-            <div className="w-3/4">{createBookingDate}</div>
+            <div className="w-3/4">{formatBookingDate(createBookingDate)}</div>
           </div>
         </div>
       </div>
