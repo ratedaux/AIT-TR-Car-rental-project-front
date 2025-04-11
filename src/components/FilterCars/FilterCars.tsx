@@ -215,11 +215,10 @@ export default function FilterCars() {
     };
 
     return (
-        <div>
-            <div className='max-w-5xl mx-auto bg-white rounded-lg shadow-lg relative -mt-30 py-5 border border-gray-100 mb-6'>
-
-                <h2 className='text-2xl font-bold text-gray-800 mb-12 text-center'>Find Available Cars</h2>
-                <form className="flex flex-col md:flex-row gap-4 mt-5 items-stretch p-7" onSubmit={formik.handleSubmit}>
+        <div className="w-full px-4 sm:px-6 lg:px-8">
+            <div className='max-w-7xl mx-auto bg-white rounded-lg shadow-lg relative -mt-30 py-5 border border-gray-100 mb-6'>
+                <h2 className='text-xl sm:text-2xl font-bold text-gray-800 mb-6 sm:mb-12 text-center'>Find Available Cars</h2>
+                <form className="flex flex-col sm:flex-row gap-4 mt-5 items-stretch p-4 sm:p-7" onSubmit={formik.handleSubmit}>
                     <div className="flex-1">
                         <Input
                             name="startDateTime"
@@ -246,7 +245,7 @@ export default function FilterCars() {
                             max="9999-12-31T23:59"
                         />
                     </div>
-                    <div className="md: w-48">
+                    <div className="sm:w-48">
                         <Button
                             type="submit"
                             name="SEARCH"
@@ -257,11 +256,11 @@ export default function FilterCars() {
             </div>
             {isLoading && <Loader />}
             {showFilters && !isLoading && (
-                <div className="max-w-5xl mx-auto h-screen flex">
+                <div className="max-w-7xl mx-auto flex flex-col lg:flex-row">
 
                     {/* Filter sidebar */}
-                    <div className="w-1/4 h-screen sticky top-0">
-                        <div className="flex flex-col bg-white gap-4 rounded-lg shadow-lg p-6 border border-gray-100 h-full overflow-y-auto my-3">
+                    <div className="w-full lg:w-1/4 mb-4 lg:mb-0 lg:sticky lg:top-0 lg:h-screen">
+                        <div className="flex flex-col bg-white gap-4 rounded-lg shadow-lg p-4 sm:p-6 border border-gray-100 lg:h-[calc(100vh-2rem)] overflow-y-auto">
 
                             {/* Filter sidebar */}
                             <h3 className="font-semibold text-lg">Filter Cars</h3>
@@ -269,93 +268,96 @@ export default function FilterCars() {
                             {/* Brand Filter */}
                             <div>
                                 <h4 className="font-semibold">Brand</h4>
-                                {brands.map(brand => (
-                                    <label key={brand} className="block">
-                                        <input type="checkbox" className="mr-2"
-                                            value={brand}
-                                            checked={selectedBrands.includes(brand)}
-                                            onChange={() => {
-                                                handleBrandChange(brand);
-                                            }} />
-                                        {brand}
-                                    </label>
-                                ))}
+                                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2">
+                                    {brands.map(brand => (
+                                        <label key={brand} className="flex items-center">
+                                            <input type="checkbox" className="mr-2"
+                                                value={brand}
+                                                checked={selectedBrands.includes(brand)}
+                                                onChange={() => { handleBrandChange(brand); }} />
+                                            <span className="text-sm">{brand}</span>
+                                        </label>
+                                    ))}
+                                </div>
                             </div>
 
                             {/* Transmission Filter */}
                             <div>
                                 <h4 className="font-semibold">Transmission Type</h4>
-                                {["Manual", "Automatic"].map(transmissionType => (
-                                    <label key={transmissionType} className="block">
-                                        <input type="checkbox" className="mr-2"
-                                            value={transmissionType}
-                                            checked={selectedTransmissionTypes.includes(transmissionType)}
-                                            onChange={() => {
-                                                handleTransmissionTypeChange(transmissionType);
-                                            }} />
-                                        {transmissionType}
-                                    </label>
-                                ))}
+                                <div className="flex flex-col gap-2">
+                                    {["Manual", "Automatic"].map(transmissionType => (
+                                        <label key={transmissionType} className="flex items-center">
+                                            <input type="checkbox" className="mr-2"
+                                                value={transmissionType}
+                                                checked={selectedTransmissionTypes.includes(transmissionType)}
+                                                onChange={() => handleTransmissionTypeChange(transmissionType)} />
+                                            <span className="text-sm">{transmissionType}</span>
+                                        </label>
+                                    ))}
+                                </div>
                             </div>
-
                             {/* Fuel Filter */}
                             <div>
                                 <h4 className="font-semibold">Fuel Type</h4>
-                                {["Petrol", "Diesel", "Electric", "Hybrid"].map(fuelType => (
-                                    <label key={fuelType} className="block">
-                                        <input type="checkbox" className="mr-2"
-                                            value={fuelType}
-                                            checked={selectedFuelTypes.includes(fuelType)}
-                                            onChange={() => {
-                                                handleFuelTypeChange(fuelType);
-                                            }} />
-                                        {fuelType}
-                                    </label>
-                                ))}
+                                <div className="flex flex-col sm:grid-cols-4 gap-2">
+                                    {["Petrol", "Diesel", "Electric", "Hybrid"].map(fuelType => (
+                                        <label key={fuelType} className="flex items-center">
+                                            <input type="checkbox" className="mr-2"
+                                                value={fuelType}
+                                                checked={selectedFuelTypes.includes(fuelType)}
+                                                onChange={() => handleFuelTypeChange(fuelType)} />
+                                            <span className="text-sm">{fuelType}</span>
+                                        </label>
+                                    ))}
+                                </div>
                             </div>
 
                             {/* Body Type Filter */}
                             <div>
                                 <h4 className="font-semibold">Body Type</h4>
-                                {types.map(type => (
-                                    <label key={type} className="block">
-                                        <input
-                                            type="checkbox"
-                                            className="mr-2"
-                                            value={type}
-                                            checked={selectedBodyTypes.includes(type)}
-                                            onChange={() => {
-                                                handleBodyTypeChange(type);
-                                            }}
-                                        />
-                                        {capitalizeFirstLetter(type)}
-                                    </label>
-                                ))}
+                                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2">
+                                    {types.map(type => (
+                                        <label key={type} className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                className="mr-2"
+                                                value={type}
+                                                checked={selectedBodyTypes.includes(type)}
+                                                onChange={() => handleBodyTypeChange(type)}
+                                            />
+                                            <span className="text-sm">{capitalizeFirstLetter(type)}</span>
+                                        </label>
+                                    ))}
+                                </div>
                             </div>
 
                             {/* Price Range Filter */}
                             <div>
                                 <h4 className="font-semibold">Price Range</h4>
-                                <Slider
-                                    range
-                                    min={0}
-                                    max={200}
-                                    step={10}
-                                    value={priceRange}
-                                    onChange={handleSliderChange}
-                                />
-                                <div className="flex justify-between text-sm">
-                                    <span>{priceRange[0]} €</span>
-                                    <span>{priceRange[1]} €</span>
+                                <div className="px-2">
+                                    <Slider
+                                        range
+                                        min={0}
+                                        max={200}
+                                        step={10}
+                                        value={priceRange}
+                                        onChange={handleSliderChange}
+                                    />
+                                    <div className="flex justify-between text-sm mt-2">
+                                        <span>{priceRange[0]} €</span>
+                                        <span>{priceRange[1]} €</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {/* Cars list */}
-                    <div className="w-3/4 h-screen overflow-y-auto space-y-6 p-4">
-                        {cars.map(car => (
-                            <CarCard key={car.id} {...car} carImage={car.carImage || ""} />
-                        ))}
+                    <div className="w-full lg:w-3/4 lg:pl-4">
+                        <div className="flex flex-col sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {cars.map(car => (
+                                <CarCard key={car.id} {...car} carImage={car.carImage || ""} />
+                            ))}
+                        </div>
                     </div>
                 </div>
             )}
@@ -368,4 +370,4 @@ export default function FilterCars() {
             )}
         </div>
     );
-}
+};
