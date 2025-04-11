@@ -71,13 +71,13 @@ function CarCard({
 
   const handleLoginSuccess = () => {
 
-   setshowLoginNotification(false) 
-    handleRentCar()  // Продолжить аренду 
+    setshowLoginNotification(false);
+    handleRentCar();  // Продолжить аренду 
     navigate(`/booking-form/${id}`);
-   
-  }
 
-   
+  };
+
+
 
   function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -169,7 +169,7 @@ function CarCard({
       {showCarComponent &&
         ReactDOM.createPortal(
           <div className="fixed inset-0 flex items-center justify-center bg-gray bg-opacity-50 backdrop-blur-sm z-50">
-            <div className="relative bg-white rounded-lg p-6 shadow-lg max-w-3xl mx-4 my-8">
+            <div className="relative bg-white rounded-lg p-6 shadow-lg max-w-4xl w-full mx-4 my-8">
               <button
                 className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
                 onClick={handleCloseCarComponent}
