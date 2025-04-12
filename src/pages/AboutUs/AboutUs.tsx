@@ -3,6 +3,8 @@ import elena from "../../assets/avatars/Elena_Karsten.jpeg";
 import maria from "../../assets/avatars/Maria_Neshyna.jpeg";
 import alla from "../../assets/avatars/Alla_Nazarenko.jpeg";
 import liana from "../../assets/avatars/Liana_Kes.jpeg";
+import olga from "../../assets/avatars/Olga_Fatina.jpeg";
+
 
 function AboutUs() {
     return (
@@ -75,8 +77,7 @@ function AboutUs() {
                                         src={elena}
                                         alt="Elena Karsten"
                                         className="w-full h-full object-cover scale-130" style={{
-                                            objectPosition: 'center 30%',
-
+                                            objectPosition: 'center 30%'
                                         }}
                                     />
                                 </div>
@@ -115,9 +116,11 @@ function AboutUs() {
                             <div className="text-center">
                                 <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden">
                                     <img
-                                        src="/team/olga.jpg"
+                                        src={olga}
                                         alt="Olga Fatina"
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover" style={{
+                                            objectPosition: 'center 40%'
+                                        }}
                                     />
                                 </div>
                                 <h3 className="text-xl font-semibold mb-2">Olga Fatina</h3>
