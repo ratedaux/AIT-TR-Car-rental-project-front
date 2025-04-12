@@ -56,36 +56,43 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
   const [notificationTopic, setNotificationTopic] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  const [activeBookings, setActiveBookings] = useState<BookingProps[]>([]);
+  const [activeBookings, setActiveBookings] = useState<BookingProps[]>([])
+  const [loadingBookings, setLoadingBookings] = useState<Set<string>>(
+    new Set()
+  ) // Track which booking is being activated
+
   useEffect(() => {
     setActiveBookings(bookings)
   }, [bookings])
 
   const handleActivateBooking = async (bookingId: string) => {
     try {
-      setIsLoading(true)
+      setLoadingBookings((prev) => new Set(prev).add(bookingId)) // Mark as loading for this booking
       await dispatch(
         bookingActions.activateBooking({
           bookingId: bookingId,
           token: token,
-        }),
+        })
       ).unwrap()
       setNotificationTopic("Success")
       setNotificationMessage("The booking is activated")
       setShowNotification(true)
 
-        setActiveBookings(prev =>
-        prev.map(booking =>
+      setActiveBookings((prev) =>
+        prev.map((booking) =>
           booking.id === bookingId ? { ...booking, isActive: true } : booking
         )
-      ); 
-      
+      )
     } catch (error: any) {
       setNotificationTopic("Error")
       setNotificationMessage(error || "Failed to activate booking")
       setShowNotification(true)
     } finally {
-      setIsLoading(false)
+      setLoadingBookings((prev) => {
+        const newLoadingBookings = new Set(prev)
+        newLoadingBookings.delete(bookingId) // Remove from loading state
+        return newLoadingBookings
+      })
     }
   }
 
@@ -93,7 +100,7 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
     <div>
       {activeBookings && activeBookings.length > 0 ? (
         activeBookings.map((booking, index) => (
-          <div key={booking.id || index}>
+          <div key={booking.id || index} className="relative">
             <BookingComponent
               rentalStartDate={booking.rentalStartDate}
               rentalEndDate={booking.rentalEndDate}
@@ -109,16 +116,7 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
               id={booking.id}
             />
 
-            {/* <div className="m-4 flex flex-row gap-4 justify-end">
-              <div>
-                <Button
-                  type="button"
-                  onClick={() => handleEditBooking(booking.id, booking)}
-                  name="Edit"
-                />
-              </div>
-            </div> */}
-
+            {/* Loader displayed next to the button */}
             <div className="m-4 flex flex-row gap-4 justify-end">
               {canEditBooking(booking.bookingStatus) && (
                 <div>
@@ -130,7 +128,13 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
                 </div>
               )}
               {canActivateBooking(booking.bookingStatus) && (
-                <div>
+                <div className="relative">
+                  {/* Loader specific to this booking */}
+                  {loadingBookings.has(booking.id) && (
+                    <div className="absolute inset-0 flex justify-center items-center">
+                      <Loader />
+                    </div>
+                  )}
                   <Button
                     type="button"
                     onClick={() => handleActivateBooking(booking.id)}
