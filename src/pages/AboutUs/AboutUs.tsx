@@ -10,7 +10,7 @@ function AboutUs() {
     return (
         <div className="container mx-auto px-4 py-8 sm:py-12 lg:py-16">
             <div className="max-w-4xl mx-auto">
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-12 text-gray-800">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-12 text-gray-800 drop-shadow-lg">
                     About Our Team
                 </h1>
 
@@ -20,7 +20,7 @@ function AboutUs() {
                         <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-red-600">Backend Team</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-4">
                             <div className="text-center">
-                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden">
+                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
                                         src={alla}
                                         alt="Alla Nazarenko"
@@ -31,7 +31,7 @@ function AboutUs() {
                                 <p className="text-gray-600">Team Lead</p>
                             </div>
                             <div className="text-center">
-                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden">
+                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
                                         src={liana}
                                         alt="Liana Kes"
@@ -42,7 +42,7 @@ function AboutUs() {
                                 <p className="text-gray-600">Backend Developer</p>
                             </div>
                             <div className="text-center">
-                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden">
+                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
                                         src="/team/katerina.jpg"
                                         alt="Katerina Kibireva"
@@ -61,7 +61,7 @@ function AboutUs() {
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-4">
 
                             <div className="text-center">
-                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden">
+                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
                                         src={maria}
                                         alt="Maria Neshyna"
@@ -72,7 +72,7 @@ function AboutUs() {
                                 <p className="text-gray-600">Frontend Developer</p>
                             </div>
                             <div className="text-center">
-                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden relative">
+                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
                                         src={elena}
                                         alt="Elena Karsten"
@@ -85,7 +85,7 @@ function AboutUs() {
                                 <p className="text-gray-600">Frontend Developer</p>
                             </div>
                             <div className="text-center">
-                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden">
+                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
                                         src="/team/anastasia.jpg"
                                         alt="Anastasia Yemetz"
@@ -103,7 +103,7 @@ function AboutUs() {
                         <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-red-600">QA Team</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
                             <div className="text-center">
-                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden">
+                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
                                         src="/team/galina.jpg"
                                         alt="Galina Troshina"
@@ -114,7 +114,7 @@ function AboutUs() {
                                 <p className="text-gray-600">QA Engineer</p>
                             </div>
                             <div className="text-center">
-                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden">
+                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
                                         src={olga}
                                         alt="Olga Fatina"
@@ -127,7 +127,7 @@ function AboutUs() {
                                 <p className="text-gray-600">QA Engineer</p>
                             </div>
                             <div className="text-center">
-                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden">
+                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
                                         src="/team/german.jpg"
                                         alt="German Kisin"
@@ -138,7 +138,7 @@ function AboutUs() {
                                 <p className="text-gray-600">QA Engineer</p>
                             </div>
                             <div className="text-center">
-                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden">
+                                <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
                                         src="/team/gloria.jpg"
                                         alt="Gloria Adler"
