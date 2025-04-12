@@ -163,9 +163,9 @@ function BookingForm() {
         setTimeout(() => {
           navigate("/account/myBookings")
         }, 2000)
-      } catch (error) {
+      } catch (error:any) {
         setNotificationTopic("Error")
-        setNotificationMessage("Failed to create booking")
+        setNotificationMessage(error ||"Failed to create booking")
         setShowNotification(true)
       } finally {
         setIsLoading(false)

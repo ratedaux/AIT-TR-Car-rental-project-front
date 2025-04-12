@@ -9,6 +9,8 @@ import {
   bookingSelectors,
 } from "store/redux/BookingSlice/BookingSlice"
 import { authSelectors } from "store/redux/AuthSlice/authSlice"
+import Notification1 from "components/Notification/Notification1"
+import Loader from "components/Loader/Loader"
 
 export interface BookingsListProps {}
 
@@ -45,10 +47,52 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
     return status === "ACTIVE" || status === "PENDING"
   }
 
+  const canActivateBooking = (status: string | undefined) => {
+    return status === "PENDING"
+  }
+
+  const [showNotification, setShowNotification] = useState(false)
+  const [notificationMessage, setNotificationMessage] = useState("")
+  const [notificationTopic, setNotificationTopic] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
+  const [activeBookings, setActiveBookings] = useState<BookingProps[]>([]);
+  useEffect(() => {
+    setActiveBookings(bookings)
+  }, [bookings])
+
+  const handleActivateBooking = async (bookingId: string) => {
+    try {
+      setIsLoading(true)
+      await dispatch(
+        bookingActions.activateBooking({
+          bookingId: bookingId,
+          token: token,
+        }),
+      ).unwrap()
+      setNotificationTopic("Success")
+      setNotificationMessage("The booking is activated")
+      setShowNotification(true)
+
+        setActiveBookings(prev =>
+        prev.map(booking =>
+          booking.id === bookingId ? { ...booking, isActive: true } : booking
+        )
+      ); 
+      
+    } catch (error: any) {
+      setNotificationTopic("Error")
+      setNotificationMessage(error || "Failed to activate booking")
+      setShowNotification(true)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div>
-      {bookings && bookings.length > 0 ? (
-        bookings.map((booking, index) => (
+      {activeBookings && activeBookings.length > 0 ? (
+        activeBookings.map((booking, index) => (
           <div key={booking.id || index}>
             <BookingComponent
               rentalStartDate={booking.rentalStartDate}
@@ -75,22 +119,38 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
               </div>
             </div> */}
 
-            {canEditBooking(booking.bookingStatus) && (
-              
-                <div className="m-4 flex flex-row gap-4 justify-end">
-                  <div>
+            <div className="m-4 flex flex-row gap-4 justify-end">
+              {canEditBooking(booking.bookingStatus) && (
+                <div>
                   <Button
                     type="button"
                     onClick={() => handleEditBooking(booking.id, booking)}
                     name="Edit"
                   />
                 </div>
-              </div>
-            )}
+              )}
+              {canActivateBooking(booking.bookingStatus) && (
+                <div>
+                  <Button
+                    type="button"
+                    onClick={() => handleActivateBooking(booking.id)}
+                    name="Activate"
+                  />
+                </div>
+              )}
+            </div>
           </div>
         ))
       ) : (
         <p>Loading...</p>
+      )}
+      {isLoading && <Loader />}
+      {showNotification && (
+        <Notification1
+          topic={notificationTopic}
+          message={notificationMessage}
+          onClose={() => setShowNotification(false)}
+        />
       )}
     </div>
   )
