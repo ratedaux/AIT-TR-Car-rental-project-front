@@ -8,11 +8,11 @@ const formatStatus = (status: string | undefined): string => {
   if (!status) return ""
   
   const formatted = status
-    .replace(/_/g, " ") // заменяем подчёркивания на пробелы
-    .toLowerCase()      // всё в нижний регистр
+    .replace(/_/g, " ") 
+    .toLowerCase()      
     .trim()
 
-  return formatted.charAt(0).toUpperCase() + formatted.slice(1) // первая буква заглавная
+  return formatted.charAt(0).toUpperCase() + formatted.slice(1) 
 }
 
 const formatBookingDate = (date: string): string => {

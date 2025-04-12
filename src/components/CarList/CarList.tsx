@@ -49,9 +49,9 @@ function CarList() {
       setLocalCars(prev =>
         prev.map(car => (car.id === carId ? { ...car, isActive: false } : car)),
       )
-    } catch (error) {
+    } catch (error:any) {
       setNotificationTopic("Error")
-      setNotificationMessage("Failed to delete car")
+      setNotificationMessage(error ||"Failed to delete car")
       setShowNotification(true)
     } finally {
       setIsLoading(false)
@@ -71,9 +71,9 @@ function CarList() {
       setLocalCars(prev =>
         prev.map(car => (car.id === carId ? { ...car, isActive: true } : car)),
       )
-    } catch (error) {
+    } catch (error: any) {
       setNotificationTopic("Error")
-      setNotificationMessage("Failed to restore car")
+      setNotificationMessage(error ||"Failed to restore car")
       setShowNotification(true)
     } finally {
       setIsLoading(false)

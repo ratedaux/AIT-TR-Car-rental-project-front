@@ -18,6 +18,17 @@ function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
+const formatStatus = (status: string | undefined): string => {
+  if (!status) return ""
+  
+  const formatted = status
+    .replace(/_/g, " ") // заменяем подчёркивания на пробелы
+    .toLowerCase()      // всё в нижний регистр
+    .trim()
+
+  return formatted.charAt(0).toUpperCase() + formatted.slice(1) // первая буква заглавная
+}
+
 function CarComponent({ car }: CarComponentProps) {
   const navigate = useNavigate();
   const user = useSelector(authSelectors.userData);
@@ -91,7 +102,7 @@ function CarComponent({ car }: CarComponentProps) {
 
           <div className="flex flex-row items-center gap-1">
             <img src={carIcon} className="w-4 h-4" alt="Status" />
-            <div className="text-xs text-gray-700">{capitalizeFirstLetter(car.carStatus)}</div>
+            <div className="text-xs text-gray-700">{formatStatus(car.carStatus)}</div>
           </div>
         </div>
       </div>

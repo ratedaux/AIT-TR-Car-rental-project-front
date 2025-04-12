@@ -148,9 +148,9 @@ function AddNewCarForm() {
         setTimeout(() => {
           navigate("/admin/allCars")
         }, 2000)
-      } catch (error) {
+      } catch (error: any) {
         setNotificationTopic("Error")
-        setNotificationMessage("Failed to save car")
+        setNotificationMessage(error ||"Failed to save car")
         setShowNotification(true)
       } finally {
         setIsLoading(false)
