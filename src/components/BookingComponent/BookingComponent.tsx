@@ -1,7 +1,18 @@
 import { BookingProps,CarDto, CustomerDto } from "./types"
 
-function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+// function capitalizeFirstLetter(string: string ) {
+//   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+// }
+
+const formatStatus = (status: string | undefined): string => {
+  if (!status) return ""
+  
+  const formatted = status
+    .replace(/_/g, " ") // заменяем подчёркивания на пробелы
+    .toLowerCase()      // всё в нижний регистр
+    .trim()
+
+  return formatted.charAt(0).toUpperCase() + formatted.slice(1) // первая буква заглавная
 }
 
 const formatBookingDate = (date: string): string => {
@@ -46,7 +57,7 @@ function BookingComponent({
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Status:</div>
-            <div className="w-3/4">{capitalizeFirstLetter(bookingStatus)}</div>
+            <div className="w-3/4">{formatStatus(bookingStatus)}</div>
           </div>
           <div className="flex gap-4">
             <div className="w-1/4 font-bold">Start Date:</div>
