@@ -22,7 +22,7 @@ function CarList() {
   const [showNotification, setShowNotification] = useState(false)
   const [notificationMessage, setNotificationMessage] = useState("")
   const [notificationTopic, setNotificationTopic] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
+  const [loadingCars, setLoadingCars] = useState<Set<string>>(new Set()) 
 
   useEffect(() => {
     dispatch(rentCarActions.getAllCars())
@@ -38,53 +38,65 @@ function CarList() {
 
   const handleDeleteCar = async (carId: string) => {
     try {
-      setIsLoading(true)
+      setLoadingCars((prev) => new Set(prev).add(carId))
       await dispatch(
-        rentCarActions.deleteCar({ carId, token: accessToken }),
+        rentCarActions.deleteCar({ carId, token: accessToken })
       ).unwrap()
       setNotificationTopic("Success")
       setNotificationMessage("The car is deleted")
       setShowNotification(true)
 
-      setLocalCars(prev =>
-        prev.map(car => (car.id === carId ? { ...car, isActive: false } : car)),
+      setLocalCars((prev) =>
+        prev.map((car) =>
+          car.id === carId ? { ...car, isActive: false } : car
+        )
       )
-    } catch (error) {
+    } catch (error: any) {
       setNotificationTopic("Error")
-      setNotificationMessage("Failed to delete car")
+      setNotificationMessage(error || "Failed to delete car")
       setShowNotification(true)
     } finally {
-      setIsLoading(false)
+      setLoadingCars((prev) => {
+        const newLoadingCars = new Set(prev)
+        newLoadingCars.delete(carId) 
+        return newLoadingCars
+      })
     }
   }
 
   const handleRestoreCar = async (carId: string) => {
     try {
-      setIsLoading(true)
+      setLoadingCars((prev) => new Set(prev).add(carId)) 
       await dispatch(
-        rentCarActions.restoreCar({ carId, token: accessToken }),
+        rentCarActions.restoreCar({ carId, token: accessToken })
       ).unwrap()
       setNotificationTopic("Success")
       setNotificationMessage("The car is restored")
       setShowNotification(true)
 
-      setLocalCars(prev =>
-        prev.map(car => (car.id === carId ? { ...car, isActive: true } : car)),
+      setLocalCars((prev) =>
+        prev.map((car) =>
+          car.id === carId ? { ...car, isActive: true } : car
+        )
       )
-    } catch (error) {
+    } catch (error: any) {
       setNotificationTopic("Error")
-      setNotificationMessage("Failed to restore car")
+      setNotificationMessage(error || "Failed to restore car")
       setShowNotification(true)
     } finally {
-      setIsLoading(false)
+      setLoadingCars((prev) => {
+        const newLoadingCars = new Set(prev)
+        newLoadingCars.delete(carId) 
+        return newLoadingCars
+      })
     }
   }
 
   return (
     <div className="w-auto h-screen overflow-y-auto space-y-6 p-4">
       {localCars && localCars.length > 0 ? (
-        localCars.map(car => (
-          <div key={car.id}>
+        localCars.map((car) => (
+          <div key={car.id} className="relative">
             <CarCard
               carImage={car.carImage}
               brand={car.brand}
@@ -108,7 +120,12 @@ function CarList() {
                   />
                 )}
               </div>
-              <div>
+              <div className="relative"> 
+                {loadingCars.has(car.id) && (
+                  <div className="absolute inset-0 flex justify-center items-center">
+                    <Loader />
+                  </div>
+                )}
                 <Button
                   type="button"
                   customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"
@@ -126,7 +143,7 @@ function CarList() {
       ) : (
         <p>Loading...</p>
       )}
-      {isLoading && <Loader />}
+
       {showNotification && (
         <Notification1
           topic={notificationTopic}

@@ -143,7 +143,7 @@ export const carsSlice = createAppSlice({
           )
           return response.data
         } catch (error: any) {
-          return thunkApi.rejectWithValue(error.response?.data || error.message)
+          return thunkApi.rejectWithValue(error.response?.data?.message || error.message || "Something went wrong")
         }
       },
       {
@@ -180,7 +180,7 @@ export const carsSlice = createAppSlice({
           })
           return response.data
         } catch (error: any) {
-          return thunkApi.rejectWithValue(error.response?.data || error.message)
+          return thunkApi.rejectWithValue(error.response?.data?.message || error.message || "Something went wrong")
         }
       },
       {
@@ -216,7 +216,7 @@ export const carsSlice = createAppSlice({
           )
           return response.data
         } catch (error: any) {
-          return thunkApi.rejectWithValue(error.response?.data || error.message)
+          return thunkApi.rejectWithValue(error.response?.data?.message || error.message || "Something went wrong")
         }
       },
       {
@@ -253,7 +253,7 @@ export const carsSlice = createAppSlice({
           })
           return carId
         } catch (error: any) {
-          return thunkApi.rejectWithValue(error.response?.data || error.message)
+          return thunkApi.rejectWithValue(error.response?.data?.message || error.message || "Something went wrong")
         }
       },
       {
@@ -302,7 +302,7 @@ export const carsSlice = createAppSlice({
           )
           return response.data
         } catch (error: any) {
-          return thunkApi.rejectWithValue(error.response?.data || error.message)
+          return thunkApi.rejectWithValue(error.response?.data?.message || error.message || "Something went wrong")
         }
       },
       {
