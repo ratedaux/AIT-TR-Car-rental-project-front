@@ -182,7 +182,7 @@ export const bookingSlice = createAppSlice({
           )
           return result.data
         } catch (error: any) {
-          return thunkApi.rejectWithValue(error.response?.data || error.message)
+          return thunkApi.rejectWithValue(error.response?.data?.message || error.message || "Something went wrong")
         }
       },
       {
@@ -227,8 +227,8 @@ export const bookingSlice = createAppSlice({
             },
           )
           return result.data
-        } catch (error) {
-          return thunkApi.rejectWithValue(error)
+        } catch (error: any) {
+          return thunkApi.rejectWithValue(error.response?.data?.message || error.message || "Something went wrong")
         }
       },
       {
@@ -237,10 +237,16 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingData = {
-            ...state.bookingData,
-            bookingStatus: "CANCELLED_BY_USER",
-          }
+          state.bookingData = action.payload
+
+          state.bookingListByUser = state.bookingListByUser.map(booking =>
+            booking.id === action.payload.id ? action.payload : booking,
+          )
+
+          state.bookingList = state.bookingList.map(booking =>
+            booking.id === action.payload.id ? action.payload : booking,
+          )
+
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
@@ -266,7 +272,7 @@ export const bookingSlice = createAppSlice({
           )
           return result.data
         } catch (error: any) {
-          return thunkApi.rejectWithValue(error.response?.data || error.message)
+          return thunkApi.rejectWithValue(error.response?.data?.message || error.message || "Something went wrong")
         }
       },
       {
@@ -275,10 +281,16 @@ export const bookingSlice = createAppSlice({
           state.error = undefined
         },
         fulfilled: (state: BookingSliceState, action: any) => {
-          state.bookingData = {
-            ...state.bookingData,
-            bookingStatus: "CLOSED_BY_ADMIN",
-          }
+          state.bookingData = action.payload
+
+          state.bookingListByUser = state.bookingListByUser.map(booking =>
+            booking.id === action.payload.id ? action.payload : booking,
+          )
+
+          state.bookingList = state.bookingList.map(booking =>
+            booking.id === action.payload.id ? action.payload : booking,
+          )
+
           state.status = "success"
         },
         rejected: (state: BookingSliceState, action: any) => {
@@ -315,7 +327,7 @@ export const bookingSlice = createAppSlice({
           )
           return result.data
         } catch (error: any) {
-          return thunkApi.rejectWithValue(error.response?.data || error.message)
+          return thunkApi.rejectWithValue(error.response?.data?.message || error.message || "Something went wrong")
         }
       },
       {
@@ -329,6 +341,50 @@ export const bookingSlice = createAppSlice({
         },
         rejected: (state: BookingSliceState, action: any) => {
           state.error = action.payload || "Something went wrong..."
+          state.status = "error"
+        },
+      },
+    ),
+    activateBooking: create.asyncThunk(
+      async (
+        { bookingId, token }: { bookingId: string; token: string | null },
+        thunkApi,
+      ) => {
+        try {
+          const result = await axios.put(
+            `/api/bookings/activate/${bookingId}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          )
+          return result.data
+        } catch (error: any ) {
+          return thunkApi.rejectWithValue(error.response?.data?.message || error.message || "Something went wrong")
+        }
+      },
+      {
+        pending: (state: BookingSliceState) => {
+          state.status = "loading"
+          state.error = undefined
+        },
+        fulfilled: (state: BookingSliceState, action: any) => {
+          state.bookingData = action.payload
+
+          state.bookingListByUser = state.bookingListByUser.map(booking =>
+            booking.id === action.payload.id ? action.payload : booking,
+          )
+
+          state.bookingList = state.bookingList.map(booking =>
+            booking.id === action.payload.id ? action.payload : booking,
+          )
+
+          state.status = "success"
+        },
+        rejected: (state: BookingSliceState, action: any) => {
+          state.error = action.payload
           state.status = "error"
         },
       },

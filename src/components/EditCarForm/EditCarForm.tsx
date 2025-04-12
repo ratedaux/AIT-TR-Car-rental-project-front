@@ -154,9 +154,9 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
               "UNDER_REPAIR",
               "REMOVER_FROM_RENT",
               "UNDER_INSPECTION",
-              "DELETED"
+              // "DELETED"
             ]}
-            label="Status"
+            label="Car status"
             placeholder="Select car status"
             value={formik.values.carStatus}
             onChange={formik.handleChange}

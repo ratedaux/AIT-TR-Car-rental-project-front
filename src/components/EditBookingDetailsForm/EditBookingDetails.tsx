@@ -127,9 +127,9 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
           console.error("Unknown role");
         }
       }, 2000);
-    } catch (error) {
+    } catch (error: any) {
       setNotificationTopic("Error");
-      setNotificationMessage("Failed to extend booking");
+      setNotificationMessage(error || "Failed to extend booking");
       setShowNotification(true);
     } finally {
       setIsLoading(false);
@@ -173,9 +173,9 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
         handleClose();
       }, 2000);
 
-    } catch (error) {
+    } catch (error: any) {
       setNotificationTopic("Error");
-      setNotificationMessage("Failed to cancel booking");
+      setNotificationMessage(error ||"Failed to cancel booking");
       setShowNotification(true);
     } finally {
       setIsLoading(false);
@@ -198,9 +198,9 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
         handleClose();
       }, 2000);
 
-    } catch (error) {
+    } catch (error: any) {
       setNotificationTopic("Error");
-      setNotificationMessage("Failed to close booking");
+      setNotificationMessage(error || "Failed to close booking");
       setShowNotification(true);
     } finally {
       setIsLoading(false);
@@ -261,7 +261,7 @@ const EditBookingDetailsForm: React.FC<EditBookingFormProps> = ({
               </div>
             </div>
             <div className="flex gap-4">
-              <div className="w-1/3 font-bold">Status:</div>
+              <div className="w-1/3 font-bold">Rental status:</div>
               <div className="w-2/3">{capitalizeFirstLetter(bookingDetails.bookingStatus)}</div>
             </div>
             <div className="flex gap-4">
