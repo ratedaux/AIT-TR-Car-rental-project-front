@@ -278,54 +278,50 @@ export const carsSlice = createAppSlice({
     ),
     uploadCarImage: create.asyncThunk(
       async (
-        {
-          carId,
-          file,
-          token,
-        }: { carId: string; file: File; token: string | null },
-        thunkApi,
+        { carId, formData, token }: { carId: string; formData: FormData; token: string | null },
+        thunkApi
       ) => {
         try {
-          const formData = new FormData()
-          formData.append("id", carId)
-          formData.append("file", file)
-
-          const response = await axios.post<string>(
-            "/api/cars/upload-image",
+          const response = await axios.post(
+            `/api/cars/upload-image?id=${carId}`,
             formData,
             {
               headers: {
-                "Content-Type": "multipart/form-data",
+                "Content-Type": "multipart/form-data",  
                 Authorization: `Bearer ${token}`,
               },
-            },
-          )
-          return response.data
+            }
+          );
+          
+          return response.data;  
         } catch (error: any) {
-          return thunkApi.rejectWithValue(error.response?.data?.message || error.message || "Something went wrong")
+          return thunkApi.rejectWithValue(
+            error.response?.data?.message || error.message || "Something went wrong"
+          );
         }
       },
       {
         pending: (state: RentCarSliceState) => {
-          state.error = undefined
-          state.status = "loading"
+          state.error = undefined;
+          state.status = "loading";
         },
         fulfilled: (state: RentCarSliceState, action: any) => {
-          state.status = "success"
-          // update URL of image in state
-          const imageUrl = action.payload
-          state.cars = state.cars.map(car =>
-            car.id === action.meta.arg.carId
-              ? { ...car, carImage: imageUrl }
-              : car,
-          )
+          state.status = "success";
+          const imageUrl = action.payload;
+          const carId = action.meta.arg.carId;
+    
+                   state.cars = state.cars.map(car =>
+            car.id === carId ? { ...car, carImage: imageUrl } : car
+          );
         },
         rejected: (state: RentCarSliceState, action: any) => {
-          state.error = action.payload || "Error uploading image"
-          state.status = "error"
+          state.error = action.payload || "Error uploading image";
+          state.status = "error";
         },
-      },
+      }
     ),
+    
+    
     setPriceRange: create.reducer(
       (state: RentCarSliceState, action: { payload: [number, number] }) => {
         state.priceRange = action.payload

@@ -19,6 +19,7 @@ import AddNewCarForm from "components/AddNewCarForm/AddNewCarForm";
 import EmailConfirmation from "components/EmailConfirmation/EmailConfirmation";
 import CustomerContainer from "components/CustomerContainer/CustomerContainer";
 import AboutUs from "pages/AboutUs/AboutUs";
+import UploadImage from "pages/UploadImage/UploadImage";
 
 
 const App = () => {
@@ -62,6 +63,7 @@ const App = () => {
           <Route path="/rent-car/:id" element={<RentCarPage />} />
           <Route path="/edit-user/:id" element={<EditUserPage />} />
           <Route path="*" element={<NotFoundPage />} />
+          <Route path="/upload-image/:id" element={<UploadImage />} />
         </Routes>
       </Layout>
     </HashRouter>
