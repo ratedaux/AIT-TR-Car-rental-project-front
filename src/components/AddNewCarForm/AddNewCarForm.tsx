@@ -20,7 +20,10 @@ function AddNewCarForm() {
   const [isLoading, setIsLoading] = useState(false)
 
   const token = useAppSelector(authSelectors.accessToken)
- 
+  useEffect(() => {
+    dispatch(authActions.getCurrentUser())
+  }, [token])
+
   const validationSchema = Yup.object({
     brand: Yup.string()
       .required("Car brand is required")
