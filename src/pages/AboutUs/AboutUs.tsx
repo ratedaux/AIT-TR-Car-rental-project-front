@@ -4,7 +4,7 @@ import maria from "../../assets/avatars/Maria_Neshyna.jpeg";
 import alla from "../../assets/avatars/Alla_Nazarenko.jpeg";
 import liana from "../../assets/avatars/Liana_Kes.jpeg";
 import olga from "../../assets/avatars/Olga_Fatina.jpeg";
-
+import gloria from "../../assets/avatars/Gloria_Adler.jpeg";
 
 function AboutUs() {
     return (
@@ -140,9 +140,11 @@ function AboutUs() {
                             <div className="text-center">
                                 <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
-                                        src="/team/gloria.jpg"
+                                        src={gloria}
                                         alt="Gloria Adler"
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover" style={{
+                                            objectPosition: 'center 35%'
+                                        }}
                                     />
                                 </div>
                                 <h3 className="text-xl font-semibold mb-2">Gloria Adler</h3>
