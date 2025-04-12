@@ -127,7 +127,7 @@ const BookingsListComponent: React.FC<BookingsListProps> = () => {
                   />
                 </div>
               )}
-              {canActivateBooking(booking.bookingStatus) && (
+              {canActivateBooking(booking.bookingStatus) && user?.role === "ROLE_ADMIN" && (
                 <div className="relative">
                   {/* Loader specific to this booking */}
                   {loadingBookings.has(booking.id) && (
