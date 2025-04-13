@@ -1,41 +1,50 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../../assets/logo.svg";
-import mainImg from "../../assets/mainImg.jpg";
-import { LayoutProps } from "./types";
-import { useDispatch, useSelector } from "react-redux";
-import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice";
-import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import logo from "../../assets/logo.svg"
+import mainImg from "../../assets/mainImg.jpg"
+import { LayoutProps } from "./types"
+import { useSelector } from "react-redux"
+import { authActions, authSelectors } from "store/redux/AuthSlice/authSlice"
+import { useEffect, useState } from "react"
+import { useAppDispatch } from "store/hooks"
 
 function Layout({ children }: LayoutProps) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const isLoggedIn = useSelector(authSelectors.isLoggedIn);
-  const user = useSelector(authSelectors.userData);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isHomePage = location.pathname === "/";
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const isLoggedIn = useSelector(authSelectors.isLoggedIn)
+  const user = useSelector(authSelectors.userData)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const isHomePage = location.pathname === "/"
 
+  const authStatus = useSelector(authSelectors.authStatus)
+  const isUserLoading = isLoggedIn && !user && authStatus === "loading"
+
+  useEffect(() => {
+    if (isLoggedIn && !user) {
+      dispatch(authActions.getCurrentUser())
+    }
+  }, [isLoggedIn, user, dispatch])
 
   const logout = () => {
-    dispatch(authActions.logoutUser());
-  };
+    dispatch(authActions.logoutUser())
+  }
 
   const onHandleLogout = () => {
-    logout();
-    navigate("/");
-    setIsMenuOpen(false);
-  };
+    logout()
+    navigate("/")
+    setIsMenuOpen(false)
+  }
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
+    setIsMenuOpen(!isMenuOpen)
+  }
 
   return (
     <div className="flex flex-col min-h-screen w-full bg-gray-100">
       {/* Header */}
       <header
-        className="relative bg-cover bg-center h-48 sm:h-64 shadow-md border-b-[7px] border-red-600" style={{
+        className="relative bg-cover bg-center h-48 sm:h-64 shadow-md border-b-[7px] border-red-600"
+        style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(${mainImg})`,
           backgroundPosition: "center 75%",
         }}
@@ -105,7 +114,25 @@ function Layout({ children }: LayoutProps) {
                   Log out
                 </button>
               )}
-             
+              {isLoggedIn &&
+                (isUserLoading ? (
+                  <div className="w-28 h-6 bg-gray-300 animate-pulse rounded" />
+                ) : user?.role === "ROLE_CUSTOMER" ? (
+                  <Link
+                    to="/account/myData"
+                    className="text-white font-bold px-4 py-2 rounded-md transition hover:bg-red-600 hover:text-white"
+                  >
+                    My Account
+                  </Link>
+                ) : user?.role === "ROLE_ADMIN" ? (
+                  <Link
+                    to="/admin/allCars"
+                    className="text-white font-bold px-4 py-2 rounded-md transition hover:bg-red-600 hover:text-white"
+                  >
+                    Admin
+                  </Link>
+                ) : null)}
+              {/*  
              {isLoggedIn &&
                 (user?.role === "ROLE_CUSTOMER" ) && (
 
@@ -123,14 +150,15 @@ function Layout({ children }: LayoutProps) {
                 >
                   Admin
                 </Link>
-              )}
+              )} */}
             </nav>
           </div>
 
           {/* Mobile Navigation Menu */}
           <div
-            className={`lg:hidden fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-90 transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-              }`}
+            className={`lg:hidden fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-90 transition-opacity duration-300 ${
+              isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
           >
             <div className="container mx-auto px-4 py-6 relative z-50">
               <div className="flex flex-col space-y-4">
@@ -152,8 +180,8 @@ function Layout({ children }: LayoutProps) {
                 ) : (
                   <button
                     onClick={() => {
-                      onHandleLogout();
-                      setIsMenuOpen(false);
+                      onHandleLogout()
+                      setIsMenuOpen(false)
                     }}
                     className="text-white text-lg font-bold py-2 hover:text-red-500 transition-colors text-left"
                   >
@@ -183,24 +211,23 @@ function Layout({ children }: LayoutProps) {
             </div>
           </div>
         </div>
-        {
-          isHomePage && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <h1 className="hidden lg:block text-white text-2xl sm:text-3xl md:text-4xl font-bold text-center italic text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
-                <span className=" text-red-600 italic">RentCar</span> – Your Road
-                to <span className=" text-red-600 italic">Freedom</span>
-              </h1>
-            </div>
-          )}
-      </header >
+        {isHomePage && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <h1 className="hidden lg:block text-white text-2xl sm:text-3xl md:text-4xl font-bold text-center italic text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
+              <span className=" text-red-600 italic">RentCar</span> – Your Road
+              to <span className=" text-red-600 italic">Freedom</span>
+            </h1>
+          </div>
+        )}
+      </header>
 
       {/* Main Content */}
-      < main className="flex-grow container mx-auto px-4 py-6 sm:py-8" >
+      <main className="flex-grow container mx-auto px-4 py-6 sm:py-8">
         {children}
-      </main >
+      </main>
 
       {/* Footer */}
-      < footer className="bg-gray-800 text-white py-6 sm:py-8" >
+      <footer className="bg-gray-800 text-white py-6 sm:py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
             <div className="space-x-6">
@@ -222,9 +249,9 @@ function Layout({ children }: LayoutProps) {
             </div>
           </div>
         </div>
-      </footer >
-    </div >
-  );
+      </footer>
+    </div>
+  )
 }
 
-export default Layout;
+export default Layout
