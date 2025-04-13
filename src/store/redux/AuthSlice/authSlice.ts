@@ -2,7 +2,7 @@ import axios from "axios"
 
 import { createAppSlice } from "store/createAppSlice"
 import { AuthSliceState } from "./type"
-import { a } from "vitest/dist/chunks/suite.d.FvehnV49.js"
+
 
 const initialAuthState: AuthSliceState = {
   user: null,
