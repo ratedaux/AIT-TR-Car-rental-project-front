@@ -91,10 +91,10 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
         setTimeout(() => {
           navigate("/admin/allCars");
         }, 2000);
-      } catch (error) {
+      } catch (error: any) {
         setNotificationTopic("Error");
         // setNotificationMessage("Failed to upload image");
-        setNotificationMessage("Failed to edit car");
+        setNotificationMessage(error ||"Failed to edit car");
         setShowNotification(true);
       } finally {
         setIsLoading(false);
@@ -154,9 +154,9 @@ const EditCarForm: React.FC<EditCarFormProps> = ({ car }) => {
               "UNDER_REPAIR",
               "REMOVER_FROM_RENT",
               "UNDER_INSPECTION",
-              "DELETED"
+              // "DELETED"
             ]}
-            label="Status"
+            label="Car status"
             placeholder="Select car status"
             value={formik.values.carStatus}
             onChange={formik.handleChange}

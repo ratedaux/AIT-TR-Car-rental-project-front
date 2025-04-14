@@ -20,10 +20,7 @@ function AddNewCarForm() {
   const [isLoading, setIsLoading] = useState(false)
 
   const token = useAppSelector(authSelectors.accessToken)
-  useEffect(() => {
-    dispatch(authActions.getCurrentUser())
-  }, [token])
-
+ 
   const validationSchema = Yup.object({
     brand: Yup.string()
       .required("Car brand is required")
@@ -56,10 +53,10 @@ function AddNewCarForm() {
       .min(0.01, "Price must be more than 0")
       .max(1000, "Price per day cannot exceed 1000")
       .required("Price per day is required"),
-    carImage: Yup.string()
-      .trim()
-      .min(1, "Car image is required")
-      .required("Car image is required"),
+    // carImage: Yup.string()
+    //   .trim()
+    //   .min(1, "Car image is required")
+    //   .required("Car image is required"),
   })
 
   const handleFileChange = async (
@@ -92,7 +89,7 @@ function AddNewCarForm() {
       fuelType: "",
       transmissionType: "",
       dayRentalPrice: "",
-      carImage: "",
+      // carImage: "",
     } as unknown as AddNewCarFormProps,
     validationSchema: validationSchema,
     validateOnChange: true,
@@ -112,7 +109,7 @@ function AddNewCarForm() {
               fuelType: values.fuelType,
               transmissionType: values.transmissionType,
               dayRentalPrice: values.dayRentalPrice,
-              carImage: values.carImage,
+              // carImage: " ",
             },
             token: token,
           }),
@@ -148,9 +145,9 @@ function AddNewCarForm() {
         setTimeout(() => {
           navigate("/admin/allCars")
         }, 2000)
-      } catch (error) {
+      } catch (error: any) {
         setNotificationTopic("Error")
-        setNotificationMessage("Failed to save car")
+        setNotificationMessage(error ||"Failed to save car")
         setShowNotification(true)
       } finally {
         setIsLoading(false)
@@ -343,7 +340,7 @@ function AddNewCarForm() {
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.dayRentalPrice}
           />
-          <Input
+          {/* <Input
             name="carImage"
             type="file"
             accept="image/png, image/jpeg"
@@ -352,7 +349,7 @@ function AddNewCarForm() {
             onChange={handleFileChange}
             onBlur={formik.handleBlur}
             errorMessage={formik.errors.carImage}
-          />
+          /> */}
         </div>
         <div className="mt-1 w-100%">
           <Button
