@@ -14,7 +14,7 @@ const initialCarState: RentCarSliceState = {
     transmissionType: "",
     carStatus: "",
     dayRentalPrice: 0,
-    carImage: "",
+    // carImage: "",
   },
   cars: [],
   status: "default",

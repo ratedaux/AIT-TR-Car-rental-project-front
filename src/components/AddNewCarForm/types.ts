@@ -8,5 +8,5 @@ export interface AddNewCarFormProps {
   dayRentalPrice: number
   image: File | string
   carImage?: string
-  carStatus: string
+  // carStatus: string
 }

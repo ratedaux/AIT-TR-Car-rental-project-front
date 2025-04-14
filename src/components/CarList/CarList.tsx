@@ -18,138 +18,153 @@ function CarList() {
   const cars = useAppSelector(rentCarSelectors.selectAllCars)
   const accessToken = useAppSelector(authSelectors.accessToken)
 
-  const [localCars, setLocalCars] = useState<CarCardProps[]>([])
   const [showNotification, setShowNotification] = useState(false)
   const [notificationMessage, setNotificationMessage] = useState("")
   const [notificationTopic, setNotificationTopic] = useState("")
   const [loadingCars, setLoadingCars] = useState<Set<string>>(new Set())
+  const [optimisticState, setOptimisticState] = useState<Record<string, Partial<CarCardProps>>>({})
 
   useEffect(() => {
     dispatch(rentCarActions.getAllCars())
   }, [dispatch])
-
-  useEffect(() => {
-    setLocalCars(cars)
-  }, [cars])
 
   const handleEditCar = (carId: string, carDetails: CarCardProps) => {
     navigate(`/edit-car/${carId}`, { state: { carDetails } })
   }
 
   const handleDeleteCar = async (carId: string) => {
+    // Оптимистично обновляем
+    setOptimisticState(prev => ({
+      ...prev,
+      [carId]: { isActive: false, carStatus: "DELETED" },
+    }))
+
     try {
       setLoadingCars(prev => new Set(prev).add(carId))
-      await dispatch(
-        rentCarActions.deleteCar({ carId, token: accessToken }),
-      ).unwrap()
+      await dispatch(rentCarActions.deleteCar({ carId, token: accessToken })).unwrap()
       setNotificationTopic("Success")
       setNotificationMessage("The car is deleted")
       setShowNotification(true)
-
-      setLocalCars(prev =>
-        prev.map(car => (car.id === carId ? { ...car, isActive: false } : car)),
-      )
     } catch (error: any) {
+      // Откат если ошибка
+      setOptimisticState(prev => ({
+        ...prev,
+        [carId]: { isActive: true, carStatus: "ACTIVE" },
+      }))
       setNotificationTopic("Error")
       setNotificationMessage(error || "Failed to delete car")
       setShowNotification(true)
     } finally {
       setLoadingCars(prev => {
-        const newLoadingCars = new Set(prev)
-        newLoadingCars.delete(carId)
-        return newLoadingCars
+        const newLoading = new Set(prev)
+        newLoading.delete(carId)
+        return newLoading
       })
     }
   }
 
   const handleRestoreCar = async (carId: string) => {
+    setOptimisticState(prev => ({
+      ...prev,
+      [carId]: { isActive: true, carStatus: "ACTIVE" },
+    }))
+
     try {
       setLoadingCars(prev => new Set(prev).add(carId))
-      await dispatch(
-        rentCarActions.restoreCar({ carId, token: accessToken }),
-      ).unwrap()
+      await dispatch(rentCarActions.restoreCar({ carId, token: accessToken })).unwrap()
       setNotificationTopic("Success")
       setNotificationMessage("The car is restored")
       setShowNotification(true)
-
-      setLocalCars(prev =>
-        prev.map(car => (car.id === carId ? { ...car, isActive: true } : car)),
-      )
     } catch (error: any) {
+      setOptimisticState(prev => ({
+        ...prev,
+        [carId]: { isActive: false, carStatus: "DELETED" },
+      }))
       setNotificationTopic("Error")
       setNotificationMessage(error || "Failed to restore car")
       setShowNotification(true)
     } finally {
       setLoadingCars(prev => {
-        const newLoadingCars = new Set(prev)
-        newLoadingCars.delete(carId)
-        return newLoadingCars
+        const newLoading = new Set(prev)
+        newLoading.delete(carId)
+        return newLoading
       })
+    }
+  }
+
+  const getOptimisticCar = (car: CarCardProps): CarCardProps => {
+    return {
+      ...car,
+      ...optimisticState[car.id],
     }
   }
 
   return (
     <div className="w-auto h-screen overflow-y-auto space-y-6 p-4">
-      {localCars && localCars.length > 0 ? (
-        localCars.map(car => (
-          <div key={car.id} className="relative">
-            <CarCard
-              carImage={car.carImage}
-              brand={car.brand}
-              model={car.model}
-              carStatus={car.carStatus}
-              dayRentalPrice={car.dayRentalPrice}
-              transmissionType={car.transmissionType}
-              year={car.year}
-              fuelType={car.fuelType}
-              id={car.id}
-              type={car.type}
-            />
+      {cars && cars.length > 0 ? (
+        cars.map(carOriginal => {
+          const car = getOptimisticCar(carOriginal)
 
-            <div className="m-4 flex flex-row gap-4 justify-end">
-              <div>
-                {car.carStatus !== "DELETED" && (
+          return (
+            <div key={car.id} className="relative">
+              <CarCard
+                carImage={car.carImage}
+                brand={car.brand}
+                model={car.model}
+                carStatus={car.carStatus}
+                dayRentalPrice={car.dayRentalPrice}
+                transmissionType={car.transmissionType}
+                year={car.year}
+                fuelType={car.fuelType}
+                id={car.id}
+                type={car.type}
+              />
+
+              <div className="m-4 flex flex-row gap-4 justify-end">
+                <div>
+                  {car.isActive && (
+                    <Button
+                      type="button"
+                      onClick={() => handleEditCar(car.id, car)}
+                      name="Edit"
+                    />
+                  )}
+                </div>
+
+                <div>
+                  {car.isActive && (
+                    <Button
+                      type="button"
+                      customClasses="!w-full !rounded-lg hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
+                      onClick={() =>
+                        navigate(`/upload-image/${car.id}`, { state: car })
+                      }
+                      name="Add Image"
+                    />
+                  )}
+                </div>
+
+                <div className="relative">
+                  {loadingCars.has(car.id) && (
+                    <div className="absolute inset-0 flex justify-center items-center">
+                      <Loader />
+                    </div>
+                  )}
                   <Button
                     type="button"
-                    onClick={() => handleEditCar(car.id, car)}
-                    name="Edit"
-                  />
-                )}
-              </div>
-
-              <div>
-                {car.carStatus !== "DELETED" && (
-                  <Button
-                    type="button"
-                    customClasses="!w-full !rounded-lg  hover:!bg-red-700 transition-colors duration-300 !bg-gray-900 !text-white"
+                    customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"
                     onClick={() =>
-                      navigate(`/upload-image/${car.id}`, { state: car })
+                      car.isActive
+                        ? handleDeleteCar(car.id)
+                        : handleRestoreCar(car.id)
                     }
-                    name="Add Image"
+                    name={car.isActive ? "Delete" : "Restore"}
                   />
-                )}
-              </div>
-
-              <div className="relative">
-                {loadingCars.has(car.id) && (
-                  <div className="absolute inset-0 flex justify-center items-center">
-                    <Loader />
-                  </div>
-                )}
-                <Button
-                  type="button"
-                  customClasses="!rounded-lg !bg-gray-400 hover:!bg-red-700 text-white"
-                  onClick={() =>
-                    car.isActive
-                      ? handleDeleteCar(car.id)
-                      : handleRestoreCar(car.id)
-                  }
-                  name={car.isActive ? "Delete" : "Restore"}
-                />
+                </div>
               </div>
             </div>
-          </div>
-        ))
+          )
+        })
       ) : (
         <p>Loading...</p>
       )}
