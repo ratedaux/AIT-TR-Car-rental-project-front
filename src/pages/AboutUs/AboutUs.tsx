@@ -3,8 +3,13 @@ import elena from "../../assets/avatars/Elena_Karsten.jpeg";
 import maria from "../../assets/avatars/Maria_Neshyna.jpeg";
 import alla from "../../assets/avatars/Alla_Nazarenko.jpeg";
 import liana from "../../assets/avatars/Liana_Kes.jpeg";
-import olga from "../../assets/avatars/Olga_Fatina.jpeg";
+import olha from "../../assets/avatars/Olha_Fatina.jpeg";
 import gloria from "../../assets/avatars/Gloria_Adler.jpeg";
+import german from "../../assets/avatars/German_Kisin.jpeg";
+import galina from "../../assets/avatars/Galina_Troshina.jpeg";
+import nastia from "../../assets/avatars/Anastasia_Yemetz.jpeg";
+import katia from "../../assets/avatars/Katerina_Kibireva.jpeg";
+
 
 function AboutUs() {
     return (
@@ -44,9 +49,11 @@ function AboutUs() {
                             <div className="text-center">
                                 <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
-                                        src="/team/katerina.jpg"
+                                        src={katia}
                                         alt="Katerina Kibireva"
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover scale-130" style={{
+                                            objectPosition: 'center 10%'
+                                        }}
                                     />
                                 </div>
                                 <h3 className="text-xl font-semibold mb-2">Katerina Kibireva</h3>
@@ -87,9 +94,11 @@ function AboutUs() {
                             <div className="text-center">
                                 <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
-                                        src="/team/anastasia.jpg"
+                                        src={nastia}
                                         alt="Anastasia Yemetz"
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover scale-130" style={{
+                                            objectPosition: 'center 10%'
+                                        }}
                                     />
                                 </div>
                                 <h3 className="text-xl font-semibold mb-2">Anastasia Yemetz</h3>
@@ -105,9 +114,11 @@ function AboutUs() {
                             <div className="text-center">
                                 <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
-                                        src="/team/galina.jpg"
+                                        src={galina}
                                         alt="Galina Troshina"
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover" style={{
+                                            objectPosition: 'center 10%'
+                                        }}
                                     />
                                 </div>
                                 <h3 className="text-xl font-semibold mb-2">Galina Troshina</h3>
@@ -116,22 +127,24 @@ function AboutUs() {
                             <div className="text-center">
                                 <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
-                                        src={olga}
-                                        alt="Olga Fatina"
+                                        src={olha}
+                                        alt="Olha Fatina"
                                         className="w-full h-full object-cover" style={{
                                             objectPosition: 'center 40%'
                                         }}
                                     />
                                 </div>
-                                <h3 className="text-xl font-semibold mb-2">Olga Fatina</h3>
+                                <h3 className="text-xl font-semibold mb-2">Olha Fatina</h3>
                                 <p className="text-gray-600">QA Engineer</p>
                             </div>
                             <div className="text-center">
                                 <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gray-200 overflow-hidden shadow-lg transform transition duration-500 hover:scale-110">
                                     <img
-                                        src="/team/german.jpg"
+                                        src={german}
                                         alt="German Kisin"
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover" style={{
+                                            objectPosition: 'center 35%'
+                                        }}
                                     />
                                 </div>
                                 <h3 className="text-xl font-semibold mb-2">German Kisin</h3>
