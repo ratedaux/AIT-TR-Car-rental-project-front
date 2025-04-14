@@ -1,37 +1,52 @@
-# vite-template-redux
+# Car Rental Project
 
-Uses [Vite](https://vitejs.dev/), [Vitest](https://vitest.dev/), and [React Testing Library](https://github.com/testing-library/react-testing-library) to create a modern [React](https://react.dev/) app compatible with [Create React App](https://create-react-app.dev/)
+This project is a modern web application for car rental services, built using [Vite](https://vitejs.dev/), [React](https://react.dev/), and [Redux](https://redux.js.org/). It provides a user-friendly interface for customers to browse, book, and manage car rentals.
 
-## Dependency Installation
+## Features
 
-Before starting to work with the project, make sure all dependencies are installed. To do this, run the following command:
+- **Responsive Design**: Optimized for mobile, tablet, and desktop devices.
+- **User Authentication**: Secure login and registration for users.
+- **Car Management**: Admin panel for managing car listings and bookings.
+- **Booking System**: Easy-to-use booking system with date and time selection.
+- **Notifications**: Real-time notifications for booking confirmations and updates.
+
+## Getting Started
+
+To get started with the project, clone the repository and install the dependencies:
 
 ```sh
+git clone <repository-url>
+cd car-rental-project
 npm install
 ```
 
-This will install all necessary packages, including `@fortawesome/fontawesome-free`, for the project to work correctly.
+## Development
+
+To start the development server, run:
 
 ```sh
-npx degit reduxjs/redux-templates/packages/vite-template-redux my-app
+npm run dev
 ```
 
-## Goals
+This will start the server and open the application in your default browser.
 
-- Easy migration from Create React App or Vite
-- As beginner friendly as Create React App
-- Optimized performance compared to Create React App
-- Customizable without ejecting
+## Build
 
-## Scripts
+To build the project for production, use:
 
-- `run dev`/`start` - start dev server and open browser
-- `build` - build for production
-- `preview` - locally preview production build
-- `test` - launch test runner
+```sh
+npm run build
+```
 
-## Inspiration
+## Deployment
 
-- [Create React App](https://github.com/facebook/create-react-app/tree/main/packages/cra-template)
-- [Vite](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react)
-- [Vitest](https://github.com/vitest-dev/vitest/tree/main/examples/react-testing-lib)
+The project is deployed and can be accessed at [Car Rental App](https://car-rental-cymg8.ondigitalocean.app/#/).
+
+## Testing
+
+To run tests, use:
+
+```sh
+npm run test
+```
+
